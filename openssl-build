@@ -86,6 +86,30 @@ then
     cd ${OPENSSL_TMP_FOLDER}
     ./Configure android-armv7
     build_library
+elif [ "$OPENSSL_TARGET_ABI" == "x86" ]
+then
+    ${NDK_MAKE_TOOLCHAIN} --platform=android-${OPENSSL_TARGET_API} \
+                          --toolchain=x86-${OPENSSL_GCC_VERSION} \
+                          --install-dir="${OPENSSL_TMP_FOLDER}/android-toolchain-x86"
+    export TOOLCHAIN_PATH="${OPENSSL_TMP_FOLDER}/android-toolchain-x86/bin"
+    export TOOL=i686-linux-android
+    export NDK_TOOLCHAIN_BASENAME=${TOOLCHAIN_PATH}/${TOOL}
+    export CC=$NDK_TOOLCHAIN_BASENAME-gcc
+    export CXX=$NDK_TOOLCHAIN_BASENAME-g++
+    export LINK=${CXX}
+    export LD=$NDK_TOOLCHAIN_BASENAME-ld
+    export AR=$NDK_TOOLCHAIN_BASENAME-ar
+    export RANLIB=$NDK_TOOLCHAIN_BASENAME-ranlib
+    export STRIP=$NDK_TOOLCHAIN_BASENAME-strip
+    export ARCH_FLAGS="-march=i686 -msse3 -mstackrealign -mfpmath=sse"
+    export ARCH_LINK=
+    export CPPFLAGS=" ${ARCH_FLAGS} -fpic -ffunction-sections -funwind-tables -fstack-protector -fno-strict-aliasing -finline-limit=64 "
+    export CXXFLAGS=" ${ARCH_FLAGS} -fpic -ffunction-sections -funwind-tables -fstack-protector -fno-strict-aliasing -finline-limit=64 -frtti -fexceptions "
+    export CFLAGS=" ${ARCH_FLAGS} -fpic -ffunction-sections -funwind-tables -fstack-protector -fno-strict-aliasing -finline-limit=64 "
+    export LDFLAGS=" ${ARCH_LINK} "
+    cd ${OPENSSL_TMP_FOLDER}
+    ./Configure android-x86
+    build_library
 else
     echo "Unsupported target ABI: $OPENSSL_TARGET_ABI"
     exit 1
