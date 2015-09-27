@@ -1,0 +1,45 @@
+#!/bin/bash
+if [[ $EUID -ne 0 ]]; then
+   echo "This script must be run as root" 1>&2
+   exit 1
+fi
+
+. config.conf
+
+if [ "$SETUP_PACKAGES" == "1" ]
+then
+    apt-get update
+    apt-get upgrade
+    apt-get install -y vim curl bzip2 gcc g++ binutils make autoconf openssl \
+                       libssl-dev openjdk-7-jdk openjdk-7-jre libopus0 \
+                       libpcre3 libpcre3-dev build-essential
+fi
+
+if [ "$DOWNLOAD_NDK" == "1" ]
+then
+    echo "Downloading Android NDK..."
+    curl -L -o ndk.bin "$NDK_DOWNLOAD_URL"
+    rm -rf "$NDK_DIR_NAME"
+    chmod +x ndk.bin && ./ndk.bin && rm -rf ndk.bin
+fi
+
+if [ "$DOWNLOAD_PJSIP" == "1" ]
+then
+    echo "Downloading PJSip..."
+    curl -L -o pjsip.tar.bz2 "$PJSIP_DOWNLOAD_URL"
+    rm -rf "$PJSIP_DIR_NAME"
+    tar xvjf pjsip.tar.bz2 && rm -rf pjsip.tar.bz2
+fi
+
+if [ "$DOWNLOAD_SWIG" == "1" ]
+then
+    echo "Downloading SWIG..."
+    curl -L -o swig.tar.gz http://prdownloads.sourceforge.net/swig/swig-3.0.7.tar.gz
+    rm -rf "$SWIG_DIR_NAME"
+    tar xzvf swig.tar.gz && rm -rf swig.tar.gz
+    cd "$SWIG_DIR_NAME"
+    ./configure
+    make && make install
+    cd ..
+    rm -rf "$SWIG_DIR_NAME"
+fi

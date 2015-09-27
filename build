@@ -1,0 +1,53 @@
+#!/bin/bash -e
+#@author Aleksandar Gotev (alex.gotev@mobimesh.it)
+
+. config.conf
+
+BASE_FOLDER=$(pwd)
+
+PJSIP_BASE_PATH="${BASE_FOLDER}/${PJSIP_DIR_NAME}"
+CONFIG_SITE_PATH="${PJSIP_BASE_PATH}/pjlib/include/pj/config_site.h"
+PJSUA_BASE_DIR="${PJSIP_BASE_PATH}/pjsip-apps/src/swig"
+PJSUA_GENERATED_SRC_DIR="${PJSUA_BASE_DIR}/java/android/src"
+PJSUA_GENERATED_SO_PATH="${PJSUA_BASE_DIR}/java/android/libs/armeabi/libpjsua2.so"
+FINAL_BUILD_DIR="${PJSIP_BASE_PATH}/pjsip-build"
+FINAL_BUILD_LIB="${FINAL_BUILD_DIR}/lib"
+FINAL_BUILD_LOGS="${FINAL_BUILD_DIR}/logs"
+
+export ANDROID_NDK_ROOT="${BASE_FOLDER}/${NDK_FOLDER}"
+export PATH="$ANDROID_NDK_ROOT:$PATH"
+
+echo "Clear final build folder ..."
+rm -rf "${FINAL_BUILD_DIR}"
+mkdir -p "${FINAL_BUILD_LIB}"
+mkdir -p "${FINAL_BUILD_LOGS}"
+
+echo "Creating config site file for Android ..."
+cat <<EOF > "$CONFIG_SITE_PATH"
+#define PJ_CONFIG_ANDROID 1
+#include <pj/config_site_sample.h>
+#define PJMEDIA_HAS_VIDEO 1
+EOF
+
+for arch in "${TARGET_ARCHS[@]}"
+do
+    echo "Compile PJSIP for arch $arch ..."
+    cd "${PJSIP_BASE_PATH}"
+    TARGET_ABI=$arch ./configure-android --use-ndk-cflags >>"${FINAL_BUILD_LOGS}/${arch}.log" 2>&1
+    make dep >>"${FINAL_BUILD_LOGS}/${arch}.log" 2>&1
+    make clean >>"${FINAL_BUILD_LOGS}/${arch}.log" 2>&1
+    make >>"${FINAL_BUILD_LOGS}/${arch}.log" 2>&1
+
+    echo "Compile PJSUA for arch $arch ..."
+    cd "${PJSUA_BASE_DIR}"
+    make >>"${FINAL_BUILD_LOGS}/${arch}.log" 2>&1
+
+    echo "Copying .so library to final build directory ..."
+    mkdir -p "${FINAL_BUILD_LIB}/${arch}"
+    mv "${PJSUA_GENERATED_SO_PATH}" "${FINAL_BUILD_LIB}/${arch}/"
+done
+
+echo "Copying PJSUA2 java bindings to final build directory ..."
+cp -r "${PJSUA_GENERATED_SRC_DIR}" "${FINAL_BUILD_DIR}"
+
+echo "Finished! Check the generated output in ${FINAL_BUILD_DIR}"
