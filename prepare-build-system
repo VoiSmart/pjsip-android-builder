@@ -36,7 +36,7 @@ fi
 if [ "$DOWNLOAD_SWIG" == "1" ]
 then
     echo "Downloading SWIG..."
-    curl -L -o swig.tar.gz http://prdownloads.sourceforge.net/swig/swig-3.0.7.tar.gz
+    curl -L -o swig.tar.gz "$SWIG_DOWNLOAD_URL"
     rm -rf "$SWIG_DIR_NAME"
     tar xzvf swig.tar.gz && rm -rf swig.tar.gz
     cd "$SWIG_DIR_NAME"
@@ -44,4 +44,12 @@ then
     make && make install
     cd ..
     rm -rf "$SWIG_DIR_NAME"
+fi
+
+if [ "$DOWNLOAD_OPENSSL" == "1" ]
+then
+    echo "Downloading OpenSSL..."
+    curl -L -o openssl.tar.gz "$OPENSSL_DOWNLOAD_URL"
+    rm -rf "$OPENSSL_DIR_NAME"
+    tar xzvf openssl.tar.gz && rm -rf openssl.tar.gz
 fi
