@@ -11,7 +11,7 @@ First, you need a virtualization system. There are plenty of choices out there. 
 1. Download the latest Ubuntu Server ISO (I've chosen 14.04.3 LTS): http://www.ubuntu.com/download/server <br>I've chosen this distro because it has a good support for the applications that we need and it's kept updated. In the future, support to other distributions can be added as well, with your help :)
 2. Create a new virtual machine with at least 1GB RAM and 20GB virtual hard drive. Add as many RAM and processors as you can, so the compilation process will be faster.
 3. Install Ubuntu Server
-4. SSH into your newly installed VM and execute the following commands, which will install all the required packages and files to be able to build PJSIP<br>
+4. SSH into your newly installed VM and execute the following commands, which will install all the required packages and files to be able to build PJSIP. This will take some time, as there are many things which has to be downloaded and installed, so relax or do some other thing while waiting<br>
 ```
 sudo su
 apt-get update && apt-get -y upgrade && apt-get install -y git
