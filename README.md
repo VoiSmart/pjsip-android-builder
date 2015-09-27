@@ -1,11 +1,11 @@
 # pjsip-android-builder
 Easily build PJSIP for Android, by using a Linux virtual machine
 
-# Purpose
+## Purpose
 I needed a fast and easily replicable build system to build PJSIP http://www.pjsip.org/ library for Android, without having to deal with compilation issues every time and waste a lot of time reading docs and forums. So, I thought of making a Linux virtual machine and make some scripts to easily download all the requirements and configure it to be a complete build environment, without affecting my computer which has already plenty of developer stuff on it :D
 If you want to contribute, your help is really appreciated :)
 
-# Setup
+## Setup
 First, you need a virtualization system. There are plenty of choices out there. Choose the one that you prefer (VirtualBox, vmWare, Vagrant, you name it). I'm supposing that you know what a virtual machine is and how to setup your environment to be able to run virtual machines. So, let's begin :)
 
 1. Download the latest Ubuntu Server ISO: http://www.ubuntu.com/download/server <br>I've chosen this distro because it has a good support for the applications that we need and it's kept updated. In the future, support to other distributions can be added as well, with your help :)
@@ -20,7 +20,7 @@ cd pjsip-android-builder
 ./prepare-build-system
 ```
 
-# Build PJSIP
+## Build PJSIP
 After you have successfully set up you VM, to build PJSIP, go into pjsip-android-builder and execute:
 ```
 ./build
@@ -32,3 +32,19 @@ pjsip-build
  |-- lib\   contains the compiled libraries for each architecture
  |-- src\   contains PJSUA Java wrapper to work with the library
 ```
+
+## License
+
+    Copyright (C) 2015 Aleksandar Gotev
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
