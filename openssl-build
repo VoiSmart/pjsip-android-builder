@@ -29,6 +29,14 @@ rm -rf "$OPENSSL_TMP_FOLDER"
 mkdir -p "$OPENSSL_TMP_FOLDER"
 cp -r ${OPENSSL_BASE_FOLDER}/* ${OPENSSL_TMP_FOLDER}
 
+function build_library {
+    PATH=$TOOLCHAIN_PATH:$PATH make
+    mkdir -p ${OPENSSL_OUTPUT_PATH}
+    cp lib*.a ${OPENSSL_OUTPUT_PATH}
+    rm -rf ${OPENSSL_TMP_FOLDER}
+    echo "Build completed! Check output libraries in ${OPENSSL_OUTPUT_PATH}"
+}
+
 if [ "$OPENSSL_TARGET_ABI" == "armeabi-v7a" ]
 then
     ${NDK_MAKE_TOOLCHAIN} --platform=android-${OPENSSL_TARGET_API} \
@@ -52,11 +60,7 @@ then
     export LDFLAGS=" ${ARCH_LINK} "
     cd ${OPENSSL_TMP_FOLDER}
     ./Configure android-armv7
-    PATH=$TOOLCHAIN_PATH:$PATH make
-    mkdir -p ${OPENSSL_OUTPUT_PATH}
-    cp lib*.a ${OPENSSL_OUTPUT_PATH}
-    rm -rf ${OPENSSL_TMP_FOLDER}
-    echo "Build completed! Check output libraries in ${OPENSSL_OUTPUT_PATH}"
+    build_library
 else
     echo "Unsupported target ABI: $OPENSSL_TARGET_ABI"
     exit 1
