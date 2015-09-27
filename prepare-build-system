@@ -29,6 +29,8 @@ then
     curl -L -o pjsip.tar.bz2 "$PJSIP_DOWNLOAD_URL"
     rm -rf "$PJSIP_DIR_NAME"
     tar xvjf pjsip.tar.bz2 && rm -rf pjsip.tar.bz2
+    # fix bash script error in 2.4.5 tag
+    sed -i 's/TARGET_HOST+=-linux-android/TARGET_HOST="\${TARGET_HOST}-linux-android"/g' $(pwd)"/${PJSIP_DIR_NAME}/configure-android"
 fi
 
 if [ "$DOWNLOAD_SWIG" == "1" ]

@@ -10,11 +10,11 @@ CONFIG_SITE_PATH="${PJSIP_BASE_PATH}/pjlib/include/pj/config_site.h"
 PJSUA_BASE_DIR="${PJSIP_BASE_PATH}/pjsip-apps/src/swig"
 PJSUA_GENERATED_SRC_DIR="${PJSUA_BASE_DIR}/java/android/src"
 PJSUA_GENERATED_SO_PATH="${PJSUA_BASE_DIR}/java/android/libs/armeabi/libpjsua2.so"
-FINAL_BUILD_DIR="${PJSIP_BASE_PATH}/pjsip-build"
+FINAL_BUILD_DIR="${BASE_FOLDER}/pjsip-build"
 FINAL_BUILD_LIB="${FINAL_BUILD_DIR}/lib"
 FINAL_BUILD_LOGS="${FINAL_BUILD_DIR}/logs"
 
-export ANDROID_NDK_ROOT="${BASE_FOLDER}/${NDK_FOLDER}"
+export ANDROID_NDK_ROOT="${BASE_FOLDER}/${NDK_DIR_NAME}"
 export PATH="$ANDROID_NDK_ROOT:$PATH"
 
 echo "Clear final build folder ..."
