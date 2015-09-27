@@ -53,5 +53,5 @@ done
 
 echo "Copying PJSUA2 java bindings to final build directory ..."
 cp -r "${PJSUA_GENERATED_SRC_DIR}" "${FINAL_BUILD_DIR}"
-
+rm -rf "${PJSIP_TMP_PATH}"
 echo "Finished! Check the generated output in ${FINAL_BUILD_DIR}"
