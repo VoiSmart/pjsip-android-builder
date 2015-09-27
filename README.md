@@ -8,7 +8,7 @@ If you want to contribute, your help is really appreciated :)
 ## Setup
 First, you need a virtualization system. There are plenty of choices out there. Choose the one that you prefer (VirtualBox, vmWare, Vagrant, you name it). I'm supposing that you know what a virtual machine is and how to setup your environment to be able to run virtual machines. So, let's begin :)
 
-1. Download the latest Ubuntu Server ISO: http://www.ubuntu.com/download/server <br>I've chosen this distro because it has a good support for the applications that we need and it's kept updated. In the future, support to other distributions can be added as well, with your help :)
+1. Download the latest Ubuntu Server ISO (I've chosen 14.04.3 LTS): http://www.ubuntu.com/download/server <br>I've chosen this distro because it has a good support for the applications that we need and it's kept updated. In the future, support to other distributions can be added as well, with your help :)
 2. Create a new virtual machine with at least 1GB RAM and 20GB virtual hard drive. Add as many RAM and processors as you can, so the compilation process will be faster.
 3. Install Ubuntu Server
 4. SSH into your newly installed VM and execute the following commands, which will install all the required packages and files to be able to build PJSIP<br>
@@ -29,9 +29,14 @@ The script is going to create a new folder named <b>pjsip-build</b> organized as
 ```
 pjsip-build
  |-- logs\  contains the full build log for each target architecture
- |-- lib\   contains the compiled libraries for each architecture
+ |-- lib\   contains the compiled libraries for each target architecture
  |-- src\   contains PJSUA Java wrapper to work with the library
 ```
+
+## Configuration
+It's possible to configure which versions of Android NDK, PJSIP and Swig to use.
+You can also specify which targets you want to build, if you don't need them all.
+This is done by editing the <b>config.conf</b> file. Please read the comments in the file for more details.
 
 ## License
 
