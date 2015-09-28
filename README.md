@@ -1,5 +1,5 @@
 # pjsip-android-builder
-Easily build PJSIP for Android, by using a Linux virtual machine
+Easily build PJSIP for Android with OpenSSL support, by using a Linux virtual machine
 
 ## Purpose
 I needed a fast and easily replicable build system to build PJSIP http://www.pjsip.org/ library for Android, without wasting a lot of time reading docs and forums every time. So, I thought of making a Linux virtual machine and make some scripts to easily download all the requirements and configure it to be a complete build environment.
