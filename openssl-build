@@ -6,6 +6,8 @@ if [ "$#" -ne 6 ]
 then
     echo "Usage: ./openssl-build <ANDROID_NDK_PATH> <OPENSSL_SOURCES_PATH> <ANDROID_TARGET_API> <ANDROID_TARGET_ABI> <GCC_VERSION> <OUTPUT_PATH>"
     echo
+    echo "Supported target ABIs: armeabi, armeabi-v7a, x86, x86_64, arm64-v8a"
+    echo
     echo "Example using GCC 4.8, NDK 10e, OpenSSL 1.0.2d and targeting for armeabi-v7a and Android API 21."
     echo "./openssl-build /home/user/android-ndk-r10e \\"
     echo "                /home/user/openssl-1.0.2d \\"
