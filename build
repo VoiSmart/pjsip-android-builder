@@ -38,7 +38,9 @@ do
     cd "${PJSIP_BASE_PATH}"
     cp -r * "${PJSIP_TMP_PATH}"
     cd "${PJSIP_TMP_PATH}"
-    TARGET_ABI=$arch ./configure-android --use-ndk-cflags >>"${FINAL_BUILD_LOGS}/${arch}.log" 2>&1
+    TARGET_ABI=$arch ./configure-android --use-ndk-cflags \
+                                         --with-ssl="${BASE_FOLDER}/openssl-build-output/libs/${arch}" \
+                                         >>"${FINAL_BUILD_LOGS}/${arch}.log" 2>&1
     make dep >>"${FINAL_BUILD_LOGS}/${arch}.log" 2>&1
     make >>"${FINAL_BUILD_LOGS}/${arch}.log" 2>&1
 

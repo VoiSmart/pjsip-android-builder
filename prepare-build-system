@@ -52,4 +52,5 @@ then
     curl -L -o openssl.tar.gz "$OPENSSL_DOWNLOAD_URL"
     rm -rf "$OPENSSL_DIR_NAME"
     tar xzvf openssl.tar.gz && rm -rf openssl.tar.gz
+    ./openssl-build-target-archs
 fi

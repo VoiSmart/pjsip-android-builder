@@ -34,9 +34,9 @@ mkdir -p "$OPENSSL_TMP_FOLDER"
 cp -r ${OPENSSL_BASE_FOLDER}/* ${OPENSSL_TMP_FOLDER}
 
 function build_library {
-    PATH=$TOOLCHAIN_PATH:$PATH make
     mkdir -p ${OPENSSL_OUTPUT_PATH}
-    cp lib*.a ${OPENSSL_OUTPUT_PATH}
+    export PATH=$TOOLCHAIN_PATH:$PATH
+    make && make install
     rm -rf ${OPENSSL_TMP_FOLDER}
     echo "Build completed! Check output libraries in ${OPENSSL_OUTPUT_PATH}"
 }
@@ -63,7 +63,7 @@ then
     export CFLAGS=" ${ARCH_FLAGS} -fpic -ffunction-sections -funwind-tables -fstack-protector -fno-strict-aliasing -finline-limit=64 "
     export LDFLAGS=" ${ARCH_LINK} "
     cd ${OPENSSL_TMP_FOLDER}
-    ./Configure android-armv7
+    ./Configure android-armv7 --openssldir=${OPENSSL_OUTPUT_PATH}
     build_library
 
 elif [ "$OPENSSL_TARGET_ABI" == "arm64-v8a" ]
@@ -88,7 +88,7 @@ then
     export CFLAGS=" ${ARCH_FLAGS} -fpic -ffunction-sections -funwind-tables -fstack-protector -fno-strict-aliasing -finline-limit=64 "
     export LDFLAGS=" ${ARCH_LINK} "
     cd ${OPENSSL_TMP_FOLDER}
-    ./Configure android
+    ./Configure android --openssldir=${OPENSSL_OUTPUT_PATH}
     build_library
 
 elif [ "$OPENSSL_TARGET_ABI" == "armeabi" ]
@@ -113,8 +113,9 @@ then
     export CFLAGS=" ${ARCH_FLAGS} -fpic -ffunction-sections -funwind-tables -fstack-protector -fno-strict-aliasing -finline-limit=64 "
     export LDFLAGS=" ${ARCH_LINK} "
     cd ${OPENSSL_TMP_FOLDER}
-    ./Configure android-armv7
+    ./Configure android --openssldir=${OPENSSL_OUTPUT_PATH}
     build_library
+
 elif [ "$OPENSSL_TARGET_ABI" == "x86" ]
 then
     ${NDK_MAKE_TOOLCHAIN} --platform=android-${OPENSSL_TARGET_API} \
@@ -137,7 +138,7 @@ then
     export CFLAGS=" ${ARCH_FLAGS} -fpic -ffunction-sections -funwind-tables -fstack-protector -fno-strict-aliasing -finline-limit=64 "
     export LDFLAGS=" ${ARCH_LINK} "
     cd ${OPENSSL_TMP_FOLDER}
-    ./Configure android-x86
+    ./Configure android-x86 --openssldir=${OPENSSL_OUTPUT_PATH}
     build_library
 
 elif [ "$OPENSSL_TARGET_ABI" == "x86_64" ]
@@ -160,7 +161,7 @@ then
     export CFLAGS=" ${ARCH_FLAGS} -fpic -ffunction-sections -funwind-tables -fstack-protector -fno-strict-aliasing -finline-limit=64 "
     export LDFLAGS=" ${ARCH_LINK} "
     cd ${OPENSSL_TMP_FOLDER}
-    ./Configure linux-x86_64
+    ./Configure linux-x86_64 --openssldir=${OPENSSL_OUTPUT_PATH}
     build_library
 
 else
