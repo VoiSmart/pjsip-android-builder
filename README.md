@@ -2,7 +2,7 @@
 Easily build PJSIP for Android, by using a Linux virtual machine
 
 ## Purpose
-I needed a fast and easily replicable build system to build PJSIP http://www.pjsip.org/ library for Android, without having to deal with compilation issues every time and waste a lot of time reading docs and forums. So, I thought of making a Linux virtual machine and make some scripts to easily download all the requirements and configure it to be a complete build environment, without affecting my computer which has already plenty of developer stuff on it :D
+I needed a fast and easily replicable build system to build PJSIP http://www.pjsip.org/ library for Android, without wasting a lot of time reading docs and forums every time. So, I thought of making a Linux virtual machine and make some scripts to easily download all the requirements and configure it to be a complete build environment.
 If you want to contribute, your help is really appreciated :)
 
 ## Setup
@@ -69,13 +69,9 @@ Usage:
 
 Supported target ABIs: armeabi, armeabi-v7a, x86, x86_64, arm64-v8a
 
-Example using GCC 4.8, NDK 10e, OpenSSL 1.0.2d and targeting for armeabi-v7a and Android API 21.
-./openssl-build /home/user/android-ndk-r10e \
-                /home/user/openssl-1.0.2d \
-                21 \
-                armeabi-v7a \
-                4.8 \
-                /home/user/output/armeabi-v7a
+Example using GCC 4.8, NDK 10e, OpenSSL 1.0.2d and Android API 21 for armeabi-v7a.
+./openssl-build /home/user/android-ndk-r10e /home/user/openssl-1.0.2d 21 \
+                armeabi-v7a 4.8 /home/user/output/armeabi-v7a
 ```
 If you want to leverage on the <b>config.conf</b> properties and build OpenSSL for every configured target arch, you can use the following helper script:
 ```
