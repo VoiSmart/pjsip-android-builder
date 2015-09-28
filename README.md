@@ -21,7 +21,7 @@ cd pjsip-android-builder
 ```
 
 ## Build PJSIP
-After you have successfully set up you VM, to build PJSIP, go into pjsip-android-builder and execute:
+After you have successfully set up your VM, to build PJSIP, go into pjsip-android-builder and execute:
 ```
 ./build
 ```
@@ -58,9 +58,45 @@ pjsip-build
 If something goes wrong during the compilation of a particular target architecture, the main script will be terminated and you can see the full log in `./pjsip-build/logs/<arch>.log`. So for example if there's an error for <b>x86</b>, you can see the full log in `./pjsip-build/logs/x86.log`
 
 ## Configuration
-It's possible to configure which versions of Android NDK, PJSIP and Swig to use.
-You can also specify which targets you want to build, if you don't need them all.
-This is done by editing the <b>config.conf</b> file. Please read the comments in the file for more details.
+It's possible to configure library versions and build settings by editing the <b>config.conf</b> file. Please read the comments in the file for more details.
+
+## Build only OpenSSL
+This project has separate independent script to build only OpenSSL library.
+```
+Usage: 
+./openssl-build <ANDROID_NDK_PATH> <OPENSSL_SOURCES_PATH> <ANDROID_TARGET_API> \
+                <ANDROID_TARGET_ABI> <GCC_VERSION> <OUTPUT_PATH>
+
+Supported target ABIs: armeabi, armeabi-v7a, x86, x86_64, arm64-v8a
+
+Example using GCC 4.8, NDK 10e, OpenSSL 1.0.2d and targeting for armeabi-v7a and Android API 21.
+./openssl-build /home/user/android-ndk-r10e \
+                /home/user/openssl-1.0.2d \
+                21 \
+                armeabi-v7a \
+                4.8 \
+                /home/user/output/armeabi-v7a
+```
+If you want to leverage on the <b>config.conf</b> properties and build OpenSSL for every configured target arch, you can use the following helper script:
+```
+./openssl-build-target-archs
+```
+When everything goes well, you will see an output like this:
+```
+Building OpenSSL for target arch armeabi ...
+Building OpenSSL for target arch armeabi-v7a ...
+Building OpenSSL for target arch x86 ...
+Building OpenSSL for target arch x86_64 ...
+Building OpenSSL for target arch arm64-v8a ...
+Finished building OpenSSL! Check output folder: /home/user/pjsip-android-builder/openssl-build-output
+```
+The script is going to create a new folder named <b>openssl-build-output</b> organized as follows:
+```
+openssl-build-output
+ |-- logs/  contains the full build log for each target architecture
+ |-- libs/  contains the compiled libraries for each target architecture
+```
+If something goes wrong during the compilation of a particular target architecture, the main script will be terminated and you can see the full log in `./openssl-build-output/logs/<arch>.log`. So for example if there's an error for <b>x86</b>, you can see the full log in `./openssl-build-output/logs/x86.log`
 
 ## License
 
