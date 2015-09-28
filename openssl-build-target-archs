@@ -5,11 +5,10 @@
 NDK_PATH=$(pwd)"/${NDK_DIR_NAME}"
 OPENSSL_PATH=$(pwd)"/${OPENSSL_DIR_NAME}"
 GCC_VERSION=$(gcc --version | grep gcc | awk '{print $4}' | cut -d'.' -f1,2)
-OUT_PATH=$(pwd)"/openssl-build-output"
-LIB_PATH="${OUT_PATH}/libs"
-LOG_PATH="${OUT_PATH}/logs"
+LIB_PATH="${OPENSSL_BUILD_OUT_PATH}/libs"
+LOG_PATH="${OPENSSL_BUILD_OUT_PATH}/logs"
 
-rm -rf "${OUT_PATH}"
+rm -rf "${OPENSSL_BUILD_OUT_PATH}"
 mkdir -p "${LIB_PATH}"
 mkdir -p "${LOG_PATH}"
 
@@ -21,4 +20,4 @@ do
                     >>"${LOG_PATH}/${arch}.log" 2>&1
 done
 
-echo "Finished building OpenSSL! Check output folder: ${OUT_PATH}"
+echo "Finished building OpenSSL! Check output folder: ${OPENSSL_BUILD_OUT_PATH}"
