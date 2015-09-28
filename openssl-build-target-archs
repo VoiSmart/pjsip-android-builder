@@ -8,7 +8,6 @@ GCC_VERSION=$(gcc --version | grep gcc | awk '{print $4}' | cut -d'.' -f1,2)
 OUT_PATH=$(pwd)"/openssl-build-output"
 LIB_PATH="${OUT_PATH}/libs"
 LOG_PATH="${OUT_PATH}/logs"
-TARGET_API=21
 
 rm -rf "${OUT_PATH}"
 mkdir -p "${LIB_PATH}"
@@ -17,7 +16,7 @@ mkdir -p "${LOG_PATH}"
 for arch in "${TARGET_ARCHS[@]}"
 do
     echo "Building OpenSSL for target arch $arch ..."
-    ./openssl-build ${NDK_PATH} ${OPENSSL_PATH} ${TARGET_API} \
+    ./openssl-build ${NDK_PATH} ${OPENSSL_PATH} ${TARGET_ANDROID_API} \
                     ${arch} ${GCC_VERSION} "${LIB_PATH}/${arch}" \
                     >>"${LOG_PATH}/${arch}.log" 2>&1
 done
