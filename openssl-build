@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -e
 #@author Aleksandar Gotev (alex.gotev@mobimesh.it)
 #Hints and code taken also from http://stackoverflow.com/questions/11929773/compiling-the-latest-openssl-for-android
 
