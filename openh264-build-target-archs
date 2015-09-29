@@ -28,7 +28,8 @@ do
     #change default output DIR for make install
     sed -i "s*PREFIX=/usr/local*PREFIX=${LIB_PATH}/${arch}*g" Makefile
     
-    ARGS="OS=android NDKROOT=${NDK_PATH} TARGET=android-${TARGET_ANDROID_API} ARCH="
+    ARGS="OS=android NDKROOT=${NDK_PATH} NDKLEVEL=${OPENH264_TARGET_NDK_LEVEL} "
+    ARGS="${ARGS}TARGET=android-${TARGET_ANDROID_API} ARCH="
     
     if [ "$arch" == "armeabi" ]
     then
