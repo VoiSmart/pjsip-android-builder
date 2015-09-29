@@ -80,7 +80,8 @@ then
     curl -L -o openssl.tar.gz "$OPENSSL_DOWNLOAD_URL"
     rm -rf "$OPENSSL_DIR_NAME"
     tar xzvf openssl.tar.gz && rm -rf openssl.tar.gz
-    ${BASEDIR}/openssl-build-target-archs
+    cd ${BASEDIR}
+    ./openssl-build-target-archs
 fi
 
 if [ "$DOWNLOAD_OPENH264" == "1" ]
@@ -89,7 +90,14 @@ then
     curl -L -o openh264.tar.gz "$OPENH264_DOWNLOAD_URL"
     rm -rf "${OPENH264_DIR_NAME}"
     tar xzvf openh264.tar.gz && rm -rf openh264.tar.gz
-    ${BASEDIR}/openh264-build-target-archs
+    if [ "${OPENH264_DIR_NAME}" == "openh264-1.0.0" ]
+    then
+        echo "Patching OpenH264 to be able to compile with Android API 21+.."
+        cp ${BASEDIR}/openh264-1.0.0-android21.patch ${BASEDIR}/${OPENH264_DIR_NAME}/
+        cd ${OPENH264_DIR_NAME} && patch -p1 < openh264-1.0.0-android21.patch || true
+    fi
+    cd ${BASEDIR}
+    ./openh264-build-target-archs
 fi
 
 echo "The build system is ready! Execute: ./build to build PJSIP :)"

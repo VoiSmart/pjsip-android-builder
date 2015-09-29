@@ -40,6 +40,7 @@ do
     cd "${PJSIP_TMP_PATH}"
     TARGET_ABI=$arch ./configure-android --use-ndk-cflags \
                                          --with-ssl="${OPENSSL_BUILD_OUT_PATH}/libs/${arch}" \
+                                         --with-openh264="${OPENH264_BUILD_OUT_PATH}/libs/${arch}" \
                                          >>"${FINAL_BUILD_LOGS}/${arch}.log" 2>&1
     make dep >>"${FINAL_BUILD_LOGS}/${arch}.log" 2>&1
     make >>"${FINAL_BUILD_LOGS}/${arch}.log" 2>&1
@@ -48,9 +49,14 @@ do
     cd "${PJSUA_BASE_DIR}"
     make >>"${FINAL_BUILD_LOGS}/${arch}.log" 2>&1
 
-    echo "Copying .so library to final build directory ..."
+    echo "Copying PJSUA .so library to final build directory ..."
     mkdir -p "${FINAL_BUILD_LIB}/${arch}"
     mv "${PJSUA_GENERATED_SO_PATH}" "${FINAL_BUILD_LIB}/${arch}/"
+
+    if [ -f ${OPENH264_BUILD_OUT_PATH}/libs/${arch}/lib/libopenh264.so ]; then
+        echo "Copying OpenH264 .so library to final build directory ..."
+        cp ${OPENH264_BUILD_OUT_PATH}/libs/${arch}/lib/libopenh264.so ${FINAL_BUILD_LIB}/${arch}/
+    fi
 done
 
 echo "Copying PJSUA2 java bindings to final build directory ..."
