@@ -6,6 +6,8 @@ fi
 
 . config.conf
 
+BASEDIR=$(pwd)
+
 if [ "$SETUP_PACKAGES" == "1" ]
 then
     apt-get update
@@ -78,7 +80,7 @@ then
     curl -L -o openssl.tar.gz "$OPENSSL_DOWNLOAD_URL"
     rm -rf "$OPENSSL_DIR_NAME"
     tar xzvf openssl.tar.gz && rm -rf openssl.tar.gz
-    ./openssl-build-target-archs
+    ${BASEDIR}/openssl-build-target-archs
 fi
 
 if [ "$DOWNLOAD_OPENH264" == "1" ]
@@ -87,5 +89,8 @@ then
     curl -L -o openh264.tar.gz "$OPENH264_DOWNLOAD_URL"
     rm -rf "${OPENH264_DIR_NAME}"
     tar xzvf openh264.tar.gz && rm -rf openh264.tar.gz
-    ./openh264-build-target-archs
+    ${BASEDIR}/openh264-build-target-archs
 fi
+
+echo "The build system is ready! Execute: ./build to build PJSIP :)"
+
