@@ -1,8 +1,4 @@
-#!/bin/bash
-if [[ $EUID -ne 0 ]]; then
-   echo "This script must be run as root" 1>&2
-   exit 1
-fi
+#!/bin/bash -e
 
 . config.conf
 
@@ -10,12 +6,11 @@ BASEDIR=$(pwd)
 
 if [ "$SETUP_PACKAGES" == "1" ]
 then
-    apt-get update
-    apt-get upgrade
-    apt-get install -y vim curl bzip2 gcc g++ binutils make autoconf openssl \
-                       libssl-dev openjdk-7-jdk openjdk-7-jre ant libopus0 \
-                       libpcre3 libpcre3-dev build-essential nasm \
-                       libc6:i386 libstdc++6:i386 zlib1g:i386
+    DEPS="vim curl bzip2 gcc g++ binutils make autoconf openssl \
+          libssl-dev openjdk-7-jdk openjdk-7-jre ant libopus0 \
+          libpcre3 libpcre3-dev build-essential nasm \
+          libc6:i386 libstdc++6:i386 zlib1g:i386"
+    sudo -- sh -c "apt-get update && apt-get -y upgrade && apt-get install -y ${DEPS}"
 fi
 
 if [ "$DOWNLOAD_NDK" == "1" ]
@@ -69,7 +64,7 @@ then
     tar xzvf swig.tar.gz && rm -rf swig.tar.gz
     cd "$SWIG_DIR_NAME"
     ./configure
-    make && make install
+    make && sudo make install
     cd ..
     rm -rf "$SWIG_DIR_NAME"
 fi
