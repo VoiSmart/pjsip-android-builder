@@ -11,8 +11,9 @@ then
     apt-get update
     apt-get upgrade
     apt-get install -y vim curl bzip2 gcc g++ binutils make autoconf openssl \
-                       libssl-dev openjdk-7-jdk openjdk-7-jre libopus0 \
-                       libpcre3 libpcre3-dev build-essential
+                       libssl-dev openjdk-7-jdk openjdk-7-jre ant libopus0 \
+                       libpcre3 libpcre3-dev build-essential nasm \
+                       libc6:i386 libstdc++6:i386 zlib1g:i386
 fi
 
 if [ "$DOWNLOAD_NDK" == "1" ]
@@ -21,6 +22,31 @@ then
     curl -L -o ndk.bin "$NDK_DOWNLOAD_URL"
     rm -rf "$NDK_DIR_NAME"
     chmod +x ndk.bin && ./ndk.bin && rm -rf ndk.bin
+fi
+
+if [ "$DOWNLOAD_SDK" == "1" ]
+then
+    echo "Downloading Android SDK..."
+    curl -L -o sdk.tgz "$SDK_DOWNLOAD_URL"
+    rm -rf "$SDK_DIR_NAME"
+    tar xzvf sdk.tgz && rm -rf sdk.tgz
+fi
+
+if [ "$DOWNLOAD_TARGET_API" == "1" ]
+then
+    echo "Downloading Android API Platform ${TARGET_ANDROID_API}..."
+    cd ${SDK_DIR_NAME}/tools
+
+    ALL_SDK=$(./android list sdk --all)
+
+    PACKAGE=$(echo "${ALL_SDK}" | grep "API ${TARGET_ANDROID_API}" | head -n 1 | awk '{print $1}' | cut -d'-' -f 1)
+    echo yes | ./android update sdk --all --filter ${PACKAGE} --no-ui --force
+
+    PACKAGE=$(echo "${ALL_SDK}" | grep "Android SDK Platform-tools" | head -n 1 | awk '{print $1}' | cut -d'-' -f 1)
+    echo yes | ./android update sdk --all --filter ${PACKAGE} --no-ui --force
+
+    PACKAGE=$(echo "${ALL_SDK}" | grep "Build-tools" | head -n 1 | awk '{print $1}' | cut -d'-' -f 1)
+    echo yes | ./android update sdk --all --filter ${PACKAGE} --no-ui --force
 fi
 
 if [ "$DOWNLOAD_PJSIP" == "1" ]
@@ -53,4 +79,13 @@ then
     rm -rf "$OPENSSL_DIR_NAME"
     tar xzvf openssl.tar.gz && rm -rf openssl.tar.gz
     ./openssl-build-target-archs
+fi
+
+if [ "$DOWNLOAD_OPENH264" == "1" ]
+then
+    echo "Downloading OpenH264..."
+    curl -L -o openh264.tar.gz "$OPENH264_DOWNLOAD_URL"
+    rm -rf "${OPENH264_DIR_NAME}"
+    tar xzvf openh264.tar.gz && rm -rf openh264.tar.gz
+    ./openh264-build-target-archs
 fi
