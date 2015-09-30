@@ -13,7 +13,7 @@ First, you need a virtualization system. There are plenty of choices out there. 
 3. Install Ubuntu Server
 4. SSH into your newly installed VM and execute the following commands, which will install all the required packages and files to be able to build PJSIP. This will take some time, as there are many things which has to be downloaded and installed, so relax or do some other thing while waiting<br>
 ```
-sudo -- sh -c "apt-get update && apt-get -y upgrade && apt-get install -y git"
+sudo apt-get install -y git
 git clone https://github.com/alexbbb/pjsip-android-builder
 cd pjsip-android-builder
 ./prepare-build-system
