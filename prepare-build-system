@@ -16,6 +16,7 @@ fi
 if [ "$DOWNLOAD_NDK" == "1" ]
 then
     echo "Downloading Android NDK..."
+    cd "${BASEDIR}"
     curl -L -o ndk.bin "$NDK_DOWNLOAD_URL"
     rm -rf "$NDK_DIR_NAME"
     chmod +x ndk.bin && ./ndk.bin && rm -rf ndk.bin
@@ -24,6 +25,7 @@ fi
 if [ "$DOWNLOAD_SDK" == "1" ]
 then
     echo "Downloading Android SDK..."
+    cd "${BASEDIR}"
     curl -L -o sdk.tgz "$SDK_DOWNLOAD_URL"
     rm -rf "$SDK_DIR_NAME"
     tar xzvf sdk.tgz && rm -rf sdk.tgz
@@ -32,7 +34,7 @@ fi
 if [ "$DOWNLOAD_TARGET_API" == "1" ]
 then
     echo "Downloading Android API Platform ${TARGET_ANDROID_API}..."
-    cd ${SDK_DIR_NAME}/tools
+    cd ${BASEDIR}/${SDK_DIR_NAME}/tools
 
     ALL_SDK=$(./android list sdk --all)
 
@@ -49,6 +51,7 @@ fi
 if [ "$DOWNLOAD_PJSIP" == "1" ]
 then
     echo "Downloading PJSip..."
+    cd "${BASEDIR}"
     curl -L -o pjsip.tar.bz2 "$PJSIP_DOWNLOAD_URL"
     rm -rf "$PJSIP_DIR_NAME"
     tar xvjf pjsip.tar.bz2 && rm -rf pjsip.tar.bz2
@@ -59,6 +62,7 @@ fi
 if [ "$DOWNLOAD_SWIG" == "1" ]
 then
     echo "Downloading SWIG..."
+    cd "${BASEDIR}"
     curl -L -o swig.tar.gz "$SWIG_DOWNLOAD_URL"
     rm -rf "$SWIG_DIR_NAME"
     tar xzvf swig.tar.gz && rm -rf swig.tar.gz
@@ -72,6 +76,7 @@ fi
 if [ "$DOWNLOAD_OPENSSL" == "1" ]
 then
     echo "Downloading OpenSSL..."
+    cd "${BASEDIR}"
     curl -L -o openssl.tar.gz "$OPENSSL_DOWNLOAD_URL"
     rm -rf "$OPENSSL_DIR_NAME"
     tar xzvf openssl.tar.gz && rm -rf openssl.tar.gz
@@ -82,6 +87,7 @@ fi
 if [ "$DOWNLOAD_OPENH264" == "1" ]
 then
     echo "Downloading OpenH264..."
+    cd "${BASEDIR}"
     curl -L -o openh264.tar.gz "$OPENH264_DOWNLOAD_URL"
     rm -rf "${OPENH264_DIR_NAME}"
     tar xzvf openh264.tar.gz && rm -rf openh264.tar.gz
