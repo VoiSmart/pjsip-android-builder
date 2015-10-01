@@ -45,7 +45,7 @@ do
     mkdir -p "${YUV_RELEASE_FOLDER}"
     cp "${BASE_FOLDER}/${LIBYUV_REPO_DIR_NAME}/libs/${arch}/libyuv.so" ${YUV_RELEASE_FOLDER}
 
-    TARGET_ABI=$arch ./configure-android --use-ndk-cflags \
+    APP_PLATFORM=android-${TARGET_ANDROID_API} TARGET_ABI=$arch ./configure-android --use-ndk-cflags \
                                          --with-ssl="${OPENSSL_BUILD_OUT_PATH}/libs/${arch}" \
                                          --with-openh264="${OPENH264_BUILD_OUT_PATH}/libs/${arch}" \
                                          --with-libyuv="${BASE_FOLDER}/${LIBYUV_REPO_DIR_NAME}/jni" \
