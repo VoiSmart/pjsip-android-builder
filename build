@@ -38,9 +38,17 @@ do
     cd "${PJSIP_BASE_PATH}"
     cp -r * "${PJSIP_TMP_PATH}"
     cd "${PJSIP_TMP_PATH}"
+
+    #following instructions from here: http://trac.pjsip.org/repos/ticket/1776
+    YUV_RELEASE_FOLDER="${BASE_FOLDER}/${LIBYUV_REPO_DIR_NAME}/jni/out/Release"
+    rm -rf "${YUV_RELEASE_FOLDER}"
+    mkdir -p "${YUV_RELEASE_FOLDER}"
+    cp "${BASE_FOLDER}/${LIBYUV_REPO_DIR_NAME}/libs/${arch}/libyuv.so" ${YUV_RELEASE_FOLDER}
+
     TARGET_ABI=$arch ./configure-android --use-ndk-cflags \
                                          --with-ssl="${OPENSSL_BUILD_OUT_PATH}/libs/${arch}" \
                                          --with-openh264="${OPENH264_BUILD_OUT_PATH}/libs/${arch}" \
+                                         --with-libyuv="${BASE_FOLDER}/${LIBYUV_REPO_DIR_NAME}/jni" \
                                          >>"${FINAL_BUILD_LOGS}/${arch}.log" 2>&1
     make dep >>"${FINAL_BUILD_LOGS}/${arch}.log" 2>&1
     make >>"${FINAL_BUILD_LOGS}/${arch}.log" 2>&1
@@ -57,6 +65,9 @@ do
         echo "Copying OpenH264 .so library to final build directory ..."
         cp ${OPENH264_BUILD_OUT_PATH}/libs/${arch}/lib/libopenh264.so ${FINAL_BUILD_LIB}/${arch}/
     fi
+
+    echo "Copying libyuv .so library to final build directory ..."
+    cp "${BASE_FOLDER}/${LIBYUV_REPO_DIR_NAME}/libs/${arch}/libyuv.so" ${FINAL_BUILD_LIB}/${arch}/
 done
 
 echo "Copying PJSUA2 java bindings to final build directory ..."

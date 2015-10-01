@@ -84,6 +84,18 @@ then
     ./openssl-build-target-archs
 fi
 
+if [ "$DOWNLOAD_LIBYUV" == "1" ]
+then
+    echo "Downloading libyuv..."
+    cd "${BASEDIR}"
+    rm -rf "${LIBYUV_REPO_DIR_NAME}"
+    git clone "${LIBYUV_REPO_PATH}"
+    cd "${LIBYUV_REPO_DIR_NAME}"
+    export PATH="${BASEDIR}/${NDK_DIR_NAME}:$PATH"
+    sed -i 's/APP_ABI := armeabi armeabi-v7a arm64-v8a x86/APP_ABI := armeabi armeabi-v7a arm64-v8a x86 x86_64/g' jni/Application.mk
+    ndk-build
+fi
+
 if [ "$DOWNLOAD_OPENH264" == "1" ]
 then
     echo "Downloading OpenH264..."
