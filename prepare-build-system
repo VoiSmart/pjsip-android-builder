@@ -6,29 +6,34 @@ BASEDIR=$(pwd)
 
 if [ "$SETUP_PACKAGES" == "1" ]
 then
-    DEPS="vim curl bzip2 gcc g++ binutils make autoconf openssl \
+    DEPS="vim git curl bzip2 gcc g++ binutils make autoconf openssl \
           libssl-dev openjdk-7-jdk openjdk-7-jre ant libopus0 \
           libpcre3 libpcre3-dev build-essential nasm \
           libc6:i386 libstdc++6:i386 zlib1g:i386"
-    sudo -- sh -c "apt-get update && apt-get -y upgrade && apt-get install -y ${DEPS}"
+    sudo -- sh -c "dpkg --add-architecture i386; apt-get update && apt-get -y upgrade && apt-get install -y ${DEPS}"
 fi
 
 if [ "$DOWNLOAD_NDK" == "1" ]
 then
-    echo "Downloading Android NDK..."
+    echo "Downloading Android NDK ..."
     cd "${BASEDIR}"
-    curl -L -o ndk.bin "$NDK_DOWNLOAD_URL"
+    curl -L -# -o ndk.bin "$NDK_DOWNLOAD_URL" 2>&1
     rm -rf "$NDK_DIR_NAME"
-    chmod +x ndk.bin && ./ndk.bin && rm -rf ndk.bin
+    echo "Android NDK downloaded!"
+    echo "Extracting Android NDK ..."
+    chmod +x ndk.bin && ./ndk.bin 2>&1 > /dev/null
+    rm -rf ndk.bin
 fi
 
 if [ "$DOWNLOAD_SDK" == "1" ]
 then
-    echo "Downloading Android SDK..."
+    echo "Downloading Android SDK ..."
     cd "${BASEDIR}"
-    curl -L -o sdk.tgz "$SDK_DOWNLOAD_URL"
+    curl -L -# -o sdk.tgz "$SDK_DOWNLOAD_URL" 2>&1
     rm -rf "$SDK_DIR_NAME"
-    tar xzvf sdk.tgz && rm -rf sdk.tgz
+    echo "Android SDK downloaded!"
+    echo "Extracting Android SDK ..."
+    tar xzf sdk.tgz && rm -rf sdk.tgz
 fi
 
 if [ "$DOWNLOAD_TARGET_API" == "1" ]
@@ -50,22 +55,26 @@ fi
 
 if [ "$DOWNLOAD_PJSIP" == "1" ]
 then
-    echo "Downloading PJSip..."
+    echo "Downloading PJSIP ..."
     cd "${BASEDIR}"
-    curl -L -o pjsip.tar.bz2 "$PJSIP_DOWNLOAD_URL"
+    curl -L -# -o pjsip.tar.bz2 "$PJSIP_DOWNLOAD_URL" 2>&1
     rm -rf "$PJSIP_DIR_NAME"
-    tar xvjf pjsip.tar.bz2 && rm -rf pjsip.tar.bz2
+    echo "PJSIP downloaded!"
+    echo "Extracting PJSIP ..."
+    tar xjf pjsip.tar.bz2 && rm -rf pjsip.tar.bz2
     # fix bash script error in 2.4.5 tag
     sed -i 's/TARGET_HOST+=-linux-android/TARGET_HOST="\${TARGET_HOST}-linux-android"/g' "${BASEDIR}/${PJSIP_DIR_NAME}/configure-android"
 fi
 
 if [ "$DOWNLOAD_SWIG" == "1" ]
 then
-    echo "Downloading SWIG..."
+    echo "Downloading SWIG ..."
     cd "${BASEDIR}"
-    curl -L -o swig.tar.gz "$SWIG_DOWNLOAD_URL"
+    curl -L -# -o swig.tar.gz "$SWIG_DOWNLOAD_URL" 2>&1
     rm -rf "$SWIG_DIR_NAME"
-    tar xzvf swig.tar.gz && rm -rf swig.tar.gz
+    echo "SWIG downloaded!"
+    echo "Extracting SWIG ..."
+    tar xzf swig.tar.gz && rm -rf swig.tar.gz
     cd "$SWIG_DIR_NAME"
     ./configure
     make && sudo make install
@@ -75,18 +84,20 @@ fi
 
 if [ "$DOWNLOAD_OPENSSL" == "1" ]
 then
-    echo "Downloading OpenSSL..."
+    echo "Downloading OpenSSL ..."
     cd "${BASEDIR}"
-    curl -L -o openssl.tar.gz "$OPENSSL_DOWNLOAD_URL"
+    curl -L -# -o openssl.tar.gz "$OPENSSL_DOWNLOAD_URL" 2>&1
     rm -rf "$OPENSSL_DIR_NAME"
-    tar xzvf openssl.tar.gz && rm -rf openssl.tar.gz
+    echo "OpenSSL downloaded!"
+    echo "Extracting OpenSSL ..."
+    tar xzf openssl.tar.gz && rm -rf openssl.tar.gz
     cd ${BASEDIR}
     ./openssl-build-target-archs
 fi
 
 if [ "$DOWNLOAD_LIBYUV" == "1" ]
 then
-    echo "Downloading libyuv..."
+    echo "Downloading libyuv ..."
     cd "${BASEDIR}"
     rm -rf "${LIBYUV_REPO_DIR_NAME}"
     git clone "${LIBYUV_REPO_PATH}"
@@ -98,11 +109,13 @@ fi
 
 if [ "$DOWNLOAD_OPENH264" == "1" ]
 then
-    echo "Downloading OpenH264..."
+    echo "Downloading OpenH264 ..."
     cd "${BASEDIR}"
-    curl -L -o openh264.tar.gz "$OPENH264_DOWNLOAD_URL"
+    curl -L -# -o openh264.tar.gz "$OPENH264_DOWNLOAD_URL" 2>&1
     rm -rf "${OPENH264_DIR_NAME}"
-    tar xzvf openh264.tar.gz && rm -rf openh264.tar.gz
+    echo "OpenH264 downloaded!"
+    echo "Extracting OpenH264 ..."
+    tar xzf openh264.tar.gz && rm -rf openh264.tar.gz
     if [ "${OPENH264_DIR_NAME}" == "openh264-1.0.0" ]
     then
         echo "Patching OpenH264 to be able to compile with Android API 21+.."
@@ -110,7 +123,7 @@ then
         cd ${OPENH264_DIR_NAME} && patch -p1 < openh264-1.0.0-android21.patch || true
     fi
     cd ${BASEDIR}
-    ./openh264-build-target-archs
+    ./openh264-build-target-archs || true
 fi
 
 echo "The build system is ready! Execute: ./build to build PJSIP :)"

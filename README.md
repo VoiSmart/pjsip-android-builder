@@ -5,7 +5,25 @@ Easily build PJSIP with OpenSSL, OpenH264 and libyuv support for Android, by usi
 I needed a fast and easily replicable build system to build PJSIP http://www.pjsip.org/ library for Android, without wasting a lot of time reading docs and forums every time. So, I thought of making a Linux virtual machine and make some scripts to easily download all the requirements and configure it to be a complete build environment.
 If you want to contribute, your help is really appreciated :)
 
-## Setup
+## Easy setup
+Install [vagrant](https://www.vagrantup.com/), then open a terminal and execute:
+```
+git clone https://github.com/alexbbb/pjsip-android-builder
+cd pjsip-android-builder
+vagrant up
+```
+This will setup a full Ubuntu Server 14.04.3 LTS from scratch with everything that's needed to compile PJSIP. This will take some time, as there are many things which has to be downloaded and installed, so relax or do some other thing while waiting. After plenty of output, if everything is ok you will see:
+```
+The build system is ready! Execute: ./build to build PJSIP :)
+```
+then you can SSH into the VM and build PJSIP:
+```
+vagrant ssh
+cd /pjsip-android-builder
+./build
+```
+
+## Manual setup
 First, you need a virtualization system. There are plenty of choices out there. Choose the one that you prefer (VirtualBox, vmWare, Vagrant, you name it). I'm supposing that you know what a virtual machine is and how to setup your environment to be able to run virtual machines. So, let's begin :)
 
 1. Download the latest Ubuntu Server ISO (I've chosen 14.04.3 LTS): http://www.ubuntu.com/download/server <br>I've chosen this distro because it has a good support for the applications that we need and it's kept updated. In the future, support to other distributions can be added as well, with your help :)
@@ -70,7 +88,7 @@ It's possible to configure library versions and build settings by editing the <b
 ## Build only OpenSSL
 This project has separate independent script to build only OpenSSL library.
 ```
-Usage: 
+Usage:
 ./openssl-build <ANDROID_NDK_PATH> <OPENSSL_SOURCES_PATH> <ANDROID_TARGET_API> \
                 <ANDROID_TARGET_ABI> <GCC_VERSION> <OUTPUT_PATH>
 
