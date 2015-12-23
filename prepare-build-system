@@ -92,7 +92,7 @@ then
     git clone "${LIBYUV_REPO_PATH}"
     cd "${LIBYUV_REPO_DIR_NAME}"
     export PATH="${BASEDIR}/${NDK_DIR_NAME}:$PATH"
-    sed -i 's/APP_ABI := armeabi armeabi-v7a arm64-v8a x86/APP_ABI := armeabi armeabi-v7a arm64-v8a x86 x86_64/g' jni/Application.mk
+    sed -i 's/APP_ABI := armeabi armeabi-v7a arm64-v8a x86/APP_ABI := armeabi armeabi-v7a arm64-v8a x86 x86_64 mips mips64/g' jni/Application.mk
     ndk-build
 fi
 
