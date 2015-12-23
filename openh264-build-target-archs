@@ -50,6 +50,14 @@ do
     elif [ "$arch" == "arm64-v8a" ]
     then
         ARGS="${ARGS}arm64"
+
+    elif [ "$arch" == "mips" ]
+    then
+        ARGS="${ARGS}mips"
+
+    elif [ "$arch" == "mips64" ]
+    then
+        ARGS="${ARGS}mips64"
     fi
     
     make ${ARGS} >>"${LOG_PATH}/${arch}.log" 2>&1
