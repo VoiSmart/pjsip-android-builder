@@ -83,7 +83,7 @@ pjsip-build
 If something goes wrong during the compilation of a particular target architecture, the main script will be terminated and you can see the full log in `./pjsip-build/logs/<arch>.log`. So for example if there's an error for <b>x86</b>, you can see the full log in `./pjsip-build/logs/x86.log`
 
 ## Build with G.729 codec
-Currently G.729 codec is supported only for `arm-v7a` arch. If you want to contribute by adding support also for other arch, check https://github.com/alexbbb/pjsip-android-builder/issues/9.
+Currently G.729 codec is supported only for `arm-v7a` arch. If you want to contribute by adding support also for other arch, check https://github.com/alexbbb/pjsip-android-builder/issues/9. Please read [G.729 codec disclaimer](https://github.com/alexbbb/pjsip-android-builder/blob/master/g729_patch/README.md) before proceeding with the following instructions!
 
 Comment this line in `config.conf` (by adding `#` in front of it);
 ```
