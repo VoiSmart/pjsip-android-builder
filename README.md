@@ -1,8 +1,8 @@
 # pjsip-android-builder
-Easily build PJSIP with OpenSSL, OpenH264 and libyuv support for Android, by using a Linux virtual machine
+Easily build PJSIP with: OpenSSL, OpenH264, libyuv and G.729 (without Intel IPP) for Android, by using a Linux virtual machine.
 
 ## Purpose
-I needed a fast and easily replicable build system to build PJSIP http://www.pjsip.org/ library for Android, without wasting a lot of time reading docs and forums every time. So, I thought of making a Linux virtual machine and make some scripts to easily download all the requirements and configure it to be a complete build environment.
+I needed a fast and easily replicable build system to build PJSIP http://www.pjsip.org/ native library (NDK) for Android. So, I created a Linux virtual machine and wrote some scripts to download and install all the requirements needed to make it a complete build environment.
 If you want to contribute, your help is really appreciated :)
 
 ## Easy setup
@@ -81,6 +81,20 @@ pjsip-build
  |-- src/   contains PJSUA Java wrapper to work with the library
 ```
 If something goes wrong during the compilation of a particular target architecture, the main script will be terminated and you can see the full log in `./pjsip-build/logs/<arch>.log`. So for example if there's an error for <b>x86</b>, you can see the full log in `./pjsip-build/logs/x86.log`
+
+## Build with G.729 codec
+Currently G.729 codec is supported only for `arm-v7a` arch. If you want to contribute by adding support also for other arch, check https://github.com/alexbbb/pjsip-android-builder/issues/9.
+
+Comment this line in `config.conf` (by adding `#` in front of it);
+```
+TARGET_ARCHS=("armeabi" "armeabi-v7a" "x86" "x86_64" "arm64-v8a")
+```
+and replace it with:
+```
+TARGET_ARCHS=("armeabi-v7a")
+```
+
+Use `build-with-g729` script insted of `build`.
 
 ## Configuration
 It's possible to configure library versions and build settings by editing the <b>config.conf</b> file. Please read the comments in the file for more details.

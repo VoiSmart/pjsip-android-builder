@@ -62,8 +62,17 @@ then
     echo "PJSIP downloaded!"
     echo "Extracting PJSIP ..."
     tar xjf pjsip.tar.bz2 && rm -rf pjsip.tar.bz2
-    # fix bash script error in 2.4.5 tag
-    sed -i 's/TARGET_HOST+=-linux-android/TARGET_HOST="\${TARGET_HOST}-linux-android"/g' "${BASEDIR}/${PJSIP_DIR_NAME}/configure-android"
+
+    if [ "${PJSIP_DIR_NAME}" == "pjproject-2.4.5" ]
+    then
+        echo "Fix BASH script error in 2.4.5 tag ..."
+        sed -i 's/TARGET_HOST+=-linux-android/TARGET_HOST="\${TARGET_HOST}-linux-android"/g' "${BASEDIR}/${PJSIP_DIR_NAME}/configure-android"
+
+        echo "Apply patch to support G.729 codec without Intel IPP codec library ..."
+        cd g729_patch
+        ./install.sh
+        cd ..
+    fi
 fi
 
 if [ "$DOWNLOAD_SWIG" == "1" ]

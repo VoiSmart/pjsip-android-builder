@@ -26,6 +26,7 @@ mkdir -p "${FINAL_BUILD_LOGS}"
 echo "Creating config site file for Android ..."
 cat <<EOF > "$CONFIG_SITE_PATH"
 #define PJ_CONFIG_ANDROID 1
+#define PJMEDIA_HAS_G729_CODEC 1
 #define PJMEDIA_HAS_G7221_CODEC 1
 #include <pj/config_site_sample.h>
 #define PJMEDIA_HAS_VIDEO 1
@@ -50,6 +51,7 @@ do
                                          --with-ssl="${OPENSSL_BUILD_OUT_PATH}/libs/${arch}" \
                                          --with-openh264="${OPENH264_BUILD_OUT_PATH}/libs/${arch}" \
                                          --with-libyuv="${BASE_FOLDER}/${LIBYUV_REPO_DIR_NAME}/jni" \
+                                         --enable-g729-codec \
                                          >>"${FINAL_BUILD_LOGS}/${arch}.log" 2>&1
     make dep >>"${FINAL_BUILD_LOGS}/${arch}.log" 2>&1
     make >>"${FINAL_BUILD_LOGS}/${arch}.log" 2>&1

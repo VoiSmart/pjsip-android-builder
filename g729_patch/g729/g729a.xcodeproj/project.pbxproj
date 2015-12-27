@@ -1,0 +1,382 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 45;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		7E5864D010128CDC004BA577 /* basic_op.h in Headers */ = {isa = PBXBuildFile; fileRef = 7E5864C910128CDC004BA577 /* basic_op.h */; };
+		7E5864D110128CDC004BA577 /* ld8a.h in Headers */ = {isa = PBXBuildFile; fileRef = 7E5864CA10128CDC004BA577 /* ld8a.h */; };
+		7E5864D210128CDC004BA577 /* libavcodec_get_bits.h in Headers */ = {isa = PBXBuildFile; fileRef = 7E5864CB10128CDC004BA577 /* libavcodec_get_bits.h */; };
+		7E5864D310128CDC004BA577 /* libavcodec_put_bits.h in Headers */ = {isa = PBXBuildFile; fileRef = 7E5864CC10128CDC004BA577 /* libavcodec_put_bits.h */; };
+		7E5864D410128CDC004BA577 /* oper_32b.h in Headers */ = {isa = PBXBuildFile; fileRef = 7E5864CD10128CDC004BA577 /* oper_32b.h */; };
+		7E5864D510128CDC004BA577 /* tab_ld8a.h in Headers */ = {isa = PBXBuildFile; fileRef = 7E5864CE10128CDC004BA577 /* tab_ld8a.h */; };
+		7E5864D610128CDC004BA577 /* typedef.h in Headers */ = {isa = PBXBuildFile; fileRef = 7E5864CF10128CDC004BA577 /* typedef.h */; };
+		7E5864F310128CF4004BA577 /* ACELP_CA.C in Sources */ = {isa = PBXBuildFile; fileRef = 7E5864D710128CF4004BA577 /* ACELP_CA.C */; };
+		7E5864F410128CF4004BA577 /* BASIC_OP.C in Sources */ = {isa = PBXBuildFile; fileRef = 7E5864D810128CF4004BA577 /* BASIC_OP.C */; };
+		7E5864F510128CF4004BA577 /* BITS.C in Sources */ = {isa = PBXBuildFile; fileRef = 7E5864D910128CF4004BA577 /* BITS.C */; };
+		7E5864F610128CF4004BA577 /* COD_LD8A.C in Sources */ = {isa = PBXBuildFile; fileRef = 7E5864DA10128CF4004BA577 /* COD_LD8A.C */; };
+		7E5864F710128CF4004BA577 /* COR_FUNC.C in Sources */ = {isa = PBXBuildFile; fileRef = 7E5864DB10128CF4004BA577 /* COR_FUNC.C */; };
+		7E5864F810128CF4004BA577 /* DE_ACELP.C in Sources */ = {isa = PBXBuildFile; fileRef = 7E5864DC10128CF4004BA577 /* DE_ACELP.C */; };
+		7E5864F910128CF4004BA577 /* DEC_GAIN.C in Sources */ = {isa = PBXBuildFile; fileRef = 7E5864DD10128CF4004BA577 /* DEC_GAIN.C */; };
+		7E5864FA10128CF4004BA577 /* DEC_LAG3.C in Sources */ = {isa = PBXBuildFile; fileRef = 7E5864DE10128CF4004BA577 /* DEC_LAG3.C */; };
+		7E5864FB10128CF4004BA577 /* DEC_LD8A.C in Sources */ = {isa = PBXBuildFile; fileRef = 7E5864DF10128CF4004BA577 /* DEC_LD8A.C */; };
+		7E5864FC10128CF4004BA577 /* DSPFUNC.C in Sources */ = {isa = PBXBuildFile; fileRef = 7E5864E010128CF4004BA577 /* DSPFUNC.C */; };
+		7E5864FD10128CF4004BA577 /* FILTER.C in Sources */ = {isa = PBXBuildFile; fileRef = 7E5864E110128CF4004BA577 /* FILTER.C */; };
+		7E5864FE10128CF4004BA577 /* GAINPRED.C in Sources */ = {isa = PBXBuildFile; fileRef = 7E5864E210128CF4004BA577 /* GAINPRED.C */; };
+		7E5864FF10128CF4004BA577 /* LPC.C in Sources */ = {isa = PBXBuildFile; fileRef = 7E5864E310128CF4004BA577 /* LPC.C */; };
+		7E58650010128CF4004BA577 /* LPCFUNC.C in Sources */ = {isa = PBXBuildFile; fileRef = 7E5864E410128CF4004BA577 /* LPCFUNC.C */; };
+		7E58650110128CF4004BA577 /* LSPDEC.C in Sources */ = {isa = PBXBuildFile; fileRef = 7E5864E510128CF4004BA577 /* LSPDEC.C */; };
+		7E58650210128CF4004BA577 /* LSPGETQ.C in Sources */ = {isa = PBXBuildFile; fileRef = 7E5864E610128CF4004BA577 /* LSPGETQ.C */; };
+		7E58650310128CF4004BA577 /* OPER_32B.C in Sources */ = {isa = PBXBuildFile; fileRef = 7E5864E710128CF4004BA577 /* OPER_32B.C */; };
+		7E58650410128CF4004BA577 /* P_PARITY.C in Sources */ = {isa = PBXBuildFile; fileRef = 7E5864E810128CF4004BA577 /* P_PARITY.C */; };
+		7E58650510128CF4004BA577 /* PITCH_A.C in Sources */ = {isa = PBXBuildFile; fileRef = 7E5864E910128CF4004BA577 /* PITCH_A.C */; };
+		7E58650610128CF4004BA577 /* POST_PRO.C in Sources */ = {isa = PBXBuildFile; fileRef = 7E5864EA10128CF4004BA577 /* POST_PRO.C */; };
+		7E58650710128CF4004BA577 /* POSTFILT.C in Sources */ = {isa = PBXBuildFile; fileRef = 7E5864EB10128CF4004BA577 /* POSTFILT.C */; };
+		7E58650810128CF4004BA577 /* PRE_PROC.C in Sources */ = {isa = PBXBuildFile; fileRef = 7E5864EC10128CF4004BA577 /* PRE_PROC.C */; };
+		7E58650910128CF4004BA577 /* PRED_LT3.C in Sources */ = {isa = PBXBuildFile; fileRef = 7E5864ED10128CF4004BA577 /* PRED_LT3.C */; };
+		7E58650A10128CF4004BA577 /* QUA_GAIN.C in Sources */ = {isa = PBXBuildFile; fileRef = 7E5864EE10128CF4004BA577 /* QUA_GAIN.C */; };
+		7E58650B10128CF4004BA577 /* QUA_LSP.C in Sources */ = {isa = PBXBuildFile; fileRef = 7E5864EF10128CF4004BA577 /* QUA_LSP.C */; };
+		7E58650C10128CF4004BA577 /* TAB_LD8A.C in Sources */ = {isa = PBXBuildFile; fileRef = 7E5864F010128CF4004BA577 /* TAB_LD8A.C */; };
+		7E58650D10128CF4004BA577 /* TAMING.C in Sources */ = {isa = PBXBuildFile; fileRef = 7E5864F110128CF4004BA577 /* TAMING.C */; };
+		7E58650E10128CF4004BA577 /* UTIL.C in Sources */ = {isa = PBXBuildFile; fileRef = 7E5864F210128CF4004BA577 /* UTIL.C */; };
+		7E9604771036B65C0071903D /* g729a_decoder.c in Sources */ = {isa = PBXBuildFile; fileRef = 7E9604741036B65C0071903D /* g729a_decoder.c */; };
+		7E9604781036B65C0071903D /* g729a_encoder.c in Sources */ = {isa = PBXBuildFile; fileRef = 7E9604751036B65C0071903D /* g729a_encoder.c */; };
+		7E96047D1036B6A80071903D /* g729a.h in Headers */ = {isa = PBXBuildFile; fileRef = 7E96047A1036B6A80071903D /* g729a.h */; };
+		7E96047E1036B6A80071903D /* g729a_decoder.h in Headers */ = {isa = PBXBuildFile; fileRef = 7E96047B1036B6A80071903D /* g729a_decoder.h */; };
+		7E96047F1036B6A80071903D /* g729a_encoder.h in Headers */ = {isa = PBXBuildFile; fileRef = 7E96047C1036B6A80071903D /* g729a_encoder.h */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		7E5864C910128CDC004BA577 /* basic_op.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = basic_op.h; path = Headers/basic_op.h; sourceTree = "<group>"; };
+		7E5864CA10128CDC004BA577 /* ld8a.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ld8a.h; path = Headers/ld8a.h; sourceTree = "<group>"; };
+		7E5864CB10128CDC004BA577 /* libavcodec_get_bits.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = libavcodec_get_bits.h; path = Headers/libavcodec_get_bits.h; sourceTree = SOURCE_ROOT; };
+		7E5864CC10128CDC004BA577 /* libavcodec_put_bits.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = libavcodec_put_bits.h; path = Headers/libavcodec_put_bits.h; sourceTree = SOURCE_ROOT; };
+		7E5864CD10128CDC004BA577 /* oper_32b.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = oper_32b.h; path = Headers/oper_32b.h; sourceTree = "<group>"; };
+		7E5864CE10128CDC004BA577 /* tab_ld8a.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tab_ld8a.h; path = Headers/tab_ld8a.h; sourceTree = "<group>"; };
+		7E5864CF10128CDC004BA577 /* typedef.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = typedef.h; path = Headers/typedef.h; sourceTree = "<group>"; };
+		7E5864D710128CF4004BA577 /* ACELP_CA.C */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ACELP_CA.C; path = Sources/ACELP_CA.C; sourceTree = "<group>"; };
+		7E5864D810128CF4004BA577 /* BASIC_OP.C */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BASIC_OP.C; path = Sources/BASIC_OP.C; sourceTree = SOURCE_ROOT; };
+		7E5864D910128CF4004BA577 /* BITS.C */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BITS.C; path = Sources/BITS.C; sourceTree = SOURCE_ROOT; };
+		7E5864DA10128CF4004BA577 /* COD_LD8A.C */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = COD_LD8A.C; path = Sources/COD_LD8A.C; sourceTree = SOURCE_ROOT; };
+		7E5864DB10128CF4004BA577 /* COR_FUNC.C */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = COR_FUNC.C; path = Sources/COR_FUNC.C; sourceTree = SOURCE_ROOT; };
+		7E5864DC10128CF4004BA577 /* DE_ACELP.C */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = DE_ACELP.C; path = Sources/DE_ACELP.C; sourceTree = SOURCE_ROOT; };
+		7E5864DD10128CF4004BA577 /* DEC_GAIN.C */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = DEC_GAIN.C; path = Sources/DEC_GAIN.C; sourceTree = SOURCE_ROOT; };
+		7E5864DE10128CF4004BA577 /* DEC_LAG3.C */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = DEC_LAG3.C; path = Sources/DEC_LAG3.C; sourceTree = SOURCE_ROOT; };
+		7E5864DF10128CF4004BA577 /* DEC_LD8A.C */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = DEC_LD8A.C; path = Sources/DEC_LD8A.C; sourceTree = SOURCE_ROOT; };
+		7E5864E010128CF4004BA577 /* DSPFUNC.C */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = DSPFUNC.C; path = Sources/DSPFUNC.C; sourceTree = SOURCE_ROOT; };
+		7E5864E110128CF4004BA577 /* FILTER.C */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = FILTER.C; path = Sources/FILTER.C; sourceTree = SOURCE_ROOT; };
+		7E5864E210128CF4004BA577 /* GAINPRED.C */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GAINPRED.C; path = Sources/GAINPRED.C; sourceTree = SOURCE_ROOT; };
+		7E5864E310128CF4004BA577 /* LPC.C */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = LPC.C; path = Sources/LPC.C; sourceTree = SOURCE_ROOT; };
+		7E5864E410128CF4004BA577 /* LPCFUNC.C */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = LPCFUNC.C; path = Sources/LPCFUNC.C; sourceTree = SOURCE_ROOT; };
+		7E5864E510128CF4004BA577 /* LSPDEC.C */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = LSPDEC.C; path = Sources/LSPDEC.C; sourceTree = SOURCE_ROOT; };
+		7E5864E610128CF4004BA577 /* LSPGETQ.C */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = LSPGETQ.C; path = Sources/LSPGETQ.C; sourceTree = SOURCE_ROOT; };
+		7E5864E710128CF4004BA577 /* OPER_32B.C */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = OPER_32B.C; path = Sources/OPER_32B.C; sourceTree = SOURCE_ROOT; };
+		7E5864E810128CF4004BA577 /* P_PARITY.C */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = P_PARITY.C; path = Sources/P_PARITY.C; sourceTree = SOURCE_ROOT; };
+		7E5864E910128CF4004BA577 /* PITCH_A.C */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PITCH_A.C; path = Sources/PITCH_A.C; sourceTree = SOURCE_ROOT; };
+		7E5864EA10128CF4004BA577 /* POST_PRO.C */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = POST_PRO.C; path = Sources/POST_PRO.C; sourceTree = SOURCE_ROOT; };
+		7E5864EB10128CF4004BA577 /* POSTFILT.C */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = POSTFILT.C; path = Sources/POSTFILT.C; sourceTree = SOURCE_ROOT; };
+		7E5864EC10128CF4004BA577 /* PRE_PROC.C */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PRE_PROC.C; path = Sources/PRE_PROC.C; sourceTree = SOURCE_ROOT; };
+		7E5864ED10128CF4004BA577 /* PRED_LT3.C */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PRED_LT3.C; path = Sources/PRED_LT3.C; sourceTree = SOURCE_ROOT; };
+		7E5864EE10128CF4004BA577 /* QUA_GAIN.C */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = QUA_GAIN.C; path = Sources/QUA_GAIN.C; sourceTree = SOURCE_ROOT; };
+		7E5864EF10128CF4004BA577 /* QUA_LSP.C */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = QUA_LSP.C; path = Sources/QUA_LSP.C; sourceTree = SOURCE_ROOT; };
+		7E5864F010128CF4004BA577 /* TAB_LD8A.C */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TAB_LD8A.C; path = Sources/TAB_LD8A.C; sourceTree = SOURCE_ROOT; };
+		7E5864F110128CF4004BA577 /* TAMING.C */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TAMING.C; path = Sources/TAMING.C; sourceTree = SOURCE_ROOT; };
+		7E5864F210128CF4004BA577 /* UTIL.C */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = UTIL.C; path = Sources/UTIL.C; sourceTree = SOURCE_ROOT; };
+		7E9604741036B65C0071903D /* g729a_decoder.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = g729a_decoder.c; path = Sources/g729a_decoder.c; sourceTree = "<group>"; };
+		7E9604751036B65C0071903D /* g729a_encoder.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = g729a_encoder.c; path = Sources/g729a_encoder.c; sourceTree = "<group>"; };
+		7E96047A1036B6A80071903D /* g729a.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = g729a.h; path = Headers/g729a.h; sourceTree = "<group>"; };
+		7E96047B1036B6A80071903D /* g729a_decoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = g729a_decoder.h; path = Headers/g729a_decoder.h; sourceTree = "<group>"; };
+		7E96047C1036B6A80071903D /* g729a_encoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = g729a_encoder.h; path = Headers/g729a_encoder.h; sourceTree = "<group>"; };
+		D2AAC07E0554694100DB518D /* libg729a.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libg729a.a; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		D2AAC07C0554694100DB518D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		034768DFFF38A50411DB9C8B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D2AAC07E0554694100DB518D /* libg729a.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		0867D691FE84028FC02AAC07 /* g729a */ = {
+			isa = PBXGroup;
+			children = (
+				08FB77AEFE84172EC02AAC07 /* Headers */,
+				32C88DFF0371C24200C91783 /* Sources */,
+				0867D69AFE84028FC02AAC07 /* Frameworks */,
+				034768DFFF38A50411DB9C8B /* Products */,
+			);
+			name = g729a;
+			sourceTree = "<group>";
+		};
+		0867D69AFE84028FC02AAC07 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		08FB77AEFE84172EC02AAC07 /* Headers */ = {
+			isa = PBXGroup;
+			children = (
+				7E96047A1036B6A80071903D /* g729a.h */,
+				7E96047B1036B6A80071903D /* g729a_decoder.h */,
+				7E96047C1036B6A80071903D /* g729a_encoder.h */,
+				7E5864C910128CDC004BA577 /* basic_op.h */,
+				7E5864CA10128CDC004BA577 /* ld8a.h */,
+				7E5864CB10128CDC004BA577 /* libavcodec_get_bits.h */,
+				7E5864CC10128CDC004BA577 /* libavcodec_put_bits.h */,
+				7E5864CD10128CDC004BA577 /* oper_32b.h */,
+				7E5864CE10128CDC004BA577 /* tab_ld8a.h */,
+				7E5864CF10128CDC004BA577 /* typedef.h */,
+			);
+			name = Headers;
+			sourceTree = "<group>";
+		};
+		32C88DFF0371C24200C91783 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				7E9604741036B65C0071903D /* g729a_decoder.c */,
+				7E9604751036B65C0071903D /* g729a_encoder.c */,
+				7E5864D710128CF4004BA577 /* ACELP_CA.C */,
+				7E5864D810128CF4004BA577 /* BASIC_OP.C */,
+				7E5864D910128CF4004BA577 /* BITS.C */,
+				7E5864DA10128CF4004BA577 /* COD_LD8A.C */,
+				7E5864DB10128CF4004BA577 /* COR_FUNC.C */,
+				7E5864DC10128CF4004BA577 /* DE_ACELP.C */,
+				7E5864DD10128CF4004BA577 /* DEC_GAIN.C */,
+				7E5864DE10128CF4004BA577 /* DEC_LAG3.C */,
+				7E5864DF10128CF4004BA577 /* DEC_LD8A.C */,
+				7E5864E010128CF4004BA577 /* DSPFUNC.C */,
+				7E5864E110128CF4004BA577 /* FILTER.C */,
+				7E5864E210128CF4004BA577 /* GAINPRED.C */,
+				7E5864E310128CF4004BA577 /* LPC.C */,
+				7E5864E410128CF4004BA577 /* LPCFUNC.C */,
+				7E5864E510128CF4004BA577 /* LSPDEC.C */,
+				7E5864E610128CF4004BA577 /* LSPGETQ.C */,
+				7E5864E710128CF4004BA577 /* OPER_32B.C */,
+				7E5864E810128CF4004BA577 /* P_PARITY.C */,
+				7E5864E910128CF4004BA577 /* PITCH_A.C */,
+				7E5864EA10128CF4004BA577 /* POST_PRO.C */,
+				7E5864EB10128CF4004BA577 /* POSTFILT.C */,
+				7E5864EC10128CF4004BA577 /* PRE_PROC.C */,
+				7E5864ED10128CF4004BA577 /* PRED_LT3.C */,
+				7E5864EE10128CF4004BA577 /* QUA_GAIN.C */,
+				7E5864EF10128CF4004BA577 /* QUA_LSP.C */,
+				7E5864F010128CF4004BA577 /* TAB_LD8A.C */,
+				7E5864F110128CF4004BA577 /* TAMING.C */,
+				7E5864F210128CF4004BA577 /* UTIL.C */,
+			);
+			name = Sources;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		D2AAC07A0554694100DB518D /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7E5864D010128CDC004BA577 /* basic_op.h in Headers */,
+				7E5864D110128CDC004BA577 /* ld8a.h in Headers */,
+				7E5864D210128CDC004BA577 /* libavcodec_get_bits.h in Headers */,
+				7E5864D310128CDC004BA577 /* libavcodec_put_bits.h in Headers */,
+				7E5864D410128CDC004BA577 /* oper_32b.h in Headers */,
+				7E5864D510128CDC004BA577 /* tab_ld8a.h in Headers */,
+				7E5864D610128CDC004BA577 /* typedef.h in Headers */,
+				7E96047D1036B6A80071903D /* g729a.h in Headers */,
+				7E96047E1036B6A80071903D /* g729a_decoder.h in Headers */,
+				7E96047F1036B6A80071903D /* g729a_encoder.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		D2AAC07D0554694100DB518D /* g729a */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1DEB921E08733DC00010E9CD /* Build configuration list for PBXNativeTarget "g729a" */;
+			buildPhases = (
+				D2AAC07A0554694100DB518D /* Headers */,
+				D2AAC07B0554694100DB518D /* Sources */,
+				D2AAC07C0554694100DB518D /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = g729a;
+			productName = g729a;
+			productReference = D2AAC07E0554694100DB518D /* libg729a.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		0867D690FE84028FC02AAC07 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 1DEB922208733DC00010E9CD /* Build configuration list for PBXProject "g729a" */;
+			compatibilityVersion = "Xcode 3.1";
+			hasScannedForEncodings = 1;
+			mainGroup = 0867D691FE84028FC02AAC07 /* g729a */;
+			productRefGroup = 034768DFFF38A50411DB9C8B /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				D2AAC07D0554694100DB518D /* g729a */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		D2AAC07B0554694100DB518D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7E5864F310128CF4004BA577 /* ACELP_CA.C in Sources */,
+				7E5864F410128CF4004BA577 /* BASIC_OP.C in Sources */,
+				7E5864F510128CF4004BA577 /* BITS.C in Sources */,
+				7E5864F610128CF4004BA577 /* COD_LD8A.C in Sources */,
+				7E5864F710128CF4004BA577 /* COR_FUNC.C in Sources */,
+				7E5864F810128CF4004BA577 /* DE_ACELP.C in Sources */,
+				7E5864F910128CF4004BA577 /* DEC_GAIN.C in Sources */,
+				7E5864FA10128CF4004BA577 /* DEC_LAG3.C in Sources */,
+				7E5864FB10128CF4004BA577 /* DEC_LD8A.C in Sources */,
+				7E5864FC10128CF4004BA577 /* DSPFUNC.C in Sources */,
+				7E5864FD10128CF4004BA577 /* FILTER.C in Sources */,
+				7E5864FE10128CF4004BA577 /* GAINPRED.C in Sources */,
+				7E5864FF10128CF4004BA577 /* LPC.C in Sources */,
+				7E58650010128CF4004BA577 /* LPCFUNC.C in Sources */,
+				7E58650110128CF4004BA577 /* LSPDEC.C in Sources */,
+				7E58650210128CF4004BA577 /* LSPGETQ.C in Sources */,
+				7E58650310128CF4004BA577 /* OPER_32B.C in Sources */,
+				7E58650410128CF4004BA577 /* P_PARITY.C in Sources */,
+				7E58650510128CF4004BA577 /* PITCH_A.C in Sources */,
+				7E58650610128CF4004BA577 /* POST_PRO.C in Sources */,
+				7E58650710128CF4004BA577 /* POSTFILT.C in Sources */,
+				7E58650810128CF4004BA577 /* PRE_PROC.C in Sources */,
+				7E58650910128CF4004BA577 /* PRED_LT3.C in Sources */,
+				7E58650A10128CF4004BA577 /* QUA_GAIN.C in Sources */,
+				7E58650B10128CF4004BA577 /* QUA_LSP.C in Sources */,
+				7E58650C10128CF4004BA577 /* TAB_LD8A.C in Sources */,
+				7E58650D10128CF4004BA577 /* TAMING.C in Sources */,
+				7E58650E10128CF4004BA577 /* UTIL.C in Sources */,
+				7E9604771036B65C0071903D /* g729a_decoder.c in Sources */,
+				7E9604781036B65C0071903D /* g729a_encoder.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		1DEB921F08733DC00010E9CD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				COPY_PHASE_STRIP = NO;
+				DSTROOT = /tmp/g729a.dst;
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PFE_FILE_C_DIALECTS = c;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_THUMB_SUPPORT = NO;
+				INSTALL_PATH = /usr/local/lib;
+				ORDER_FILE = "";
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(OTHER_CFLAGS)",
+					"-x",
+					c,
+				);
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = g729a;
+				SDKROOT = iphoneos2.2;
+			};
+			name = Debug;
+		};
+		1DEB922008733DC00010E9CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				DSTROOT = /tmp/g729a.dst;
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_MODEL_TUNING = G5;
+				GCC_PFE_FILE_C_DIALECTS = c;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_THUMB_SUPPORT = NO;
+				INSTALL_PATH = /usr/local/lib;
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(OTHER_CFLAGS)",
+					"-x",
+					c,
+				);
+				PRODUCT_NAME = g729a;
+				SDKROOT = iphoneos2.2;
+			};
+			name = Release;
+		};
+		1DEB922308733DC00010E9CD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				PREBINDING = NO;
+			};
+			name = Debug;
+		};
+		1DEB922408733DC00010E9CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				OTHER_LDFLAGS = "-ObjC";
+				PREBINDING = NO;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1DEB921E08733DC00010E9CD /* Build configuration list for PBXNativeTarget "g729a" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1DEB921F08733DC00010E9CD /* Debug */,
+				1DEB922008733DC00010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1DEB922208733DC00010E9CD /* Build configuration list for PBXProject "g729a" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1DEB922308733DC00010E9CD /* Debug */,
+				1DEB922408733DC00010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 0867D690FE84028FC02AAC07 /* Project object */;
+}
