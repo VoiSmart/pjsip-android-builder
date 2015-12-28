@@ -11,20 +11,21 @@ export G729_CODEC_LIB := libg729codec-$(TARGET_NAME)$(LIBEXT)
 # Gather all flags.
 #
 export _CFLAGS 	:= $(CC_CFLAGS) $(OS_CFLAGS) $(HOST_CFLAGS) $(M_CFLAGS) \
-		   $(CFLAGS) $(CC_INC)../.. $(CC_INC)../../g729/Headers \
-		   $(CC_INC)../../../pjlib/include
+		   $(CFLAGS) $(CC_INC)../.. $(CC_INC)../../g729/include \
+		   $(CC_INC)../../../pjlib/include $(CC_INC)../../../pjlib-util/include \
+		   $(CC_INC)../../../pjnath/include $(CC_INC)../../../pjmedia/include
 export _CXXFLAGS:= $(_CFLAGS) $(CC_CXXFLAGS) $(OS_CXXFLAGS) $(M_CXXFLAGS) \
 		   $(HOST_CXXFLAGS) $(CXXFLAGS)
 export _LDFLAGS := $(CC_LDFLAGS) $(OS_LDFLAGS) $(M_LDFLAGS) $(HOST_LDFLAGS) \
 		   $(LDFLAGS)
 
 export G729_CODEC_SRCDIR = ../../g729
-export G729_CODEC_OBJS = Sources/acelp_ca.o Sources/cod_ld8a.o Sources/dec_gain.o Sources/dspfunc.o Sources/g729a_encoder.o \
-                         Sources/lpcfunc.o Sources/oper_32b.o Sources/post_pro.o Sources/pred_lt3.o Sources/tab_ld8a.o \
-			 Sources/basic_op.o Sources/cor_func.o Sources/dec_lag3.o Sources/filter.o Sources/gainpred.o \
-			 Sources/lspdec.o Sources/p_parity.o Sources/postfilt.o Sources/qua_gain.o Sources/taming.o \
-			 Sources/bits.o Sources/de_acelp.o Sources/dec_ld8a.o Sources/g729a_decoder.o Sources/lpc.o \
-			 Sources/lspgetq.o Sources/pitch_a.o Sources/pre_proc.o Sources/qua_lsp.o Sources/util.o
+export G729_CODEC_OBJS = src/acelp_ca.o src/cod_ld8a.o src/dec_gain.o src/dspfunc.o src/g729a_encoder.o \
+                         src/lpcfunc.o src/oper_32b.o src/post_pro.o src/pred_lt3.o src/tab_ld8a.o \
+			 src/basic_op.o src/cor_func.o src/dec_lag3.o src/filter.o src/gainpred.o \
+			 src/lspdec.o src/p_parity.o src/postfilt.o src/qua_gain.o src/taming.o \
+			 src/bits.o src/de_acelp.o src/dec_ld8a.o src/g729a_decoder.o src/lpc.o \
+			 src/lspgetq.o src/pitch_a.o src/pre_proc.o src/qua_lsp.o src/util.o src/round.o
 
 export G729_CODEC_CFLAGS = $(_CFLAGS)
 

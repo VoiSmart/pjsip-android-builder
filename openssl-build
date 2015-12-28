@@ -192,7 +192,7 @@ then
 elif [ "$OPENSSL_TARGET_ABI" == "mips64" ]
 then
     ${NDK_MAKE_TOOLCHAIN} --platform=android-${OPENSSL_TARGET_API} \
-                          --toolchain=mips64el-linux-android-${OPENSSL_GCC_VERSION} \
+                          --toolchain=mips64el-linux-android-4.9 \
                           --install-dir="${OPENSSL_TMP_FOLDER}/android-toolchain-mips64el"
 
     export TOOLCHAIN_PATH="${OPENSSL_TMP_FOLDER}/android-toolchain-mips64el/bin"

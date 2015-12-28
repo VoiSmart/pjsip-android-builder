@@ -22,7 +22,7 @@
 /**
  * @file g729.h
  * @brief G729 Codec
- + */
++ */
 
 #include <pjmedia-codec/types.h>
 

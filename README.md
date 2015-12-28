@@ -1,8 +1,18 @@
-# pjsip-android-builder
+# PJSIP Android Builder
 Easily build PJSIP with: OpenSSL, OpenH264, libyuv and G.729 (without Intel IPP) for Android, by using a Linux virtual machine.
 
+| Library \ Builds for | armeabi | armeabi-v7a | x86 | mips | arm64-v8a  | x86_64 | mips64 |
+|----------------------|---------|-------------|-----|------|------------|--------|--------|
+| PJSIP                |    X    |      X      |  X  |   X  |      X     |    X   |    X   |
+| LibYUV               |    X    |      X      |  X  |   X  |      X     |    X   |    X   |
+| G.729                |    X    |      X      |  X  |   X  |      X     |    X   |    X   |
+| OpenSSL              |    X    |      X      |  X  |   X  |      X     |    X   |        |
+| OpenH264             |    X    |      X      |  X  |   X  |            |        |        |
+
+Using Android API 21 and GCC 4.8. If you want to extend build support, fork the project and then send me a pull request.
+
 ## Purpose
-I needed a fast and easily replicable build system to build PJSIP http://www.pjsip.org/ native library (NDK) for Android. So, I created a Linux virtual machine and wrote some scripts to download and install all the requirements needed to make it a complete build environment.
+I needed an easily replicable build system to build PJSIP http://www.pjsip.org/ native library with NDK for Android. So, I created a Linux virtual machine and wrote some scripts to download, install all the requirements needed to make it a complete build environment and some automated build scripts.
 If you want to contribute, your help is really appreciated :)
 
 ## Easy setup
@@ -83,18 +93,9 @@ pjsip-build
 If something goes wrong during the compilation of a particular target architecture, the main script will be terminated and you can see the full log in `./pjsip-build/logs/<arch>.log`. So for example if there's an error for <b>x86</b>, you can see the full log in `./pjsip-build/logs/x86.log`
 
 ## Build with G.729 codec
-Currently G.729 codec is supported only for `arm-v7a` arch. If you want to contribute by adding support also for other arch, check https://github.com/alexbbb/pjsip-android-builder/issues/9. Please read [G.729 codec disclaimer](https://github.com/alexbbb/pjsip-android-builder/blob/master/g729_patch/README.md) before proceeding with the following instructions!
+Please read [G.729 codec disclaimer](https://github.com/alexbbb/pjsip-android-builder/blob/master/g729_patch/README.md)!
 
-Comment this line in `config.conf` (by adding `#` in front of it);
-```
-TARGET_ARCHS=("armeabi" "armeabi-v7a" "x86" "x86_64" "arm64-v8a")
-```
-and replace it with:
-```
-TARGET_ARCHS=("armeabi-v7a")
-```
-
-Use `build-with-g729` script insted of `build`.
+Use `./build-with-g729` script insted of `./build`.
 
 ## Configuration
 It's possible to configure library versions and build settings by editing the <b>config.conf</b> file. Please read the comments in the file for more details.
