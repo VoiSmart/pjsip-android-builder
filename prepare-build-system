@@ -21,7 +21,7 @@ then
     rm -rf "$NDK_DIR_NAME"
     echo "Android NDK downloaded!"
     echo "Extracting Android NDK ..."
-    chmod +x ndk.bin && ./ndk.bin 2>&1 > /dev/null
+    chmod +x ndk.bin && ./ndk.bin 2>&1 > /dev/null || true
     rm -rf ndk.bin
 fi
 
