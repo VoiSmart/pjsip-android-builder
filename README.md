@@ -3,11 +3,11 @@ Easily build PJSIP with: OpenSSL, OpenH264, libyuv and G.729 (without Intel IPP)
 
 | Library \ Builds for | armeabi | armeabi-v7a | x86 | mips | arm64-v8a  | x86_64 | mips64 |
 |----------------------|---------|-------------|-----|------|------------|--------|--------|
-| PJSIP                |    X    |      X      |  X  |   X  |      X     |    X   |    X   |
-| LibYUV               |    X    |      X      |  X  |   X  |      X     |    X   |    X   |
+| PJSIP 2.4.5          |    X    |      X      |  X  |   X  |      X     |    X   |    X   |
+| LibYUV r1255         |    X    |      X      |  X  |   X  |      X     |    X   |    X   |
 | G.729                |    X    |      X      |  X  |   X  |      X     |    X   |    X   |
-| OpenSSL              |    X    |      X      |  X  |   X  |      X     |    X   |        |
-| OpenH264             |    X    |      X      |  X  |   X  |            |        |        |
+| OpenSSL 1.0.2e       |    X    |      X      |  X  |   X  |      X     |    X   |        |
+| OpenH264 1.0.0       |    X    |      X      |  X  |   X  |            |        |        |
 
 Using Android API 21 and GCC 4.8. If you want to extend build support, fork the project and then send me a pull request.
 
