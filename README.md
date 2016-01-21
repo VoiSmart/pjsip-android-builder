@@ -5,7 +5,7 @@ Easily build PJSIP with: OpenSSL, OpenH264, libyuv and G.729 (without Intel IPP)
 |----------------------|---------|-------------|-----|------|------------|--------|--------|
 | [PJSIP 2.4.5](https://trac.pjsip.org/repos/browser/pjproject/tags/2.4.5)          |    X    |      X      |  X  |   X  |      X     |    X   |    X   |
 | [LibYUV r1255](https://github.com/illuspas/libyuv-android)         |    X    |      X      |  X  |   X  |      X     |    X   |    X   |
-| [G.729](https://github.com/alexbbb/pjsip-android-builder/tree/master/g729_patch)                |    X    |      X      |  X  |   X  |      X     |    X   |    X   |
+| [G.729](https://github.com/gotev/pjsip-android-builder/tree/master/g729_patch)                |    X    |      X      |  X  |   X  |      X     |    X   |    X   |
 | [OpenSSL 1.0.2e](https://www.openssl.org/source/)       |    X    |      X      |  X  |   X  |      X     |    X   |        |
 | [OpenH264 1.0.0](https://github.com/cisco/openh264/releases/tag/v1.0.0)       |    X    |      X      |  X  |   X  |            |        |        |
 
@@ -18,7 +18,7 @@ If you want to contribute, your help is really appreciated :)
 ## Easy setup
 Install [vagrant](https://www.vagrantup.com/), then open a terminal and execute:
 ```
-git clone https://github.com/alexbbb/pjsip-android-builder
+git clone https://github.com/gotev/pjsip-android-builder
 cd pjsip-android-builder
 vagrant up
 ```
@@ -93,7 +93,7 @@ pjsip-build
 If something goes wrong during the compilation of a particular target architecture, the main script will be terminated and you can see the full log in `./pjsip-build/logs/<arch>.log`. So for example if there's an error for <b>x86</b>, you can see the full log in `./pjsip-build/logs/x86.log`
 
 ## Build with G.729 codec
-Please read [G.729 codec disclaimer](https://github.com/alexbbb/pjsip-android-builder/blob/master/g729_patch/README.md)!
+Please read [G.729 codec disclaimer](https://github.com/gotev/pjsip-android-builder/blob/master/g729_patch/README.md)!
 
 Use `./build-with-g729` script insted of `./build`.
 
@@ -136,7 +136,7 @@ If something goes wrong during the compilation of a particular target architectu
 
 ## License
 
-    Copyright (C) 2015 Aleksandar Gotev
+    Copyright (C) 2015-2016 Aleksandar Gotev
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
