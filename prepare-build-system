@@ -72,13 +72,6 @@ then
         cd g729_patch
         ./install.sh
         cd ..
-
-        echo "Apply patch to throttle Android JNI record frames ..."
-        cp pjsip-2.4.5-android-jni.patch pjproject-2.4.5
-        cd pjproject-2.4.5
-        patch -p1 < pjsip-2.4.5-android-jni.patch 
-        rm -rf pjsip-2.4.5-android-jni.patch 
-        cd ..
     fi
 fi
 
