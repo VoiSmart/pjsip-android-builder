@@ -11,6 +11,8 @@ Easily build PJSIP with: OpenSSL, OpenH264, libyuv and G.729 (without Intel IPP)
 
 Using Android API 21 and GCC 4.8. If you want to extend build support, fork the project and then send me a pull request.
 
+OpenSSL and OpenH264 have problems with 64 bit archs, as you can see from the build compatibility matrix. Check [#2](https://github.com/gotev/pjsip-android-builder/issues/2) and [#8](https://github.com/gotev/pjsip-android-builder/issues/8) for further reference. 64 bit builds are supported starting from Android API 21+, so if you compile using older Android APIs, you can do that only for: `armeabi`, `armeabi-v7a`, `x86` and `mips`. 
+
 ## Purpose
 I needed an easily replicable build system to build PJSIP http://www.pjsip.org/ native library with NDK for Android. So, I created a Linux virtual machine and wrote some scripts to download, install all the requirements needed to make it a complete build environment and some automated build scripts.
 If you want to contribute, your help is really appreciated :)
