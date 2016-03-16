@@ -125,7 +125,7 @@ then
     echo "OpenH264 downloaded!"
     echo "Extracting OpenH264 ..."
     tar xzf openh264.tar.gz && rm -rf openh264.tar.gz
-    if [ "${OPENH264_DIR_NAME}" == "openh264-1.0.0" ]
+    if [ "${OPENH264_DIR_NAME}" == "openh264-1.0.0" ] && [ "${OPENH264_TARGET_NDK_LEVEL}" -ge "21" ]
     then
         echo "Patching OpenH264 to be able to compile with Android API 21+.."
         cp ${BASEDIR}/openh264-1.0.0-android21.patch ${BASEDIR}/${OPENH264_DIR_NAME}/
