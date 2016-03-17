@@ -7,10 +7,18 @@ BASEDIR=$(pwd)
 if [ "$SETUP_PACKAGES" == "1" ]
 then
     DEPS="vim git curl bzip2 gcc g++ binutils make autoconf openssl \
-          libssl-dev openjdk-7-jdk openjdk-7-jre ant libopus0 \
+          libssl-dev ant libopus0 \
           libpcre3 libpcre3-dev build-essential nasm \
           libc6:i386 libstdc++6:i386 zlib1g:i386"
     sudo -- sh -c "dpkg --add-architecture i386; apt-get update && apt-get -y upgrade && apt-get install -y ${DEPS}"
+
+    # Setup Java 8
+    sudo add-apt-repository -y ppa:webupd8team/java
+    sudo apt-get update
+    sudo apt-get purge -y openjdk*
+    echo debconf shared/accepted-oracle-license-v1-1 select true | sudo debconf-set-selections
+    echo debconf shared/accepted-oracle-license-v1-1 seen true | sudo debconf-set-selections
+    sudo apt-get -y install oracle-java8-installer
 fi
 
 if [ "$DOWNLOAD_NDK" == "1" ]
