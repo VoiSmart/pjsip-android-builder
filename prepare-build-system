@@ -120,7 +120,18 @@ then
     git clone "${LIBYUV_REPO_PATH}"
     cd "${LIBYUV_REPO_DIR_NAME}"
     export PATH="${BASEDIR}/${NDK_DIR_NAME}:$PATH"
-    sed -i 's/APP_ABI := armeabi armeabi-v7a arm64-v8a x86/APP_ABI := armeabi armeabi-v7a arm64-v8a x86 x86_64 mips mips64/g' jni/Application.mk
+
+    # Re-enable static library, disabled with https://github.com/illuspas/libyuv-android/commit/d5d7e66ed635cf96fce1aa029ccc24a06bb0e7bc
+    sed -i 's/#include $(BUILD_SHARED_LIBRARY)/include $(BUILD_SHARED_LIBRARY)/g' jni/Android.mk
+    sed -i 's/include $(BUILD_STATIC_LIBRARY)/#include $(BUILD_STATIC_LIBRARY)/g' jni/Android.mk   
+
+    if [ "${OPENH264_TARGET_NDK_LEVEL}" -ge "21" ]
+    then
+        sed -i 's/APP_ABI := armeabi-v7a arm64-v8a x86 x86_64/APP_ABI := armeabi armeabi-v7a arm64-v8a x86 x86_64 mips mips64/g' jni/Application.mk
+    else
+        sed -i 's/APP_ABI := armeabi-v7a arm64-v8a x86 x86_64/APP_ABI := armeabi armeabi-v7a x86/g' jni/Application.mk
+    fi
+
     ndk-build
 fi
 
