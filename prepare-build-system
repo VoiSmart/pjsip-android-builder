@@ -44,20 +44,23 @@ then
     tar xzf sdk.tgz && rm -rf sdk.tgz
 fi
 
-if [ "$DOWNLOAD_TARGET_API" == "1" ]
+if [ "$DOWNLOAD_ANDROID_APIS" == "1" ]
 then
-    echo "Downloading Android API Platform ${TARGET_ANDROID_API}..."
     cd ${BASEDIR}/${SDK_DIR_NAME}/tools
 
     ALL_SDK=$(./android list sdk --all)
 
-    PACKAGE=$(echo "${ALL_SDK}" | grep "API ${TARGET_ANDROID_API}" | head -n 1 | awk '{print $1}' | cut -d'-' -f 1)
-    echo yes | ./android update sdk --all --filter ${PACKAGE} --no-ui --force
+    for api in "${SETUP_ANDROID_APIS[@]}"
+    do
+        echo "Downloading Android API Platform ${api}..."
+        PACKAGE=$(echo "${ALL_SDK}" | grep "API ${api}" | head -n 1 | awk '{print $1}' | cut -d'-' -f 1)
+        echo yes | ./android update sdk --all --filter ${PACKAGE} --no-ui --force
+    done
 
     PACKAGE=$(echo "${ALL_SDK}" | grep "Android SDK Platform-tools" | head -n 1 | awk '{print $1}' | cut -d'-' -f 1)
     echo yes | ./android update sdk --all --filter ${PACKAGE} --no-ui --force
 
-    PACKAGE=$(echo "${ALL_SDK}" | grep "Build-tools" | head -n 1 | awk '{print $1}' | cut -d'-' -f 1)
+    PACKAGE=$(echo "${ALL_SDK}" | grep "Build-tools" | grep "${BUILD_TOOLS_VERSION}" | head -n 1 | awk '{print $1}' | cut -d'-' -f 1)
     echo yes | ./android update sdk --all --filter ${PACKAGE} --no-ui --force
 fi
 
