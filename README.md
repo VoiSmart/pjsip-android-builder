@@ -1,8 +1,8 @@
 # PJSIP Android Builder
 Easily build PJSIP with: OpenSSL, OpenH264, libyuv and G.729 (without Intel IPP) for Android, by using a Linux virtual machine.
 
-### Build matrix
-<b>Using Android API 18 (the default when you checkout the project):</b>
+## Build matrix
+<b>Using Android API 18 (it's the default when you checkout the project and in the vagrant base box):</b>
 
 | Library \ Builds for | armeabi | armeabi-v7a | x86 | mips | arm64-v8a  | x86_64 | mips64 |
 |----------------------|---------|-------------|-----|------|------------|--------|--------|
@@ -18,7 +18,7 @@ If you want to compile LibYUV for mips, check why it has been disabled in [#12](
 | Library \ Builds for | armeabi | armeabi-v7a | x86 | mips | arm64-v8a  | x86_64 | mips64 |
 |----------------------|---------|-------------|-----|------|------------|--------|--------|
 | [PJSIP 2.4.5](https://trac.pjsip.org/repos/browser/pjproject/tags/2.4.5)          |    X    |      X      |  X  |   X  |      X     |    X   |    X   |
-| [LibYUV r1255](https://github.com/illuspas/libyuv-android)         |    X    |      X      |  X  |   X  |      X     |    X   |    X   |
+| [LibYUV r1580](https://github.com/illuspas/libyuv-android)         |    X    |      X      |  X  |   X  |      X     |    X   |    X   |
 | [G.729](https://github.com/gotev/pjsip-android-builder/tree/master/g729_patch)                |    X    |      X      |  X  |   X  |      X     |    X   |    X   |
 | [OpenSSL 1.0.2g](https://www.openssl.org/source/)       |    X    |      X      |  X  |   X  |      X     |    X   |        |
 | [OpenH264 1.0.0](https://github.com/cisco/openh264/releases/tag/v1.0.0)       |    X    |      X      |  X  |   X  |            |        |        |
@@ -29,25 +29,34 @@ OpenSSL and OpenH264 have problems with 64 bit archs, as you can see from the bu
 I needed an easily replicable build system to build PJSIP http://www.pjsip.org/ native library with NDK for Android. So, I created a Linux virtual machine and wrote some scripts to download, install all the requirements needed to make it a complete build environment and some automated build scripts.
 If you want to contribute, your help is really appreciated :)
 
-## Easy setup
-Install [vagrant](https://www.vagrantup.com/), then open a terminal and execute:
+## Setup
+You have three options available. The first two require that you have [vagrant](https://www.vagrantup.com/) installed on your system. The first option is the easiest and also the fastest, but may be not the most updated. The second one lets you create the base box exactly as I create it, and the third one is the slowest, as you have to install everything from the base OS and download tons of stuff. You choose.
+
+### With ready to use vagrant base box
+```
+vagrant init gotev/pjsip-android-builder; vagrant up --provider virtualbox
+```
+then you can SSH into the VM and build PJSIP:
+```
+vagrant ssh
+cd /pjsip-android-builder; ./build
+```
+### Build the vagrant box from scratch
 ```
 git clone https://github.com/gotev/pjsip-android-builder
-cd pjsip-android-builder
-vagrant up
+cd pjsip-android-builder; vagrant up
 ```
-This will setup a full Ubuntu Server 14.04.3 LTS from scratch with everything that's needed to compile PJSIP. This will take some time, as there are many things which has to be downloaded and installed, so relax or do some other thing while waiting. After plenty of output, if everything is ok you will see:
+This will setup a full Ubuntu Server 14.04.3 LTS from scratch with everything that's needed to compile PJSIP. This will take some time, as there are many things which has to be downloaded and installed, so relax or do some other thing while waiting. Be aware that you may encounter errors in the process, due to newer versions of the libraries being released and the versions used in `config.conf` not being available anymore. If that happens, check which are the new versions, update `config.conf` and retry from scratch. There may be also other errors due to compilation issues when newer compiler versions and tools are released...and that's a whole new story! After plenty of output, if everything is ok you will see:
 ```
 The build system is ready! Execute: ./build to build PJSIP :)
 ```
 then you can SSH into the VM and build PJSIP:
 ```
 vagrant ssh
-cd /pjsip-android-builder
-./build
+cd /pjsip-android-builder; ./build
 ```
 
-## Manual setup
+### Manual setup
 First, you need a virtualization system. There are plenty of choices out there. Choose the one that you prefer (VirtualBox, vmWare, Vagrant, you name it). I'm supposing that you know what a virtual machine is and how to setup your environment to be able to run virtual machines. So, let's begin :)
 
 1. Download the latest Ubuntu Server ISO (I've chosen 14.04.3 LTS): http://www.ubuntu.com/download/server <br>I've chosen this distro because it has a good support for the applications that we need and it's kept updated. In the future, support to other distributions can be added as well, with your help :)
@@ -113,6 +122,24 @@ Use `./build-with-g729` script insted of `./build`.
 
 ## Configuration
 It's possible to configure library versions and build settings by editing the <b>config.conf</b> file. Please read the comments in the file for more details.
+
+### Switch from Android API 18 to Android API 21
+By default Android API 18 are used. If you want to compile with Android API 21, change the following in `config.conf` and leave the rest unchanged:
+```
+TARGET_ARCHS=("armeabi" "armeabi-v7a" "x86" "mips")
+TARGET_ANDROID_API=21
+SETUP_PACKAGES=0
+DOWNLOAD_NDK=0
+DOWNLOAD_SDK=0
+DOWNLOAD_ANDROID_APIS=0
+DOWNLOAD_PJSIP=1
+DOWNLOAD_SWIG=0
+```
+Then:
+```
+./prepare-build-system; ./build
+```
+After recent changes from 1.0.0 to 1.1 I've not had the necessary time to fully test build with API 21, so if you encounter errors, file an issue with all the details or a pull request with the solution (which is the best option).
 
 ## Build only OpenSSL
 This project has separate independent script to build only OpenSSL library.
