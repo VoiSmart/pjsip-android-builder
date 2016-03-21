@@ -1,6 +1,19 @@
 # PJSIP Android Builder
 Easily build PJSIP with: OpenSSL, OpenH264, libyuv and G.729 (without Intel IPP) for Android, by using a Linux virtual machine.
 
+### Build matrix
+<b>Using Android API 18 (the default when you checkout the project):</b>
+
+| Library \ Builds for | armeabi | armeabi-v7a | x86 | mips | arm64-v8a  | x86_64 | mips64 |
+|----------------------|---------|-------------|-----|------|------------|--------|--------|
+| [PJSIP 2.4.5](https://trac.pjsip.org/repos/browser/pjproject/tags/2.4.5)          |    X    |      X      |  X  |   X  |          |      |      |
+| [LibYUV r1255](https://github.com/illuspas/libyuv-android)         |    X    |      X      |  X  |   X  |      X     |    X   |    X   |
+| [G.729](https://github.com/gotev/pjsip-android-builder/tree/master/g729_patch)                |    X    |      X      |  X  |   X  |           |       |       |
+| [OpenSSL 1.0.2g](https://www.openssl.org/source/)       |    X    |      X      |  X  |   X  |           |       |        |
+| [OpenH264 1.0.0](https://github.com/cisco/openh264/releases/tag/v1.0.0)       |    X    |      X      |  X  |   X  |            |        |        |
+
+<b>Using Android API 21+:</b>
+
 | Library \ Builds for | armeabi | armeabi-v7a | x86 | mips | arm64-v8a  | x86_64 | mips64 |
 |----------------------|---------|-------------|-----|------|------------|--------|--------|
 | [PJSIP 2.4.5](https://trac.pjsip.org/repos/browser/pjproject/tags/2.4.5)          |    X    |      X      |  X  |   X  |      X     |    X   |    X   |
@@ -8,8 +21,6 @@ Easily build PJSIP with: OpenSSL, OpenH264, libyuv and G.729 (without Intel IPP)
 | [G.729](https://github.com/gotev/pjsip-android-builder/tree/master/g729_patch)                |    X    |      X      |  X  |   X  |      X     |    X   |    X   |
 | [OpenSSL 1.0.2g](https://www.openssl.org/source/)       |    X    |      X      |  X  |   X  |      X     |    X   |        |
 | [OpenH264 1.0.0](https://github.com/cisco/openh264/releases/tag/v1.0.0)       |    X    |      X      |  X  |   X  |            |        |        |
-
-Using Android API 21 and GCC 4.8. If you want to extend build support, fork the project and then send me a pull request.
 
 OpenSSL and OpenH264 have problems with 64 bit archs, as you can see from the build compatibility matrix. Check [#2](https://github.com/gotev/pjsip-android-builder/issues/2) and [#8](https://github.com/gotev/pjsip-android-builder/issues/8) for further reference. 64 bit builds are supported starting from Android API 21+, so if you compile using older Android APIs, you can do that only for: `armeabi`, `armeabi-v7a`, `x86` and `mips`. 
 
