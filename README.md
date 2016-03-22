@@ -33,6 +33,7 @@ If you want to contribute, your help is really appreciated :)
 You have three options available. The first two require that you have [vagrant](https://www.vagrantup.com/) installed on your system. The first option is the easiest and also the fastest, but may be not the most updated. The second one lets you create the base box exactly as I create it, and the third one is the slowest, as you have to install everything from the base OS and download tons of stuff. You choose.
 
 ### With ready to use vagrant base box
+You can find it [here](https://atlas.hashicorp.com/gotev/boxes/pjsip-android-builder/).
 ```
 vagrant init gotev/pjsip-android-builder; vagrant up --provider virtualbox
 ```
