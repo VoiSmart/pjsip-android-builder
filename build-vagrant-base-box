@@ -1,0 +1,16 @@
+#!/bin/bash -e
+vagrant up
+
+echo "Copying build system files..."
+vagrant ssh -c "cp -a /pjsip-android-builder/* /home/vagrant/; sudo chown -R vagrant:vagrant /home/vagrant"
+
+echo "Setting insecure keypair..."
+vagrant ssh -c "sudo curl -s https://raw.githubusercontent.com/mitchellh/vagrant/master/keys/vagrant.pub > .ssh/authorized_keys; sudo chmod 700 .ssh; sudo chmod 600 .ssh/authorized_keys; sudo chown -R vagrant:vagrant .ssh; rm -rf .bash_history && history -c"
+vagrant halt
+
+echo "Removing vagrant generated keypair..."
+rm -rf .vagrant/machines/default/virtualbox/private_key
+
+echo "Packaging base box..."
+VMNAME=$(VBoxManage list vms | grep "pjsip-android-builder_default" | awk '{print $1}' | tr -d '"')
+vagrant package --base "$VMNAME"

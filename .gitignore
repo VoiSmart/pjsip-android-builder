@@ -9,3 +9,4 @@ openssl-build-output
 openh264-build-output
 .vagrant
 .DS_Store
+package.box
