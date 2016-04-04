@@ -17,6 +17,10 @@ Vagrant.configure(2) do |config|
   config.vm.box = "ubuntu/trusty64"
   config.vm.hostname = "pjsip-android-builder"
 
+  # needed to avoid keypair problems after packaging the box
+  # read: https://github.com/mitchellh/vagrant/issues/5186
+  config.ssh.insert_key = true
+ 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
   # `vagrant box outdated`. This is not recommended.
