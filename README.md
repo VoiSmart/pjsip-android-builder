@@ -33,13 +33,20 @@ If you want to contribute, your help is really appreciated :)
 You have three options available. The first two require that you have [vagrant](https://www.vagrantup.com/) installed on your system. The first option is the easiest and also the fastest, but may be not the most updated. The second one lets you create the base box exactly as I create it, and the third one is the slowest, as you have to install everything from the base OS and download tons of stuff. You choose.
 
 ### With ready to use vagrant base box
+You can find it [here](https://atlas.hashicorp.com/gotev/boxes/pjsip-android-builder/).
 ```
 vagrant init gotev/pjsip-android-builder; vagrant up --provider virtualbox
 ```
 then you can SSH into the VM and build PJSIP:
 ```
-vagrant ssh
-cd /pjsip-android-builder; ./build
+git clone https://github.com/gotev/pjsip-android-builder
+cd pjsip-android-builder
+sed -i 's/SETUP_PACKAGES=1/SETUP_PACKAGES=0/g' config.conf
+sed -i 's/DOWNLOAD_NDK=1/DOWNLOAD_NDK=0/g' config.conf
+sed -i 's/DOWNLOAD_SDK=1/DOWNLOAD_SDK=0/g' config.conf
+sed -i 's/DOWNLOAD_ANDROID_APIS=1/DOWNLOAD_ANDROID_APIS=0/g' config.conf
+sed -i 's/DOWNLOAD_SWIG=1/DOWNLOAD_SWIG=0/g' config.conf
+./prepare-build-system; ./build
 ```
 ### Build the vagrant box from scratch
 ```
