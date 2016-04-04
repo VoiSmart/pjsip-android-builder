@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>PJSIP Android Builder by gotev</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">PJSIP Android Builder</h1>
+      <h2 class="project-tagline">Complete Android build environment for PJSIP with OpenSSL, OpenH264, libyuv and G.729</h2>
+      <a href="https://github.com/gotev/pjsip-android-builder" class="btn">View on GitHub</a>
+      <a href="https://github.com/gotev/pjsip-android-builder/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/gotev/pjsip-android-builder/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h2>
+<a id="build-matrix" class="anchor" href="#build-matrix" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Build matrix</h2>
+
+<p><b>Using Android API 18 (it's the default when you checkout the project and in the vagrant base box):</b></p>
+
+<table>
+<thead>
+<tr>
+<th>Library \ Builds for</th>
+<th>armeabi</th>
+<th>armeabi-v7a</th>
+<th>x86</th>
+<th>mips</th>
+<th>arm64-v8a</th>
+<th>x86_64</th>
+<th>mips64</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://trac.pjsip.org/repos/browser/pjproject/tags/2.4.5">PJSIP 2.4.5</a></td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="https://github.com/illuspas/libyuv-android">LibYUV r1580</a></td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="https://github.com/gotev/pjsip-android-builder/tree/master/g729_patch">G.729</a></td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="https://www.openssl.org/source/">OpenSSL 1.0.2g</a></td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="https://github.com/cisco/openh264/releases/tag/v1.0.0">OpenH264 1.0.0</a></td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+
+<p>If you want to compile LibYUV for mips, check why it has been disabled in <a href="https://github.com/gotev/pjsip-android-builder/issues/12">#12</a>.</p>
+
+<p><b>Using Android API 21+:</b></p>
+
+<table>
+<thead>
+<tr>
+<th>Library \ Builds for</th>
+<th>armeabi</th>
+<th>armeabi-v7a</th>
+<th>x86</th>
+<th>mips</th>
+<th>arm64-v8a</th>
+<th>x86_64</th>
+<th>mips64</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://trac.pjsip.org/repos/browser/pjproject/tags/2.4.5">PJSIP 2.4.5</a></td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+</tr>
+<tr>
+<td><a href="https://github.com/illuspas/libyuv-android">LibYUV r1580</a></td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+</tr>
+<tr>
+<td><a href="https://github.com/gotev/pjsip-android-builder/tree/master/g729_patch">G.729</a></td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+</tr>
+<tr>
+<td><a href="https://www.openssl.org/source/">OpenSSL 1.0.2g</a></td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td></td>
+</tr>
+<tr>
+<td><a href="https://github.com/cisco/openh264/releases/tag/v1.0.0">OpenH264 1.0.0</a></td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+
+<p>OpenSSL and OpenH264 have problems with 64 bit archs, as you can see from the build compatibility matrix. Check <a href="https://github.com/gotev/pjsip-android-builder/issues/2">#2</a> and <a href="https://github.com/gotev/pjsip-android-builder/issues/8">#8</a> for further reference. 64 bit builds are supported starting from Android API 21+, so if you compile using older Android APIs, you can do that only for: <code>armeabi</code>, <code>armeabi-v7a</code>, <code>x86</code> and <code>mips</code>. </p>
+
+<h2>
+<a id="purpose" class="anchor" href="#purpose" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Purpose</h2>
+
+<p>I needed an easily replicable build system to build PJSIP <a href="http://www.pjsip.org/">http://www.pjsip.org/</a> native library with NDK for Android. So, I created a Linux virtual machine and wrote some scripts to download, install all the requirements needed to make it a complete build environment and some automated build scripts.
+If you want to contribute, your help is really appreciated :)</p>
+
+<h2>
+<a id="setup" class="anchor" href="#setup" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Setup</h2>
+
+<p>You have three options available. The first two require that you have <a href="https://www.vagrantup.com/">vagrant</a> installed on your system. The first option is the easiest and also the fastest, but may be not the most updated. The second one lets you create the base box exactly as I create it, and the third one is the slowest, as you have to install everything from the base OS and download tons of stuff. You choose.</p>
+
+<h3>
+<a id="with-ready-to-use-vagrant-base-box" class="anchor" href="#with-ready-to-use-vagrant-base-box" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>With ready to use vagrant base box</h3>
+
+<p>You can find it <a href="https://atlas.hashicorp.com/gotev/boxes/pjsip-android-builder/">here</a>.</p>
+
+<pre><code>vagrant init gotev/pjsip-android-builder; vagrant up --provider virtualbox
+</code></pre>
+
+<p>then you can SSH into the VM and build PJSIP:</p>
+
+<pre><code>./build
+</code></pre>
+
+<h3>
+<a id="build-the-vagrant-box-from-scratch" class="anchor" href="#build-the-vagrant-box-from-scratch" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Build the vagrant box from scratch</h3>
+
+<pre><code>git clone https://github.com/gotev/pjsip-android-builder
+cd pjsip-android-builder; vagrant up
+</code></pre>
+
+<p>This will setup a full Ubuntu Server 14.04.3 LTS from scratch with everything that's needed to compile PJSIP. This will take some time, as there are many things which has to be downloaded and installed, so relax or do some other thing while waiting. Be aware that you may encounter errors in the process, due to newer versions of the libraries being released and the versions used in <code>config.conf</code> not being available anymore. If that happens, check which are the new versions, update <code>config.conf</code> and retry from scratch. There may be also other errors due to compilation issues when newer compiler versions and tools are released...and that's a whole new story! After plenty of output, if everything is ok you will see:</p>
+
+<pre><code>The build system is ready! Execute: ./build to build PJSIP :)
+</code></pre>
+
+<p>then you can SSH into the VM and build PJSIP:</p>
+
+<pre><code>vagrant ssh
+cd /pjsip-android-builder; ./build
+</code></pre>
+
+<h3>
+<a id="manual-setup" class="anchor" href="#manual-setup" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Manual setup</h3>
+
+<p>First, you need a virtualization system. There are plenty of choices out there. Choose the one that you prefer (VirtualBox, vmWare, Vagrant, you name it). I'm supposing that you know what a virtual machine is and how to setup your environment to be able to run virtual machines. So, let's begin :)</p>
+
+<ol>
+<li>Download the latest Ubuntu Server ISO (I've chosen 14.04.3 LTS): <a href="http://www.ubuntu.com/download/server">http://www.ubuntu.com/download/server</a> <br>I've chosen this distro because it has a good support for the applications that we need and it's kept updated. In the future, support to other distributions can be added as well, with your help :)</li>
+<li>Create a new virtual machine with at least 1GB RAM and 20GB virtual hard drive. Add as many RAM and processors as you can, so the compilation process will be faster.</li>
+<li>Install Ubuntu Server</li>
+<li>SSH into your newly installed VM and execute the following commands, which will install all the required packages and files to be able to build PJSIP. This will take some time, as there are many things which has to be downloaded and installed, so relax or do some other thing while waiting<br>
+</li>
+</ol>
+
+<pre><code>sudo apt-get install -y git
+git clone https://github.com/alexbbb/pjsip-android-builder
+cd pjsip-android-builder
+./prepare-build-system
+</code></pre>
+
+<h2>
+<a id="build-pjsip" class="anchor" href="#build-pjsip" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Build PJSIP</h2>
+
+<p>After you have successfully set up your VM, to build PJSIP, go into pjsip-android-builder and execute:</p>
+
+<pre><code>./build
+</code></pre>
+
+<p>When everything goes well, you will see an output like this:</p>
+
+<pre><code>Clear final build folder ...
+Creating config site file for Android ...
+Compile PJSIP for arch armeabi ...
+Compile PJSUA for arch armeabi ...
+Copying PJSUA .so library to final build directory ...
+Copying OpenH264 .so library to final build directory ...
+Copying libyuv .so library to final build directory ...
+Compile PJSIP for arch armeabi-v7a ...
+Compile PJSUA for arch armeabi-v7a ...
+Copying PJSUA .so library to final build directory ...
+Copying OpenH264 .so library to final build directory ...
+Copying libyuv .so library to final build directory ...
+Compile PJSIP for arch x86 ...
+Compile PJSUA for arch x86 ...
+Copying PJSUA .so library to final build directory ...
+Copying OpenH264 .so library to final build directory ...
+Copying libyuv .so library to final build directory ...
+Compile PJSIP for arch x86_64 ...
+Compile PJSUA for arch x86_64 ...
+Copying PJSUA .so library to final build directory ...
+Copying libyuv .so library to final build directory ...
+Compile PJSIP for arch arm64-v8a ...
+Compile PJSUA for arch arm64-v8a ...
+Copying PJSUA .so library to final build directory ...
+Copying libyuv .so library to final build directory ...
+Copying PJSUA2 java bindings to final build directory ...
+Finished! Check the generated output in /home/user/pjsip-android-builder/pjsip-build
+</code></pre>
+
+<p>The script is going to create a new folder named <b>pjsip-build</b> organized as follows:</p>
+
+<pre><code>pjsip-build
+ |-- logs/  contains the full build log for each target architecture
+ |-- lib/   contains the compiled libraries for each target architecture
+ |-- src/   contains PJSUA Java wrapper to work with the library
+</code></pre>
+
+<p>If something goes wrong during the compilation of a particular target architecture, the main script will be terminated and you can see the full log in <code>./pjsip-build/logs/&lt;arch&gt;.log</code>. So for example if there's an error for <b>x86</b>, you can see the full log in <code>./pjsip-build/logs/x86.log</code></p>
+
+<h2>
+<a id="build-with-g729-codec" class="anchor" href="#build-with-g729-codec" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Build with G.729 codec</h2>
+
+<p>Please read <a href="https://github.com/gotev/pjsip-android-builder/blob/master/g729_patch/README.md">G.729 codec disclaimer</a>!</p>
+
+<p>Use <code>./build-with-g729</code> script insted of <code>./build</code>.</p>
+
+<h2>
+<a id="configuration" class="anchor" href="#configuration" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Configuration</h2>
+
+<p>It's possible to configure library versions and build settings by editing the <b>config.conf</b> file. Please read the comments in the file for more details.</p>
+
+<h3>
+<a id="switch-from-android-api-18-to-android-api-21" class="anchor" href="#switch-from-android-api-18-to-android-api-21" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Switch from Android API 18 to Android API 21</h3>
+
+<p>By default Android API 18 are used. If you want to compile with Android API 21, change the following in <code>config.conf</code> and leave the rest unchanged:</p>
+
+<pre><code>TARGET_ARCHS=("armeabi" "armeabi-v7a" "x86" "mips")
+TARGET_ANDROID_API=21
+SETUP_PACKAGES=0
+DOWNLOAD_NDK=0
+DOWNLOAD_SDK=0
+DOWNLOAD_ANDROID_APIS=0
+DOWNLOAD_PJSIP=1
+DOWNLOAD_SWIG=0
+</code></pre>
+
+<p>Then:</p>
+
+<pre><code>./prepare-build-system; ./build
+</code></pre>
+
+<p>After recent changes from 1.0.0 to 1.1 I've not had the necessary time to fully test build with API 21, so if you encounter errors, file an issue with all the details or a pull request with the solution (which is the best option).</p>
+
+<h2>
+<a id="build-only-openssl" class="anchor" href="#build-only-openssl" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Build only OpenSSL</h2>
+
+<p>This project has separate independent script to build only OpenSSL library.</p>
+
+<pre><code>Usage:
+./openssl-build &lt;ANDROID_NDK_PATH&gt; &lt;OPENSSL_SOURCES_PATH&gt; &lt;ANDROID_TARGET_API&gt; \
+                &lt;ANDROID_TARGET_ABI&gt; &lt;GCC_VERSION&gt; &lt;OUTPUT_PATH&gt;
+
+Supported target ABIs: armeabi, armeabi-v7a, x86, x86_64, arm64-v8a
+
+Example using GCC 4.8, NDK 10e, OpenSSL 1.0.2d and Android API 21 for armeabi-v7a.
+./openssl-build /home/user/android-ndk-r10e /home/user/openssl-1.0.2d 21 \
+                armeabi-v7a 4.8 /home/user/output/armeabi-v7a
+</code></pre>
+
+<p>If you want to leverage on the <b>config.conf</b> properties and build OpenSSL for every configured target arch, you can use the following helper script:</p>
+
+<pre><code>./openssl-build-target-archs
+</code></pre>
+
+<p>When everything goes well, you will see an output like this:</p>
+
+<pre><code>Building OpenSSL for target arch armeabi ...
+Building OpenSSL for target arch armeabi-v7a ...
+Building OpenSSL for target arch x86 ...
+Building OpenSSL for target arch x86_64 ...
+Building OpenSSL for target arch arm64-v8a ...
+Finished building OpenSSL! Check output folder: /home/user/pjsip-android-builder/openssl-build-output
+</code></pre>
+
+<p>The script is going to create a new folder named <b>openssl-build-output</b> organized as follows:</p>
+
+<pre><code>openssl-build-output
+ |-- logs/  contains the full build log for each target architecture
+ |-- libs/  contains the compiled libraries for each target architecture
+</code></pre>
+
+<p>If something goes wrong during the compilation of a particular target architecture, the main script will be terminated and you can see the full log in <code>./openssl-build-output/logs/&lt;arch&gt;.log</code>. So for example if there's an error for <b>x86</b>, you can see the full log in <code>./openssl-build-output/logs/x86.log</code></p>
+
+<h2>
+<a id="license" class="anchor" href="#license" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>License</h2>
+
+<pre><code>Copyright (C) 2015-2016 Aleksandar Gotev
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+</code></pre>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/gotev/pjsip-android-builder">PJSIP Android Builder</a> is maintained by <a href="https://github.com/gotev">gotev</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
