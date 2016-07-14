@@ -176,6 +176,26 @@ openssl-build-output
 ```
 If something goes wrong during the compilation of a particular target architecture, the main script will be terminated and you can see the full log in `./openssl-build-output/logs/<arch>.log`. So for example if there's an error for <b>x86</b>, you can see the full log in `./openssl-build-output/logs/x86.log`
 
+### Change OpenSSL release version
+1. Go to [OpenSSL download page](https://www.openssl.org/source/) and get the link to download the latest stable version (at the time of this writing the version is 1.0.2h and the link is: https://www.openssl.org/source/openssl-1.0.2h.tar.gz)
+2. Edit `config.conf` and change: 
+  ```
+OPENSSL_DOWNLOAD_URL="https://www.openssl.org/source/openssl-1.0.2h.tar.gz"
+OPENSSL_DIR_NAME="openssl-1.0.2h"
+
+DOWNLOAD_NDK=0
+DOWNLOAD_SDK=0
+DOWNLOAD_ANDROID_APIS=0
+DOWNLOAD_PJSIP=0
+DOWNLOAD_SWIG=0
+DOWNLOAD_OPENSSL=1
+DOWNLOAD_OPENH264=0
+DOWNLOAD_LIBYUV=0
+  ```
+3. remove `openssl-build-output` and the old `openssl-1.0.2g` (or whatever version instead of 1.0.2g) directories
+4. Execute `./prepare-build-system` and the new OpenSSL will be downloaded and compiled (go get a coffee :D)
+5. Rebuild PJSIP (by either using `./build` or `./build-with-g729`)
+
 ## License
 
     Copyright (C) 2015-2016 Aleksandar Gotev
