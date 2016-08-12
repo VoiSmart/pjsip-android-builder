@@ -1,5 +1,5 @@
 #!/bin/bash -e
-PJPROJECT_BASE_FOLDER="../pjproject-2.4.5"
+PJPROJECT_BASE_FOLDER="../pjproject-2.5.5"
 
 cp g729.patch ../
 CURDIR=$(pwd)
