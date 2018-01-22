@@ -63,7 +63,7 @@ then
     export CFLAGS=" ${ARCH_FLAGS} -fpic -ffunction-sections -funwind-tables -fstack-protector -fno-strict-aliasing -finline-limit=64 "
     export LDFLAGS=" ${ARCH_LINK} "
     cd ${OPENSSL_TMP_FOLDER}
-    ./Configure android-armv7 --openssldir=${OPENSSL_OUTPUT_PATH}
+    ./Configure android-armv7 no-asm --openssldir=${OPENSSL_OUTPUT_PATH}
     build_library
 
 elif [ "$OPENSSL_TARGET_ABI" == "arm64-v8a" ]
@@ -88,7 +88,7 @@ then
     export CFLAGS=" ${ARCH_FLAGS} -fpic -ffunction-sections -funwind-tables -fstack-protector -fno-strict-aliasing -finline-limit=64 "
     export LDFLAGS=" ${ARCH_LINK} "
     cd ${OPENSSL_TMP_FOLDER}
-    ./Configure android --openssldir=${OPENSSL_OUTPUT_PATH}
+    ./Configure android no-asm --openssldir=${OPENSSL_OUTPUT_PATH}
     build_library
 
 elif [ "$OPENSSL_TARGET_ABI" == "armeabi" ]
@@ -113,7 +113,7 @@ then
     export CFLAGS=" ${ARCH_FLAGS} -fpic -ffunction-sections -funwind-tables -fstack-protector -fno-strict-aliasing -finline-limit=64 "
     export LDFLAGS=" ${ARCH_LINK} "
     cd ${OPENSSL_TMP_FOLDER}
-    ./Configure android --openssldir=${OPENSSL_OUTPUT_PATH}
+    ./Configure android no-asm --openssldir=${OPENSSL_OUTPUT_PATH}
     build_library
 
 elif [ "$OPENSSL_TARGET_ABI" == "x86" ]
@@ -138,7 +138,7 @@ then
     export CFLAGS=" ${ARCH_FLAGS} -fpic -ffunction-sections -funwind-tables -fstack-protector -fno-strict-aliasing -finline-limit=64 "
     export LDFLAGS=" ${ARCH_LINK} "
     cd ${OPENSSL_TMP_FOLDER}
-    ./Configure android-x86 --openssldir=${OPENSSL_OUTPUT_PATH}
+    ./Configure android-x86 no-asm --openssldir=${OPENSSL_OUTPUT_PATH}
     build_library
 
 elif [ "$OPENSSL_TARGET_ABI" == "x86_64" ]
@@ -161,7 +161,7 @@ then
     export CFLAGS=" ${ARCH_FLAGS} -fpic -ffunction-sections -funwind-tables -fstack-protector -fno-strict-aliasing -finline-limit=64 "
     export LDFLAGS=" ${ARCH_LINK} "
     cd ${OPENSSL_TMP_FOLDER}
-    ./Configure linux-x86_64 --openssldir=${OPENSSL_OUTPUT_PATH}
+    ./Configure linux-x86_64 no-asm --openssldir=${OPENSSL_OUTPUT_PATH}
     build_library
 elif [ "$OPENSSL_TARGET_ABI" == "mips" ]
 then
@@ -186,7 +186,7 @@ then
     export CFLAGS=" ${ARCH_FLAGS} -fpic -ffunction-sections -funwind-tables -fstack-protector -fno-strict-aliasing -finline-limit=64 "
     export LDFLAGS=" ${ARCH_LINK} "
     cd ${OPENSSL_TMP_FOLDER}
-    ./Configure android-mips --openssldir=${OPENSSL_OUTPUT_PATH}
+    ./Configure android-mips no-asm --openssldir=${OPENSSL_OUTPUT_PATH}
     build_library
 
 elif [ "$OPENSSL_TARGET_ABI" == "mips64" ]
@@ -212,7 +212,7 @@ then
     export CFLAGS=" ${ARCH_FLAGS} -fpic -ffunction-sections -funwind-tables -fstack-protector -fno-strict-aliasing -finline-limit=64 "
     export LDFLAGS=" ${ARCH_LINK} "
     cd ${OPENSSL_TMP_FOLDER}
-    ./Configure android-mips64 --openssldir=${OPENSSL_OUTPUT_PATH}
+    ./Configure android-mips64 no-asm --openssldir=${OPENSSL_OUTPUT_PATH}
     build_library
 
 else
