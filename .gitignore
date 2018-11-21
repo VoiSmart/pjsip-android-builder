@@ -1,12 +1,5 @@
-pjproject-2.4.5
-openssl-1.0.2g
-openh264-1.0.0
-libyuv-android
-android-ndk-r10e
-android-sdk-linux
-pjsip-build
-openssl-build-output
-openh264-build-output
-.vagrant
-.DS_Store
-package.box
+# libraries and tools downloaded
+tools/
+
+# all the build artifacts
+output/

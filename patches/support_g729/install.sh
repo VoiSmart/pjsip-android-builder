@@ -1,11 +1,20 @@
 #!/bin/bash -e
-PJPROJECT_BASE_FOLDER="../pjproject-2.4.5"
 
-cp g729.patch ../
+. ../../config.conf
+
+PJPROJECT_BASE_FOLDER="$DOWNLOAD_DIR/$PJSIP_DIR_NAME"
+
+if [ "$PJSIP_VERSION" == "2.8" ]
+then
+    cp g729.patch $PJPROJECT_BASE_FOLDER
+else
+    cp g729_old.patch $PJPROJECT_BASE_FOLDER/g729.patch
+fi
+
 CURDIR=$(pwd)
-cd ..
+cd "$PJPROJECT_BASE_FOLDER"
 patch -p0 < g729.patch
-rm -rf g729.patch
+rm g729.patch
 cd "$CURDIR"
 
 cp g729.c "$PJPROJECT_BASE_FOLDER/pjmedia/src/pjmedia-codec/g729.c"

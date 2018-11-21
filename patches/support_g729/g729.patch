@@ -1,6 +1,6 @@
-diff -Naur pjproject-2.7/aconfigure.ac pjproject-2.7/aconfigure.ac
---- pjproject-2.7/aconfigure.ac	2015-12-27 11:12:49.000000000 +0000
-+++ pjproject-2.7/aconfigure.ac	2015-12-27 11:18:36.000000000 +0000
+diff -Naur aconfigure.ac aconfigure.ac
+--- aconfigure.ac	2015-12-27 11:12:49.000000000 +0000
++++ aconfigure.ac	2015-12-27 11:18:36.000000000 +0000
 @@ -1255,6 +1255,20 @@
  			       )
  	      ])
@@ -22,10 +22,10 @@ diff -Naur pjproject-2.7/aconfigure.ac pjproject-2.7/aconfigure.ac
 
  dnl ########################################################
  dnl # Intel IPP support
-diff -Naur pjproject-2.7/build.mak.in pjproject-2.7/build.mak.in
---- pjproject-2.7/build.mak.in	2015-12-27 11:12:49.000000000 +0000
-+++ pjproject-2.7/build.mak.in	2015-12-27 11:14:10.000000000 +0000
-@@ -106,6 +106,11 @@
+diff -Naur build.mak.in build.mak.in
+--- build.mak.in	2015-12-27 11:12:49.000000000 +0000
++++ build.mak.in	2015-12-27 11:14:10.000000000 +0000
+@@ -115,5 +115,10 @@
  endif
  endif
 
@@ -34,12 +34,11 @@ diff -Naur pjproject-2.7/build.mak.in pjproject-2.7/build.mak.in
 +APP_THIRD_PARTY_LIB_FILES += $(PJ_DIR)/third_party/lib/libg729codec-$(LIB_SUFFIX)
 +endif
 +
- ifneq ($(findstring pa,@ac_pjmedia_snd@),)
  ifeq (@ac_external_pa@,1)
  # External PA
-diff -Naur pjproject-2.7/pjmedia/build/os-auto.mak.in pjproject-2.7/pjmedia/build/os-auto.mak.in
---- pjproject-2.7/pjmedia/build/os-auto.mak.in	2015-12-27 11:12:50.000000000 +0000
-+++ pjproject-2.7/pjmedia/build/os-auto.mak.in	2015-12-27 11:15:24.000000000 +0000
+diff -Naur pjmedia/build/os-auto.mak.in pjmedia/build/os-auto.mak.in
+--- pjmedia/build/os-auto.mak.in	2015-12-27 11:12:50.000000000 +0000
++++ pjmedia/build/os-auto.mak.in	2015-12-27 11:15:24.000000000 +0000
 @@ -72,6 +72,7 @@
  AC_NO_ILBC_CODEC=@ac_no_ilbc_codec@
  AC_NO_G722_CODEC=@ac_no_g722_codec@
@@ -62,9 +61,9 @@ diff -Naur pjproject-2.7/pjmedia/build/os-auto.mak.in pjproject-2.7/pjmedia/buil
  ifeq ($(AC_NO_OPENCORE_AMRNB),1)
  export CFLAGS += -DPJMEDIA_HAS_OPENCORE_AMRNB_CODEC=0
  else
-diff -Naur pjproject-2.7/pjmedia/include/pjmedia-codec/config_auto.h.in pjproject-2.7/pjmedia/include/pjmedia-codec/config_auto.h.in
---- pjproject-2.7/pjmedia/include/pjmedia-codec/config_auto.h.in	2015-12-27 11:12:51.000000000 +0000
-+++ pjproject-2.7/pjmedia/include/pjmedia-codec/config_auto.h.in	2015-12-27 11:17:16.000000000 +0000
+diff -Naur pjmedia/include/pjmedia-codec/config_auto.h.in pjmedia/include/pjmedia-codec/config_auto.h.in
+--- pjmedia/include/pjmedia-codec/config_auto.h.in	2015-12-27 11:12:51.000000000 +0000
++++ pjmedia/include/pjmedia-codec/config_auto.h.in	2015-12-27 11:17:16.000000000 +0000
 @@ -69,6 +69,11 @@
  #undef PJMEDIA_HAS_G7221_CODEC
  #endif
@@ -77,9 +76,9 @@ diff -Naur pjproject-2.7/pjmedia/include/pjmedia-codec/config_auto.h.in pjprojec
  /* OpenCORE AMR-NB codec */
  #ifndef PJMEDIA_HAS_OPENCORE_AMRNB_CODEC
  #undef PJMEDIA_HAS_OPENCORE_AMRNB_CODEC
-diff -Naur pjproject-2.7/pjmedia/include/pjmedia-codec/config.h pjproject-2.7/pjmedia/include/pjmedia-codec/config.h
---- pjproject-2.7/pjmedia/include/pjmedia-codec/config.h	2015-12-27 11:12:51.000000000 +0000
-+++ pjproject-2.7/pjmedia/include/pjmedia-codec/config.h	2015-12-27 11:16:28.000000000 +0000
+diff -Naur pjmedia/include/pjmedia-codec/config.h pjmedia/include/pjmedia-codec/config.h
+--- pjmedia/include/pjmedia-codec/config.h	2015-12-27 11:12:51.000000000 +0000
++++ pjmedia/include/pjmedia-codec/config.h	2015-12-27 11:16:28.000000000 +0000
 @@ -96,6 +96,12 @@
  #   define PJMEDIA_HAS_G722_CODEC    1
  #endif
@@ -93,9 +92,9 @@ diff -Naur pjproject-2.7/pjmedia/include/pjmedia-codec/config.h pjproject-2.7/pj
 
  /**
   * Default G.722 codec encoder and decoder level adjustment. The G.722
-diff -Naur pjproject-2.7/pjmedia/include/pjmedia-codec.h pjproject-2.7/pjmedia/include/pjmedia-codec.h
---- pjproject-2.7/pjmedia/include/pjmedia-codec.h	2015-12-27 11:12:51.000000000 +0000
-+++ pjproject-2.7/pjmedia/include/pjmedia-codec.h	2015-12-27 11:17:48.000000000 +0000
+diff -Naur pjmedia/include/pjmedia-codec.h pjmedia/include/pjmedia-codec.h
+--- pjmedia/include/pjmedia-codec.h	2015-12-27 11:12:51.000000000 +0000
++++ pjmedia/include/pjmedia-codec.h	2015-12-27 11:17:48.000000000 +0000
 @@ -33,6 +33,7 @@
  #include <pjmedia-codec/ilbc.h>
  #include <pjmedia-codec/g722.h>
@@ -104,9 +103,9 @@ diff -Naur pjproject-2.7/pjmedia/include/pjmedia-codec.h pjproject-2.7/pjmedia/i
  #include <pjmedia-codec/ipp_codecs.h>
  #include <pjmedia-codec/opencore_amr.h>
  #include <pjmedia-codec/openh264.h>
-diff -Naur pjproject-2.7/pjmedia/src/pjmedia-codec/audio_codecs.c pjproject-2.7/pjmedia/src/pjmedia-codec/audio_codecs.c
---- pjproject-2.7/pjmedia/src/pjmedia-codec/audio_codecs.c	2015-12-27 11:12:51.000000000 +0000
-+++ pjproject-2.7/pjmedia/src/pjmedia-codec/audio_codecs.c	2015-12-27 11:20:05.000000000 +0000
+diff -Naur pjmedia/src/pjmedia-codec/audio_codecs.c pjmedia/src/pjmedia-codec/audio_codecs.c
+--- pjmedia/src/pjmedia-codec/audio_codecs.c	2015-12-27 11:12:51.000000000 +0000
++++ pjmedia/src/pjmedia-codec/audio_codecs.c	2015-12-27 11:20:05.000000000 +0000
 @@ -100,6 +100,13 @@
  	return status;
  #endif /* PJMEDIA_HAS_G7221_CODEC */
@@ -121,9 +120,9 @@ diff -Naur pjproject-2.7/pjmedia/src/pjmedia-codec/audio_codecs.c pjproject-2.7/
  #if PJMEDIA_HAS_L16_CODEC
      /* Register L16 family codecs */
      status = pjmedia_codec_l16_init(endpt, 0);
-diff -Naur pjproject-2.7/third_party/build/os-auto.mak.in pjproject-2.7/third_party/build/os-auto.mak.in
---- pjproject-2.7/third_party/build/os-auto.mak.in	2015-12-27 11:12:54.000000000 +0000
-+++ pjproject-2.7/third_party/build/os-auto.mak.in	2015-12-27 11:20:46.000000000 +0000
+diff -Naur third_party/build/os-auto.mak.in third_party/build/os-auto.mak.in
+--- third_party/build/os-auto.mak.in	2015-12-27 11:12:54.000000000 +0000
++++ third_party/build/os-auto.mak.in	2015-12-27 11:20:46.000000000 +0000
 @@ -23,6 +23,10 @@
  DIRS += g7221
  endif

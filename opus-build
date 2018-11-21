@@ -1,0 +1,43 @@
+#!/bin/bash -e
+
+. config.conf
+
+NDK_PATH="$DOWNLOAD_DIR/${NDK_DIR_NAME}"
+OPUS_PATH="$DOWNLOAD_DIR/${OPUS_DIR_NAME}"
+LIB_PATH="${OPUS_BUILD_OUT_PATH}/libs"
+LOG_PATH="${OPUS_BUILD_OUT_PATH}/logs"
+
+LIB_BUILD_PATH="$OPUS_PATH/obj/local"
+LIB_HEADERS_PATH="$OPUS_PATH/include"
+
+rm -rf "${OPUS_BUILD_OUT_PATH}"
+mkdir -p "${LIB_PATH}"
+mkdir -p "${LOG_PATH}"
+
+
+cd $OPUS_PATH
+
+# Download Android.mk
+echo "Downloading Android.mk file from PjSip website ..."
+mkdir -p jni
+(cd jni && curl -O https://trac.pjsip.org/repos/raw-attachment/ticket/1904/Android.mk)
+
+# Build Opus
+echo "Building Opus $OPUS_VERSION ..."
+$NDK_PATH/ndk-build >> "${LOG_PATH}/opus.log" 2>&1
+
+# Copy Files to Build Directory
+echo "Copying build file in Opus Build directory ..."
+cp -r $LIB_BUILD_PATH/* $LIB_PATH
+
+for arch in "${TARGET_ARCHS[@]}"
+do
+    echo "Copying Opus file for target arch $arch ..."
+    cd $LIB_PATH/$arch
+    mkdir -p lib
+    mv `ls | grep -w -v lib` lib
+    mkdir -p include/opus
+    cp $LIB_HEADERS_PATH/* include/opus
+done
+
+echo "Finished building Opus"

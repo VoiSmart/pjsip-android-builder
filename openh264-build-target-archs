@@ -2,9 +2,9 @@
 
 . config.conf
 
-NDK_PATH=$(pwd)"/${NDK_DIR_NAME}"
-SDK_TOOLS_PATH=$(pwd)"/${SDK_DIR_NAME}/tools"
-OPENH264_PATH=$(pwd)"/${OPENH264_DIR_NAME}"
+NDK_PATH="$DOWNLOAD_DIR/${NDK_DIR_NAME}"
+SDK_TOOLS_PATH="$DOWNLOAD_DIR/${SDK_DIR_NAME}"/tools
+OPENH264_PATH="$DOWNLOAD_DIR/${OPENH264_DIR_NAME}"
 LIB_PATH="${OPENH264_BUILD_OUT_PATH}/libs"
 LOG_PATH="${OPENH264_BUILD_OUT_PATH}/logs"
 TMP_DIR="/tmp/openh264"
@@ -23,7 +23,9 @@ do
     cd ${OPENH264_PATH}
     cp -r * ${TMP_DIR}
     cd ${TMP_DIR}
+    mkdir -p "$BUILD_DIR"
     mkdir -p "${LIB_PATH}/${arch}"
+    mkdir -p "${LOG_PATH}"
     
     #change default output DIR for make install
     sed -i "s*PREFIX=/usr/local*PREFIX=${LIB_PATH}/${arch}*g" Makefile
@@ -60,9 +62,9 @@ do
         ARGS="${ARGS}mips64"
     fi
     
-    make ${ARGS} >>"${LOG_PATH}/${arch}.log" 2>&1
+    make ${ARGS} >> "${LOG_PATH}/${arch}.log" 2>&1
     mkdir -p ${LIB_PATH}/${arch}
-    make ${ARGS} install >>"${LOG_PATH}/${arch}.log" 2>&1
+    make ${ARGS} install >> "${LOG_PATH}/${arch}.log" 2>&1
 done
 
 echo "Finished building OpenH264! Check output folder: ${OPENH264_BUILD_OUT_PATH}"

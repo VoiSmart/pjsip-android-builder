@@ -2,22 +2,82 @@
 
 . config.conf
 
-NDK_PATH=$(pwd)"/${NDK_DIR_NAME}"
-OPENSSL_PATH=$(pwd)"/${OPENSSL_DIR_NAME}"
-GCC_VERSION=$(gcc --version | grep gcc | awk '{print $4}' | cut -d'.' -f1,2)
+CUR_DIR="$(pwd)"
+OPENSSL_PATH="$DOWNLOAD_DIR/${OPENSSL_DIR_NAME}"
+
+##############################################################################
+############################      FUNCTIONS     ##############################
+##############################################################################
+
+function getNDKForOpenSSL {
+    # Downloading Earlier version of NDK up to r12b. Later version won't work with this configuration
+
+    #NDK Version to download
+    NDK_VER=r12b
+
+    #The URL from which to download Android NDK
+    NDK_URL="https://dl.google.com/android/repository/android-ndk-$NDK_VER-linux-x86_64.zip"
+
+    #The name of the folder created by executing the downloaded NDK bin
+    #In general, the name corresponds to that of the bin file, except the platform info
+    NDK_D_NAME="android-ndk-$NDK_VER"
+
+    echo ""
+    echo "Downloading Android NDK ${NDK_VER} for OpenSSL ..."
+    echo ""
+
+    cd $OPENSSL_PATH
+    curl -L -# -o ndk.zip "$NDK_URL" 2>&1
+    rm -rf "$NDK_D_NAME"
+    echo ""
+    echo "Android NDK downloaded!"
+    echo "Extracting Android NDK ..."
+    echo ""
+    unzip ndk.zip -d ndk
+    mv ndk/$NDK_D_NAME .
+    rm -rf ndk
+    rm -rf ndk.zip
+
+    cd $CUR_DIR
+}
+
+function clearBuildDirectory {
+    rm -rf "${OPENSSL_BUILD_OUT_PATH}"
+    mkdir -p "${LIB_PATH}"
+    mkdir -p "${LOG_PATH}"
+}
+
+function clearNdkDirectory {
+    rm -rf $NDK_PATH
+}
+
+
+##############################################################################
+############################        MAIN          ############################
+##############################################################################
+
+# Get the NDK version for OpenSSL which may differ from the one specified in config.conf
+getNDKForOpenSSL
+
+NDK_PATH="$OPENSSL_PATH/${NDK_D_NAME}"
+#GCC_VERSION=$(gcc --version | grep gcc | awk '{print $4}' | cut -d'.' -f1,2)
+GCC_VERSION=4.9
 LIB_PATH="${OPENSSL_BUILD_OUT_PATH}/libs"
 LOG_PATH="${OPENSSL_BUILD_OUT_PATH}/logs"
 
-rm -rf "${OPENSSL_BUILD_OUT_PATH}"
-mkdir -p "${LIB_PATH}"
-mkdir -p "${LOG_PATH}"
+# Clear and recreate the build output directory
+clearBuildDirectory
 
+# Build OpenSSL for each ARCH specified in config.site
 for arch in "${TARGET_ARCHS[@]}"
 do
     echo "Building OpenSSL for target arch $arch ..."
-    ./openssl-build ${NDK_PATH} ${OPENSSL_PATH} ${TARGET_ANDROID_API} \
+    ./openssl-build ${NDK_PATH} ${OPENSSL_PATH} ${OPENSSL_TARGET_NDK_LEVEL} \
                     ${arch} ${GCC_VERSION} "${LIB_PATH}/${arch}" \
-                    >>"${LOG_PATH}/${arch}.log" 2>&1
+                    >> "${LOG_PATH}/${arch}.log" 2>&1
 done
+
+# Clearing the NDK version for OpenSSL
+clearNdkDirectory
 
 echo "Finished building OpenSSL! Check output folder: ${OPENSSL_BUILD_OUT_PATH}"

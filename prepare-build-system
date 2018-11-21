@@ -2,7 +2,23 @@
 
 . config.conf
 
-BASEDIR=$(pwd)
+PATCH_DIR=$BASEDIR/patches
+
+# Create Download directory if it does not exist
+if [ ! -d "$DOWNLOAD_DIR" ]
+then
+  mkdir $DOWNLOAD_DIR
+fi
+
+# Create Build directory if it does not exist
+if [ ! -d "$BUILD_DIR" ]
+then
+  mkdir $BUILD_DIR
+fi
+
+#Force use of GCC instead of ndk default CLANG
+export NDK_TOOLCHAIN_VERSION=4.9
+export PATH="$NDK_TOOLCHAIN_VERSION:$PATH"
 
 if [ "$SETUP_PACKAGES" == "1" ]
 then
@@ -14,6 +30,8 @@ then
     echo debconf shared/accepted-oracle-license-v1-1 seen true | sudo debconf-set-selections
     sudo apt-get -y install oracle-java8-installer ant
 
+    sudo apt-get install -y unzip git
+
     DEPS="vim git curl bzip2 gcc g++ binutils make autoconf openssl \
           libssl-dev ant libopus0 \
           libpcre3 libpcre3-dev build-essential nasm \
@@ -23,36 +41,52 @@ fi
 
 if [ "$DOWNLOAD_NDK" == "1" ]
 then
-    echo "Downloading Android NDK ..."
-    cd "${BASEDIR}"
-    curl -L -# -o ndk.bin "$NDK_DOWNLOAD_URL" 2>&1
+
+    echo ""
+    echo "Downloading Android NDK ${NDK_VERSION} ..."
+    echo ""
+
+    cd $DOWNLOAD_DIR
+    curl -L -# -o ndk.zip "$NDK_DOWNLOAD_URL" 2>&1
     rm -rf "$NDK_DIR_NAME"
+    echo ""
     echo "Android NDK downloaded!"
+    echo ""
     echo "Extracting Android NDK ..."
-    chmod +x ndk.bin && ./ndk.bin 2>&1 > /dev/null || true
-    rm -rf ndk.bin
+    echo ""
+    unzip ndk.zip -d ndk
+    mv ndk/$NDK_DIR_NAME .
+    rm -rf ndk
+    rm -rf ndk.zip
 fi
 
 if [ "$DOWNLOAD_SDK" == "1" ]
 then
-    echo "Downloading Android SDK ..."
-    cd "${BASEDIR}"
-    curl -L -# -o sdk.tgz "$SDK_DOWNLOAD_URL" 2>&1
+
+    echo ""
+    echo "Downloading Android SDK Tools version ${SDK_TOOLS_VERSION} ..."
+    cd $DOWNLOAD_DIR
+    curl -L -# -o sdk.zip "$SDK_DOWNLOAD_URL" 2>&1
     rm -rf "$SDK_DIR_NAME"
+    mkdir $SDK_DIR_NAME
+    echo ""
     echo "Android SDK downloaded!"
+    echo ""
     echo "Extracting Android SDK ..."
-    tar xzf sdk.tgz && rm -rf sdk.tgz
+    echo ""
+    unzip sdk.zip -d $SDK_DIR_NAME
+    rm -rf sdk.zip
 fi
 
 if [ "$DOWNLOAD_ANDROID_APIS" == "1" ]
 then
-    cd ${BASEDIR}/${SDK_DIR_NAME}/tools
+    cd $DOWNLOAD_DIR/${SDK_DIR_NAME}/tools
 
     ALL_SDK=$(./android list sdk --all)
 
     for api in "${SETUP_ANDROID_APIS[@]}"
     do
-        echo "Downloading Android API Platform ${api}..."
+        echo "\n\nDownloading Android API Platform ${api}..."
         PACKAGE=$(echo "${ALL_SDK}" | grep "API ${api}" | head -n 1 | awk '{print $1}' | cut -d'-' -f 1)
         echo yes | ./android update sdk --all --filter ${PACKAGE} --no-ui --force
     done
@@ -66,30 +100,65 @@ fi
 
 if [ "$DOWNLOAD_PJSIP" == "1" ]
 then
-    echo "Downloading PJSIP ..."
-    cd "${BASEDIR}"
+    echo ""
+    echo "Downloading PJSIP ${PJSIP_VERSION} ..."
+    echo ""
+    cd $DOWNLOAD_DIR
     curl -L -# -o pjsip.tar.bz2 "$PJSIP_DOWNLOAD_URL" 2>&1
     rm -rf "$PJSIP_DIR_NAME"
     echo "PJSIP downloaded!"
     echo "Extracting PJSIP ..."
     tar xjf pjsip.tar.bz2 && rm -rf pjsip.tar.bz2
 
-    if [ "${PJSIP_DIR_NAME}" == "pjproject-2.4.5" ]
+    # G.729 Codec PATCH
+    if [ "${ENABLE_G729}" == "1" ]
     then
-        echo "Fix BASH script error in 2.4.5 tag ..."
-        sed -i 's/TARGET_HOST+=-linux-android/TARGET_HOST="\${TARGET_HOST}-linux-android"/g' "${BASEDIR}/${PJSIP_DIR_NAME}/configure-android"
-
+        echo ""
+        echo ""
+        echo "######################################################################"
         echo "Apply patch to support G.729 codec without Intel IPP codec library ..."
-        cd g729_patch
+        echo "######################################################################"
+        echo ""
+        cd $PATCH_DIR/support_g729
         ./install.sh
-        cd ..
+        cd $BASEDIR
+    fi
+
+    # Fixed Call-ID PATCH
+    if [ "${USE_FIXED_CALLID}" == "1" ]
+        then
+        echo ""
+        echo ""
+        echo "######################################################################"
+        echo "Apply patch to use a fixed Call-ID in registration ..."
+        echo "######################################################################"
+        echo ""
+        cd $PATCH_DIR/fixed_callid
+        ./patch.sh
+        cd $BASEDIR
+    fi
+
+    # Changeset 5601 [fixed in pjsip 2.7] PATCH - only for pjsip 2.6
+    if [ "${PJSIP_VERSION}" == "2.6" ]
+    then
+        echo ""
+        echo ""
+        echo "######################################################################"
+        echo "Apply patch (changeset 5601) to PJSIP 2.6 to fix issue #2021"
+        echo "######################################################################"
+        echo ""
+        cd $PATCH_DIR/changeset_5601
+        ./patch.sh
+        cd $BASEDIR
     fi
 fi
 
 if [ "$DOWNLOAD_SWIG" == "1" ]
 then
-    echo "Downloading SWIG ..."
-    cd "${BASEDIR}"
+    echo ""
+    echo "Downloading SWIG ${SWIG_VERSION} ..."
+    echo ""
+    cd $DOWNLOAD_DIR
     curl -L -# -o swig.tar.gz "$SWIG_DOWNLOAD_URL" 2>&1
     rm -rf "$SWIG_DIR_NAME"
     echo "SWIG downloaded!"
@@ -104,58 +173,50 @@ fi
 
 if [ "$DOWNLOAD_OPENSSL" == "1" ]
 then
-    echo "Downloading OpenSSL ..."
-    cd "${BASEDIR}"
+    echo ""
+    echo "Downloading OpenSSL ${OPENSSL_VERSION} ..."
+    echo ""
+
+    cd $DOWNLOAD_DIR
     curl -L -# -o openssl.tar.gz "$OPENSSL_DOWNLOAD_URL" 2>&1
     rm -rf "$OPENSSL_DIR_NAME"
     echo "OpenSSL downloaded!"
     echo "Extracting OpenSSL ..."
     tar xzf openssl.tar.gz && rm -rf openssl.tar.gz
-    cd ${BASEDIR}
-    ./openssl-build-target-archs
-fi
-
-if [ "$DOWNLOAD_LIBYUV" == "1" ]
-then
-    echo "Downloading libyuv ..."
     cd "${BASEDIR}"
-    rm -rf "${LIBYUV_REPO_DIR_NAME}"
-    git clone "${LIBYUV_REPO_PATH}"
-    cd "${LIBYUV_REPO_DIR_NAME}"
-    export PATH="${BASEDIR}/${NDK_DIR_NAME}:$PATH"
-
-    # Re-enable static library, disabled with https://github.com/illuspas/libyuv-android/commit/d5d7e66ed635cf96fce1aa029ccc24a06bb0e7bc
-    sed -i 's/#include $(BUILD_SHARED_LIBRARY)/include $(BUILD_SHARED_LIBRARY)/g' jni/Android.mk
-    sed -i 's/include $(BUILD_STATIC_LIBRARY)/#include $(BUILD_STATIC_LIBRARY)/g' jni/Android.mk   
-
-    if [ "${OPENH264_TARGET_NDK_LEVEL}" -ge "21" ]
-    then
-        sed -i 's/APP_ABI := armeabi-v7a arm64-v8a x86 x86_64/APP_ABI := armeabi armeabi-v7a arm64-v8a x86 x86_64 mips mips64/g' jni/Application.mk
-    else
-        sed -i 's/APP_ABI := armeabi-v7a arm64-v8a x86 x86_64/APP_ABI := armeabi armeabi-v7a x86/g' jni/Application.mk
-    fi
-
-    ndk-build
+    ./openssl-build-target-archs
 fi
 
 if [ "$DOWNLOAD_OPENH264" == "1" ]
 then
-    echo "Downloading OpenH264 ..."
-    cd "${BASEDIR}"
+    echo ""
+    echo "Downloading OpenH264 ${OPENH264_VERSION} ..."
+    echo ""
+    cd $DOWNLOAD_DIR
     curl -L -# -o openh264.tar.gz "$OPENH264_DOWNLOAD_URL" 2>&1
     rm -rf "${OPENH264_DIR_NAME}"
     echo "OpenH264 downloaded!"
     echo "Extracting OpenH264 ..."
     tar xzf openh264.tar.gz && rm -rf openh264.tar.gz
-    if [ "${OPENH264_DIR_NAME}" == "openh264-1.0.0" ] && [ "${OPENH264_TARGET_NDK_LEVEL}" -ge "21" ]
-    then
-        echo "Patching OpenH264 to be able to compile with Android API 21+.."
-        cp ${BASEDIR}/openh264-1.0.0-android21.patch ${BASEDIR}/${OPENH264_DIR_NAME}/
-        cd ${OPENH264_DIR_NAME} && patch -p1 < openh264-1.0.0-android21.patch || true
-    fi
     cd ${BASEDIR}
     ./openh264-build-target-archs || true
 fi
 
-echo "The build system is ready! Execute: ./build to build PJSIP :)"
+if [ "$DOWNLOAD_OPUS" == "1" ]
+then
+    echo ""
+    echo "Downloading Opus ${OPUS_VERSION} ..."
+    echo ""
+    cd "$DOWNLOAD_DIR"
+    curl -L -# -o opus.tar.gz "$OPUS_DOWNLOAD_URL" 2>&1
+    rm -rf "${OPUS_DIR_NAME}"
+    echo "Opus downloaded!"
+    echo "Extracting Opus ..."
+    tar xzf opus.tar.gz && rm -rf opus.tar.gz
+    cd ${BASEDIR}
+    ./opus-build || true
+fi
+
+echo ""
+echo "The build system is ready! Execute: ./build to build PJSIP"
 
