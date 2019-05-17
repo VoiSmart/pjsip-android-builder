@@ -1,142 +1,165 @@
-diff -ru pjlib/include/pj/guid.h pjlib/include/pj/guid.h
---- pjlib/include/pj/guid.h	2012-07-18 07:52:33.000000000 +0000
-+++ pjlib/include/pj/guid.h	2018-11-21 14:26:22.613194669 +0000
-@@ -109,6 +109,26 @@
-  */
- PJ_DECL(void) pj_create_unique_string_lower(pj_pool_t *pool, pj_str_t *str);
- 
-+/**
-+ * Create a globally unique string based on device unique id, 
-+ * which length is PJ_GUID_STRING_LENGTH characters. 
-+ * Caller is responsible for preallocating the storage used
-+ * in the string.
-+ *
-+ * @param str       The string to store the result.
-+ *
-+ * @return          The string.
-+ */
-+PJ_DECL(pj_str_t*) pj_generate_unique_device_string(pj_str_t *str);
-+
-+/**
-+ * Generate a unique string based on device unique id.
-+ *
-+ * @param pool	    Pool to allocate memory from.
-+ * @param str	    The string.
-+ */
-+PJ_DECL(void) pj_create_unique_device_string(pj_pool_t *pool, pj_str_t *str);
-+
+diff -ru pjsip/include/pjsip-ua/sip_regc.h pjsip/include/pjsip-ua/sip_regc.h
+--- pjsip/include/pjsip-ua/sip_regc.h	2019-02-27 14:20:20.317143606 +0100
++++ pjsip/include/pjsip-ua/sip_regc.h	2019-02-27 18:23:41.431145200 +0100
+@@ -205,7 +205,8 @@
+ 				     const pj_str_t *to_url,
+ 				     int ccnt,
+ 				     const pj_str_t contact[],
+-				     pj_uint32_t expires);
++				     pj_uint32_t expires,
++                     const pj_str_t *cid);
  
  /**
-  * @}
-diff -ru pjlib/src/pj/guid.c pjlib/src/pj/guid.c
---- pjlib/src/pj/guid.c	2012-07-18 07:52:33.000000000 +0000
-+++ pjlib/src/pj/guid.c	2018-11-21 14:25:36.658080393 +0000
-@@ -46,3 +46,13 @@
-     for (i = 0; i < str->slen; i++)
- 	str->ptr[i] = (char)pj_tolower(str->ptr[i]);
- }
+  * Set callback to be called when the registration received a final response.
+diff -ru pjsip/include/pjsua2/account.hpp pjsip/include/pjsua2/account.hpp
+--- pjsip/include/pjsua2/account.hpp	2019-02-27 14:20:20.318143608 +0100
++++ pjsip/include/pjsua2/account.hpp	2019-02-27 18:23:41.431145200 +0100
+@@ -168,6 +168,14 @@
+      */
+     unsigned		proxyUse;
+ 
++    /**
++     * This value will be used to set the registration Call-ID
++     * if not present the library will generate a random unique value
++     *
++     * The parameters should be a string of 32 alphanumeric chars
++     */
++    string	    	callID;
 +
-+PJ_DEF(void) pj_create_unique_device_string(pj_pool_t *pool, pj_str_t *str)
-+{
-+    str->ptr = (char*)pj_pool_alloc(pool, PJ_GUID_STRING_LENGTH);
-+    pj_generate_unique_device_string(str);
+ public:
+     /**
+      * Read this object from a container node.
+diff -ru pjsip/include/pjsua-lib/pjsua.h pjsip/include/pjsua-lib/pjsua.h
+--- pjsip/include/pjsua-lib/pjsua.h	2019-02-27 14:20:20.318143608 +0100
++++ pjsip/include/pjsua-lib/pjsua.h	2019-02-27 18:23:41.432145201 +0100
+@@ -2939,6 +2939,14 @@
+     pj_str_t	    id;
+ 
+     /** 
++     * The Call ID used in REGISTER. If the value is empty, a random generated
++     * value will be used.
++     *
++     * This field is optional.
++     */
++    pj_str_t	    call_id;
 +
-+    if (str == NULL) {
-+        pj_generate_unique_string(str);
-+    }
-+}
-diff -ru pjlib/src/pj/guid_android.c pjlib/src/pj/guid_android.c
---- pjlib/src/pj/guid_android.c	2017-03-07 03:28:56.000000000 +0000
-+++ pjlib/src/pj/guid_android.c	2018-11-21 14:25:56.163128896 +0000
-@@ -118,3 +118,79 @@
-     detach_jvm(attached);
-     return NULL;
- }
-+
-+PJ_DEF(pj_str_t*) pj_generate_unique_device_string(pj_str_t *str)
-+{
-+
-+    JNIEnv *jni_env = 0;
-+    jclass build_class;
-+    jmethodID get_callid;
-+    jstring callid;
-+    const char *native_string;
-+    pj_str_t native_str;
-+
-+    pj_bool_t attached = attach_jvm(&jni_env);
-+    if (!jni_env)
-+        goto on_error;
-+
-+    build_class = (*jni_env)->FindClass(jni_env, "org/pjsip/PjCallID");
-+
-+    /* Exception check and handling */
-+    if ((*jni_env)->ExceptionCheck(jni_env)) {
-+        goto handle_exception;
-+    }
-+
-+    if (build_class == NULL || build_class == 0)
-+        goto on_error;
-+
-+    get_callid = (*jni_env)->GetStaticMethodID(jni_env, build_class,
-+                "getCallID",
-+                "()Ljava/lang/String;");
-+
-+    /* Exception check and handling */
-+    if ((*jni_env)->ExceptionCheck(jni_env)) {
-+        goto handle_exception;
-+    }
-+
-+    if (get_callid == NULL || get_callid == 0)
-+        goto on_error;
-+
-+    callid = (*jni_env)->CallStaticObjectMethod(jni_env, build_class, get_callid);
-+
-+    /* Exception check and handling */
-+    if ((*jni_env)->ExceptionCheck(jni_env)) {
-+        goto handle_exception;
-+    }
-+
-+    if (callid == NULL || callid == 0)
-+        goto on_error;
-+
-+    native_string = (*jni_env)->GetStringUTFChars(jni_env, callid,
-+                            JNI_FALSE);
-+
-+    /* Exception check and handling */
-+    if ((*jni_env)->ExceptionCheck(jni_env)) {
-+        goto handle_exception;
-+    }
-+
-+    if (native_string == 0)
-+        goto on_error;
-+
-+    native_str.ptr = (char *)native_string;
-+    native_str.slen = pj_ansi_strlen(native_string);
-+    pj_strncpy(str, &native_str, PJ_GUID_STRING_LENGTH);
-+
-+    (*jni_env)->ReleaseStringUTFChars(jni_env, callid, native_string);
-+    detach_jvm(attached);
-+
-+    return str;
-+
-+handle_exception:
-+    (*jni_env)->ExceptionClear(jni_env);
-+    goto on_error;
-+
-+on_error:
-+    PJ_LOG(2, ("guid_android.c", ("Error generating Device Unique ID")));
-+    detach_jvm(attached);
-+    return NULL;
-+}
++    /** 
+      * This is the URL to be put in the request URI for the registration,
+      * and will look something like "sip:serviceprovider".
+      *
 diff -ru pjsip/src/pjsip-ua/sip_reg.c pjsip/src/pjsip-ua/sip_reg.c
---- pjsip/src/pjsip-ua/sip_reg.c	2016-06-30 08:23:08.000000000 +0000
-+++ pjsip/src/pjsip-ua/sip_reg.c	2018-11-21 14:27:05.616301604 +0000
-@@ -386,7 +386,7 @@
+--- pjsip/src/pjsip-ua/sip_reg.c	2019-02-27 14:20:20.321143612 +0100
++++ pjsip/src/pjsip-ua/sip_reg.c	2019-02-27 18:23:41.433145202 +0100
+@@ -334,7 +334,8 @@
+ 				     const pj_str_t *to_url,
+ 				     int contact_cnt,
+ 				     const pj_str_t contact[],
+-				     pj_uint32_t expires)
++				     pj_uint32_t expires,
++                     const pj_str_t *cid)
+ {
+     pj_str_t tmp;
+     pj_status_t status;
+@@ -386,7 +387,12 @@
  
      /* Set "Call-ID" header. */
      regc->cid_hdr = pjsip_cid_hdr_create(regc->pool);
 -    pj_create_unique_string(regc->pool, &regc->cid_hdr->id);
-+    pj_create_unique_device_string(regc->pool, &regc->cid_hdr->id);
++    if (cid->slen > 0){
++        pj_strdup_with_null(regc->pool, &regc->cid_hdr->id, cid);
++	    PJ_LOG(4,(THIS_FILE, "regc: callID %.*s", regc->cid_hdr->id.slen, regc->cid_hdr->id.ptr));
++    } else {
++        pj_create_unique_string(regc->pool, &regc->cid_hdr->id);
++    }
  
      /* Set "CSeq" header. */
      regc->cseq_hdr = pjsip_cseq_hdr_create(regc->pool);
+diff -ru pjsip/src/pjsua2/account.cpp pjsip/src/pjsua2/account.cpp
+--- pjsip/src/pjsua2/account.cpp	2019-02-27 14:20:20.322143613 +0100
++++ pjsip/src/pjsua2/account.cpp	2019-02-27 18:23:41.433145202 +0100
+@@ -44,6 +44,7 @@
+     NODE_READ_UNSIGNED	(this_node, unregWaitMsec);
+     NODE_READ_UNSIGNED	(this_node, proxyUse);
+     NODE_READ_STRING	(this_node, contactParams);
++    NODE_READ_STRING	(this_node, callID);
+ 
+     readSipHeaders(this_node, "headers", headers);
+ }
+@@ -63,6 +64,7 @@
+     NODE_WRITE_UNSIGNED	(this_node, unregWaitMsec);
+     NODE_WRITE_UNSIGNED	(this_node, proxyUse);
+     NODE_WRITE_STRING	(this_node, contactParams);
++    NODE_WRITE_STRING	(this_node, callID);
+ 
+     writeSipHeaders(this_node, "headers", headers);
+ }
+@@ -332,6 +334,7 @@
+     ret.unreg_timeout		= regConfig.unregWaitMsec;
+     ret.reg_use_proxy		= regConfig.proxyUse;
+     ret.reg_contact_params	= str2Pj(regConfig.contactParams);
++    ret.call_id	= str2Pj(regConfig.callID);
+     for (i=0; i<regConfig.headers.size(); ++i) {
+ 	pj_list_push_back(&ret.reg_hdr_list, &regConfig.headers[i].toPj());
+     }
+@@ -467,6 +470,7 @@
+     regConfig.unregWaitMsec	= prm.unreg_timeout;
+     regConfig.proxyUse		= prm.reg_use_proxy;
+     regConfig.contactParams	= pj2Str(prm.reg_contact_params);
++    regConfig.callID	= pj2Str(prm.call_id);
+     regConfig.headers.clear();
+     hdr = prm.reg_hdr_list.next;
+     while (hdr != &prm.reg_hdr_list) {
+diff -ru pjsip/src/pjsua-lib/pjsua_acc.c pjsip/src/pjsua-lib/pjsua_acc.c
+--- pjsip/src/pjsua-lib/pjsua_acc.c	2019-02-27 14:20:20.321143612 +0100
++++ pjsip/src/pjsua-lib/pjsua_acc.c	2019-05-17 12:22:13.243009568 +0200
+@@ -93,6 +93,7 @@
+     pj_strdup_with_null(pool, &dst->contact_uri_params,
+                         &src->contact_uri_params);
+     pj_strdup_with_null(pool, &dst->pidf_tuple_id, &src->pidf_tuple_id);
++	pj_strdup_with_null(pool, &dst->call_id, &src->call_id);
+     pj_strdup_with_null(pool, &dst->rfc5626_instance_id,
+                         &src->rfc5626_instance_id);
+     pj_strdup_with_null(pool, &dst->rfc5626_reg_id, &src->rfc5626_reg_id);
+@@ -430,7 +431,7 @@
+     if (acc->pool)
+ 	pj_pool_reset(acc->pool);
+     else
+-	acc->pool = pjsua_pool_create("acc%p", 512, 256);
++	acc->pool = pjsua_pool_create("acc%p", 1024, 256);
+ 
+     /* Copy config */
+     pjsua_acc_config_dup(acc->pool, &pjsua_var.acc[id].cfg, cfg);
+@@ -2399,7 +2400,8 @@
+ 			      &acc->cfg.id, 
+ 			      &acc->cfg.id,
+ 			      1, &acc->reg_contact,
+-			      acc->cfg.reg_timeout);
++			      acc->cfg.reg_timeout,
++				  &acc->cfg.call_id);
+     if (status != PJ_SUCCESS) {
+ 	pjsua_perror(THIS_FILE, 
+ 		     "Client registration initialization error", 
+diff -ru pjsip/src/pjsua-lib/pjsua_core.c pjsip/src/pjsua-lib/pjsua_core.c
+--- pjsip/src/pjsua-lib/pjsua_core.c	2019-02-27 14:20:20.321143612 +0100
++++ pjsip/src/pjsua-lib/pjsua_core.c	2019-02-27 18:23:41.434145203 +0100
+@@ -259,6 +259,8 @@
+ 
+     pj_bzero(cfg, sizeof(*cfg));
+ 
++	cfg->call_id = pj_str("");
++
+     cfg->reg_timeout = PJSUA_REG_INTERVAL;
+     cfg->reg_delay_before_refresh = PJSIP_REGISTER_CLIENT_DELAY_BEFORE_REFRESH;
+     cfg->unreg_timeout = PJSUA_UNREG_TIMEOUT;
+diff -ru pjsip/src/test/regc_test.c pjsip/src/test/regc_test.c
+--- pjsip/src/test/regc_test.c	2019-02-27 14:20:20.323143614 +0100
++++ pjsip/src/test/regc_test.c	2019-02-27 18:23:41.435145204 +0100
+@@ -293,7 +293,7 @@
+ 	return -100;
+ 
+     status = pjsip_regc_init(regc, registrar_uri, &aor, &aor, contact_cnt,
+-			     contacts, expires ? expires : 60);
++			     contacts, expires ? expires : 60, "highComplexityCall-Id123456");
+     if (status != PJ_SUCCESS) {
+ 	pjsip_regc_destroy(regc);
+ 	return -110;
