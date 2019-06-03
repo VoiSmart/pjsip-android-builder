@@ -24,6 +24,11 @@ You can install everything on your local machine, or (the way I do) use an Ubunt
 1. Execute `./prepare-build-system`
 2. If everything goes well you should see all the compiled libraries (opus, openh264, openssl) in the <b>output</b> folder.
 
+## Build PJSIP using Docker
+1. Download JDK from the Oracle server and put it the the root directory (i.e. jdk-8u211-linux-x64.tar.gz)
+2. Change JDK_DIR and JDK_TAR args of the build.dockerfile file according to the downloaded JDK file
+3. Run ./build_with_docker.sh to build the lib
+
 ## Build PJSIP
 After you have successfully set up everything, to build PJSIP execute `./build`
 
