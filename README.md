@@ -9,7 +9,7 @@ If you want to contribute, your help is really appreciated :)
 Using Android API `25`:
 - Android NKD: `r13b`
 - OpenSSL: `1.0.2.g` (The build script uses NDK `r12b` and Target SDK 23)
-- OpenH264: `1.6.0` (Uses Target SDK 23)
+- OpenH264: `1.7.0` (Uses Target SDK 23)
 - Opus: `1.2.1`
 
 ## Setup
