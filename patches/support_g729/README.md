@@ -1,6 +1,9 @@
 ## Disclaimer
 G.729 implementation included in this project is Open Source and has been taken from [Siphon](http://siphon.googlecode.com/svn/trunk/g729a) and [CSipSimple](https://code.google.com/p/csipsimple/). If you want to use it in your app, you have to get a license from [G.729 patent holders](http://www.voip-info.org/wiki/view/Asterisk+G.729+Licensing) for every device on which you're going to use it. The authors of this project and of the open source implementation are not responsible for improper or unlicensed use of G.729 codec.
 
+## Incompatibility
+The patch is not compatible with pjsip 2.10
+
 ## G.729 Manual Patch instructions
 All the operations described in this file have been also automated in the `install.sh` script, which is automatically executed after you download PJSIP sources with `./prepare-build-system`. The manual patching procedure is also described here for documentation purposes and for future use.
 

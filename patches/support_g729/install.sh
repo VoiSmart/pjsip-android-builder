@@ -4,7 +4,8 @@
 
 PJPROJECT_BASE_FOLDER="$DOWNLOAD_DIR/$PJSIP_DIR_NAME"
 
-if [ "$PJSIP_VERSION" == "2.8" ]
+# The patch won't work on pjsip 2.10 since it would require further changes
+if [ "$PJSIP_VERSION" == "2.8" ] || [ "$PJSIP_VERSION" == "2.9" ]
 then
     cp g729.patch $PJPROJECT_BASE_FOLDER
 else
