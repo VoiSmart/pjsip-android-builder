@@ -101,11 +101,12 @@ then
     echo "Downloading PJSIP ${PJSIP_VERSION} ..."
     echo ""
     cd $DOWNLOAD_DIR
-    curl -L -# -o pjsip.tar.bz2 "$PJSIP_DOWNLOAD_URL" 2>&1
+    pjsipFile="pjsip.tar.gz"
+    curl -L -# -o $pjsipFile "$PJSIP_DOWNLOAD_URL" 2>&1
     rm -rf "$PJSIP_DIR_NAME"
     echo "PJSIP downloaded!"
     echo "Extracting PJSIP ..."
-    tar xjf pjsip.tar.bz2 && rm -rf pjsip.tar.bz2
+    tar xzf $pjsipFile && rm -rf $pjsipFile
 
     # G.729 Codec PATCH
     if [ "${ENABLE_G729}" == "1" ]
@@ -216,4 +217,3 @@ fi
 
 echo ""
 echo "The build system is ready! Execute: ./build to build PJSIP"
-
