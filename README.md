@@ -32,7 +32,7 @@ The script is going to create a new folder inside the output named <b>pjsip-outp
 pjsip-output-build
  |-- logs/  contains the full build log for each target architecture
  |-- lib/   contains the compiled libraries for each target architecture
- |-- src/   contains PJSUA Java wrapper to work with the library
+ |-- java/   contains PJSUA Java wrapper to work with the library
 ```
 If something goes wrong during the compilation of a particular target architecture, the main script will be terminated and you can see the full log in `./pjsip-output-build/logs/<arch>.log`. So for example if there's an error for <b>x86</b>, you can see the full log in `./pjsip-output-build/logs/x86.log`
 
