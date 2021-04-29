@@ -29,17 +29,13 @@ export PATH="$NDK_TOOLCHAIN_VERSION:$PATH"
 if [ "$SETUP_PACKAGES" == "1" ]
 then
     # Setup Java 8
-    sudo apt-get update
-    sudo apt-get purge -y openjdk*
-    sudo apt-get install -y openjdk-8-jdk
+    apt-get update
+    apt-get purge -y openjdk*
+    apt-get install -y openjdk-8-jdk
 
-    sudo apt-get install -y unzip git
-
-    DEPS="vim git curl bzip2 gcc g++ binutils make autoconf openssl \
-          libssl-dev ant libopus0 \
-          libpcre3 libpcre3-dev build-essential nasm \
-          libc6:i386 libstdc++6:i386 zlib1g:i386"
-    sudo -- sh -c "dpkg --add-architecture i386; apt-get update && apt-get -y upgrade && apt-get install -y ${DEPS}"
+    DEPS="unzip git curl bzip2 binutils make autoconf openssl \
+          libssl-dev libopus0 libpcre3 libpcre3-dev build-essential nasm python" 
+    sh -c "dpkg --add-architecture i386; apt-get update && apt-get -y upgrade && apt-get install -y ${DEPS}"
 fi
 
 if [ "$DOWNLOAD_NDK" == "1" ]
