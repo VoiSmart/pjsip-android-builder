@@ -2,7 +2,13 @@
 
 . config.conf
 
-PATCH_DIR=$BASEDIR/patches
+# Check if script is run with sudo privileges
+HAS_PRIVILEGES=$(id -u)
+if [ $HAS_PRIVILEGES -ne 0 ]
+then
+  echo "Run as root or with sudo"
+  exit 1
+fi
 
 # Create Download directory if it does not exist
 if [ ! -d "$DOWNLOAD_DIR" ]
@@ -107,6 +113,8 @@ then
     echo "PJSIP downloaded!"
     echo "Extracting PJSIP ..."
     tar xzf $pjsipFile && rm -rf $pjsipFile
+
+    PATCH_DIR=$BASEDIR/patches
 
     # Fixed Call-ID PATCH
     if [ "${USE_FIXED_CALLID}" == "1" ]
