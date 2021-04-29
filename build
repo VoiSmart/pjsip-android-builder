@@ -49,9 +49,9 @@ function setConfigSite {
         echo "#define PJ_HAS_IPV6 1" >> "$CONFIG_SITE_PATH"
     fi
 
-    if [ "${ENABLE_G729}" == "1" ]
+    if [ "${DOWNLOAD_BCG729}" == "1" ]
     then
-        echo "#define PJMEDIA_HAS_G729_CODEC 1" >> "$CONFIG_SITE_PATH"
+        echo "#define PJMEDIA_HAS_BCG729 1" >> "$CONFIG_SITE_PATH"
     fi
 }
 
@@ -68,9 +68,7 @@ function buildPjSip {
         "--with-ssl=${OPENSSL_BUILD_OUT_PATH}/libs/${arch}"
         "--with-openh264=${OPENH264_BUILD_OUT_PATH}/libs/${arch}"
         "--with-opus=${OPUS_BUILD_OUT_PATH}/libs/${arch}"
-        "--enable-g729-codec")
-
-    (( "${ENABLE_G729}" == "1" )) && args+=("--enable-g729-codec")
+        "--with-bcg729=${BCG729_BUILD_OUT_PATH}/libs/${arch}")
 
     APP_PLATFORM=android-${TARGET_ANDROID_API} TARGET_ABI=$arch ./configure-android "${args[@]}" >> "${FINAL_BUILD_LOGS}/${arch}.log" 2>&1
 

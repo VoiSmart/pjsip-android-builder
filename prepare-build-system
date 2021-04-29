@@ -108,20 +108,6 @@ then
     echo "Extracting PJSIP ..."
     tar xzf $pjsipFile && rm -rf $pjsipFile
 
-    # G.729 Codec PATCH
-    if [ "${ENABLE_G729}" == "1" ]
-    then
-        echo ""
-        echo ""
-        echo "######################################################################"
-        echo "Apply patch to support G.729 codec without Intel IPP codec library ..."
-        echo "######################################################################"
-        echo ""
-        cd $PATCH_DIR/support_g729
-        ./install.sh
-        cd $BASEDIR
-    fi
-
     # Fixed Call-ID PATCH
     if [ "${USE_FIXED_CALLID}" == "1" ]
         then
@@ -213,6 +199,20 @@ then
     tar xzf opus.tar.gz && rm -rf opus.tar.gz
     cd ${BASEDIR}
     ./opus-build || true
+fi
+
+if [ "${DOWNLOAD_BCG729}" == "1" ]
+then
+    echo ""
+    echo "Downloading bcg729 $BCG729_VERSION ..."
+    echo ""
+    cd "$DOWNLOAD_DIR"
+    rm -rf "${BCG729_DIR_NAME}"
+    mkdir $BCG729_DIR_NAME
+    git clone -b $BCG729_VERSION $BCG729_DOWNLOAD_URL $BCG729_DIR_NAME
+    echo "bcg729 downloaded!"
+    cd ${BASEDIR}
+    ./bcg729-build || true
 fi
 
 echo ""

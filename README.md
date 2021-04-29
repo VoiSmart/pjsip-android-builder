@@ -18,7 +18,7 @@ You can install everything on your local machine, or (the way I do) use an Ubunt
 #### Configuration
 1. Clone this repo on your machine or in the mounted volume inside your container.
 2. Properly configure the `config.conf` file. It's possible to configure libraries versions and build settings by editing it. The settings in the `Support` section above have been tested. Please read the comments in the file for more details.
-3. In the `config.conf` file there are some toggles to apply patches ([`g729`](patches/support_g729), and [`fixed_callid`](patches/fixed_callid)). See the respective README for more info.
+3. In the `config.conf` file there are some toggles to apply patches ([`fixed_callid`](patches/fixed_callid)). See the respective README for more info.
 
 #### Prepare Environment
 1. Execute `./prepare-build-system`
@@ -41,6 +41,7 @@ To fix the issue, popping up in recent NDK versions. I've used the fix proposed 
 
 ## Build Libraries only
 This project has separate independent script to build only single libraries:
+- Bcg729
 - OpenSSL
 - OpenH264
 - Opus

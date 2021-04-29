@@ -1,0 +1,50 @@
+#!/bin/bash -e
+
+. config.conf
+
+NDK_PATH="$DOWNLOAD_DIR/${NDK_DIR_NAME}"
+BCG729_PATH="$DOWNLOAD_DIR/${BCG729_DIR_NAME}"
+LIB_PATH="${BCG729_BUILD_OUT_PATH}/libs"
+LOG_PATH="${BCG729_BUILD_OUT_PATH}/logs"
+
+LIB_BUILD_PATH="$BCG729_PATH/obj/local"
+LIB_HEADERS_PATH="$BCG729_PATH/include"
+
+rm -rf "${BCG729_BUILD_OUT_PATH}"
+mkdir -p "${LIB_PATH}"
+mkdir -p "${LOG_PATH}"
+
+cd $BCG729_PATH
+
+# Patching Android.mk
+echo "Patching bcg729 Android.mk ..."
+echo "there"
+ADD_TO_LOCAL_SRC_FILES=$(cat <<-END
+src\/utils\.c \\
+src\/cng\.c \\
+src\/dtx\.c \\
+src\/vad\.c
+END
+)
+echo "here"
+sed -e "s/src\/utils\.c/${ADD_TO_LOCAL_SRC_FILES}/g" -i Android.mk
+
+# Build bcg729
+echo "Building bcg729 $BCG729_VERSION ..."
+
+for arch in "${TARGET_ARCHS[@]}"
+do
+    echo "Building bcg729 for $arch ..."
+    cd $BCG729_PATH
+    $NDK_PATH/build/ndk-build APP_PLATFORM=android-${TARGET_ANDROID_API} APP_ABI=$arch NDK_PROJECT_PATH=. APP_BUILD_SCRIPT=Android.mk >> "${LOG_PATH}/$arch.log" 2>&1
+
+    echo "Copying bcg729 files for target arch $arch ..."
+    cp -r $LIB_BUILD_PATH/$arch* $LIB_PATH
+    cd $LIB_PATH/$arch
+    mkdir -p lib
+    mv `ls | grep -w -v lib` lib
+    mkdir -p include
+    cp -r $LIB_HEADERS_PATH/* include
+done
+
+echo "Finished building bcg729"
