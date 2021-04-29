@@ -1,44 +1,34 @@
 #!/bin/bash -e
+# @author Vincenzo Esposito (v.esposito@voismart.it)
+# Hints and code taken also from https://proandroiddev.com/tutorial-compile-openssl-to-1-1-1-for-android-application-87137968fee
 
+set -e
+
+# Source variables from config.conf file
 . config.conf
 
-CUR_DIR="$(pwd)"
-OPENSSL_PATH="$DOWNLOAD_DIR/${OPENSSL_DIR_NAME}"
 
 ##############################################################################
 ############################      FUNCTIONS     ##############################
 ##############################################################################
 
-function getNDKForOpenSSL {
-    # Downloading Earlier version of NDK up to r12b. Later version won't work with this configuration
+function initialSetup {
+    CUR_DIR="$(pwd)"
+    OPENSSL_SRC_PATH="$DOWNLOAD_DIR/${OPENSSL_DIR_NAME}"
+    OPENSSL_TMP_FOLDER="/tmp/openssl"
+}
 
-    #NDK Version to download
-    NDK_VER=r12b
+function setupPathsAndExports {
+    NDK_PATH="$DOWNLOAD_DIR/${NDK_DIR_NAME}"
+    LIB_PATH="${OPENSSL_BUILD_OUT_PATH}/libs"
+    LOG_PATH="${OPENSSL_BUILD_OUT_PATH}/logs"
 
-    #The URL from which to download Android NDK
-    NDK_URL="https://dl.google.com/android/repository/android-ndk-$NDK_VER-linux-x86_64.zip"
-
-    #The name of the folder created by executing the downloaded NDK bin
-    #In general, the name corresponds to that of the bin file, except the platform info
-    NDK_D_NAME="android-ndk-$NDK_VER"
-
-    echo ""
-    echo "Downloading Android NDK ${NDK_VER} for OpenSSL ..."
-    echo ""
-
-    cd $OPENSSL_PATH
-    curl -L -# -o ndk.zip "$NDK_URL" 2>&1
-    rm -rf "$NDK_D_NAME"
-    echo ""
-    echo "Android NDK downloaded!"
-    echo "Extracting Android NDK ..."
-    echo ""
-    unzip ndk.zip -d ndk
-    mv ndk/$NDK_D_NAME .
-    rm -rf ndk
-    rm -rf ndk.zip
-
-    cd $CUR_DIR
+    # Export ANDROID_NDK_HOME env var
+    export ANDROID_NDK_HOME=$NDK_PATH
+    # Add toolchains bin directory to PATH
+    TOOLCHAIN_PATH="$NDK_PATH/toolchains/llvm/prebuilt/linux-x86_64"
+    # for some reason it does not need to be exported
+    PATH=$TOOLCHAIN_PATH/bin:$PATH
 }
 
 function clearBuildDirectory {
@@ -47,37 +37,93 @@ function clearBuildDirectory {
     mkdir -p "${LOG_PATH}"
 }
 
-function clearNdkDirectory {
-    rm -rf $NDK_PATH
+function clearTmpDirectory {
+    rm -rf "$OPENSSL_TMP_FOLDER"
+    mkdir -p "$OPENSSL_TMP_FOLDER"
+    cp -r ${OPENSSL_SRC_PATH}/* ${OPENSSL_TMP_FOLDER}
 }
+
+function getArchitecture {
+    OPENSSL_TARGET_ABI=$1
+    if [ "$OPENSSL_TARGET_ABI" == "armeabi-v7a" ]
+    then
+        ARCHITECTURE="android-arm"
+    elif [ "$OPENSSL_TARGET_ABI" == "arm64-v8a" ]
+    then
+        ARCHITECTURE="android-arm64"
+    elif [ "$OPENSSL_TARGET_ABI" == "x86" ]
+    then
+        # Use "no-asm" arg as specified in Merge Request #28 --- Use Only for x86 ARCH
+        ARCHITECTURE="android-x86 no-asm"
+    elif [ "$OPENSSL_TARGET_ABI" == "x86_64" ]
+    then
+        ARCHITECTURE="android-x86_64"
+    else
+        echo "Unsupported target ABI: $OPENSSL_TARGET_ABI"
+        exit 1
+    fi
+}
+
+
+##############################################################################
+############################        INIT          ############################
+##############################################################################
+
+# Initial variables setup
+initialSetup
+# Set final paths and exports
+setupPathsAndExports
+# Clear and recreate the build output directory
+clearBuildDirectory
+# Set clang compiler, instead of gcc by default
+CC=clang
 
 
 ##############################################################################
 ############################        MAIN          ############################
 ##############################################################################
 
-# Get the NDK version for OpenSSL which may differ from the one specified in config.conf
-getNDKForOpenSSL
-
-NDK_PATH="$OPENSSL_PATH/${NDK_D_NAME}"
-#GCC_VERSION=$(gcc --version | grep gcc | awk '{print $4}' | cut -d'.' -f1,2)
-GCC_VERSION=4.9
-LIB_PATH="${OPENSSL_BUILD_OUT_PATH}/libs"
-LOG_PATH="${OPENSSL_BUILD_OUT_PATH}/logs"
-
-# Clear and recreate the build output directory
-clearBuildDirectory
-
-# Build OpenSSL for each ARCH specified in config.site
+# Build OpenSSL for each ARCH specified in config.conf
 for arch in "${TARGET_ARCHS[@]}"
 do
-    echo "Building OpenSSL for target arch $arch ..."
-    ./openssl-build ${NDK_PATH} ${OPENSSL_PATH} ${OPENSSL_TARGET_NDK_LEVEL} \
-                    ${arch} ${GCC_VERSION} "${LIB_PATH}/${arch}" \
-                    >> "${LOG_PATH}/${arch}.log" 2>&1
+    echo "Configuring OpenSSL for target arch $arch ..."
+
+    # Clear the tmp source directory
+    clearTmpDirectory
+    # Go to source files
+    cd ${OPENSSL_TMP_FOLDER}
+
+    OPENSSL_OUTPUT_PATH=$LIB_PATH/$arch
+
+    # Set the target architecture
+    # Can be android-arm, android-arm64, android-x86 etc
+    ARCHITECTURE="android-arm"
+    getArchitecture $arch
+
+    # Create Makefile
+    ./Configure $ARCHITECTURE -D__ANDROID_API__=${OPENSSL_TARGET_NDK_LEVEL} >> "${LOG_PATH}/${arch}.log" 2>&1
+
+    # Build Openssl
+    echo "Building OpenSSL Library for Android arch $arch"
+    make >> "${LOG_PATH}/${arch}.log" 2>&1
+    mkdir -p $OPENSSL_OUTPUT_PATH
+    OUTPUT_LIB=$OPENSSL_OUTPUT_PATH/lib
+    mkdir -p $OUTPUT_LIB
+    OUTPUT_INCLUDE=${OPENSSL_OUTPUT_PATH}/include
+    mkdir -p $OUTPUT_INCLUDE
+    cp -RL include/openssl $OUTPUT_INCLUDE
+
+    # Copy libs to final destination folder
+    cp libssl.a $OUTPUT_LIB
+    cp libcrypto.a $OUTPUT_LIB
+    # Uncomment if you want .so libs (pjsip only needs the static libs)
+    # cp libssl.so $OUTPUT_LIB
+    # cp libcrypto.so $OUTPUT_LIB
+    echo "Build completed! Check output libraries in ${OPENSSL_OUTPUT_PATH}"
 done
 
-# Clearing the NDK version for OpenSSL
-clearNdkDirectory
-
+# Remove tmp folder
+rm -rf ${OPENSSL_TMP_FOLDER}
 echo "Finished building OpenSSL! Check output folder: ${OPENSSL_BUILD_OUT_PATH}"
+
+set +e
