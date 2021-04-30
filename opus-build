@@ -24,7 +24,7 @@ mkdir -p jni
 
 # Build Opus
 echo "Building Opus $OPUS_VERSION ..."
-$NDK_PATH/ndk-build >> "${LOG_PATH}/opus.log" 2>&1
+$NDK_PATH/ndk-build APP_PLATFORM=android-${TARGET_ANDROID_API} >> "${LOG_PATH}/opus.log" 2>&1
 
 # Copy Files to Build Directory
 echo "Copying build file in Opus Build directory ..."
