@@ -153,8 +153,13 @@ then
     echo "Extracting SWIG ..."
     tar xzf swig.tar.gz && rm -rf swig.tar.gz
     cd "$SWIG_DIR_NAME"
-    ./configure
-    make && sudo make install
+    mkdir -p $SWIG_BUILD_OUT_PATH
+    echo "Configuring SWIG ..."
+    ./configure >> "$SWIG_BUILD_OUT_PATH/swig.log" 2>&1
+    echo "Compiling SWIG ..."
+    make >> "$SWIG_BUILD_OUT_PATH/swig.log" 2>&1
+    echo "Installing SWIG ..."
+    make install >> "$SWIG_BUILD_OUT_PATH/swig.log" 2>&1
     cd ..
     rm -rf "$SWIG_DIR_NAME"
 fi
