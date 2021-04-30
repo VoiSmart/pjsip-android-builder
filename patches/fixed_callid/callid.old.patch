@@ -1,0 +1,165 @@
+diff -ru pjsip/include/pjsip-ua/sip_regc.h pjsip/include/pjsip-ua/sip_regc.h
+--- pjsip/include/pjsip-ua/sip_regc.h	2019-02-27 14:20:20.317143606 +0100
++++ pjsip/include/pjsip-ua/sip_regc.h	2019-02-27 18:23:41.431145200 +0100
+@@ -205,7 +205,8 @@
+ 				     const pj_str_t *to_url,
+ 				     int ccnt,
+ 				     const pj_str_t contact[],
+-				     pj_uint32_t expires);
++				     pj_uint32_t expires,
++                     const pj_str_t *cid);
+ 
+ /**
+  * Set callback to be called when the registration received a final response.
+diff -ru pjsip/include/pjsua2/account.hpp pjsip/include/pjsua2/account.hpp
+--- pjsip/include/pjsua2/account.hpp	2019-02-27 14:20:20.318143608 +0100
++++ pjsip/include/pjsua2/account.hpp	2019-02-27 18:23:41.431145200 +0100
+@@ -168,6 +168,14 @@
+      */
+     unsigned		proxyUse;
+ 
++    /**
++     * This value will be used to set the registration Call-ID
++     * if not present the library will generate a random unique value
++     *
++     * The parameters should be a string of 32 alphanumeric chars
++     */
++    string	    	callID;
++
+ public:
+     /**
+      * Read this object from a container node.
+diff -ru pjsip/include/pjsua-lib/pjsua.h pjsip/include/pjsua-lib/pjsua.h
+--- pjsip/include/pjsua-lib/pjsua.h	2019-02-27 14:20:20.318143608 +0100
++++ pjsip/include/pjsua-lib/pjsua.h	2019-02-27 18:23:41.432145201 +0100
+@@ -2939,6 +2939,14 @@
+     pj_str_t	    id;
+ 
+     /** 
++     * The Call ID used in REGISTER. If the value is empty, a random generated
++     * value will be used.
++     *
++     * This field is optional.
++     */
++    pj_str_t	    call_id;
++
++    /** 
+      * This is the URL to be put in the request URI for the registration,
+      * and will look something like "sip:serviceprovider".
+      *
+diff -ru pjsip/src/pjsip-ua/sip_reg.c pjsip/src/pjsip-ua/sip_reg.c
+--- pjsip/src/pjsip-ua/sip_reg.c	2019-02-27 14:20:20.321143612 +0100
++++ pjsip/src/pjsip-ua/sip_reg.c	2019-02-27 18:23:41.433145202 +0100
+@@ -334,7 +334,8 @@
+ 				     const pj_str_t *to_url,
+ 				     int contact_cnt,
+ 				     const pj_str_t contact[],
+-				     pj_uint32_t expires)
++				     pj_uint32_t expires,
++                     const pj_str_t *cid)
+ {
+     pj_str_t tmp;
+     pj_status_t status;
+@@ -386,7 +387,12 @@
+ 
+     /* Set "Call-ID" header. */
+     regc->cid_hdr = pjsip_cid_hdr_create(regc->pool);
+-    pj_create_unique_string(regc->pool, &regc->cid_hdr->id);
++    if (cid->slen > 0){
++        pj_strdup_with_null(regc->pool, &regc->cid_hdr->id, cid);
++	    PJ_LOG(4,(THIS_FILE, "regc: callID %.*s", regc->cid_hdr->id.slen, regc->cid_hdr->id.ptr));
++    } else {
++        pj_create_unique_string(regc->pool, &regc->cid_hdr->id);
++    }
+ 
+     /* Set "CSeq" header. */
+     regc->cseq_hdr = pjsip_cseq_hdr_create(regc->pool);
+diff -ru pjsip/src/pjsua2/account.cpp pjsip/src/pjsua2/account.cpp
+--- pjsip/src/pjsua2/account.cpp	2019-02-27 14:20:20.322143613 +0100
++++ pjsip/src/pjsua2/account.cpp	2019-02-27 18:23:41.433145202 +0100
+@@ -44,6 +44,7 @@
+     NODE_READ_UNSIGNED	(this_node, unregWaitMsec);
+     NODE_READ_UNSIGNED	(this_node, proxyUse);
+     NODE_READ_STRING	(this_node, contactParams);
++    NODE_READ_STRING	(this_node, callID);
+ 
+     readSipHeaders(this_node, "headers", headers);
+ }
+@@ -63,6 +64,7 @@
+     NODE_WRITE_UNSIGNED	(this_node, unregWaitMsec);
+     NODE_WRITE_UNSIGNED	(this_node, proxyUse);
+     NODE_WRITE_STRING	(this_node, contactParams);
++    NODE_WRITE_STRING	(this_node, callID);
+ 
+     writeSipHeaders(this_node, "headers", headers);
+ }
+@@ -332,6 +334,7 @@
+     ret.unreg_timeout		= regConfig.unregWaitMsec;
+     ret.reg_use_proxy		= regConfig.proxyUse;
+     ret.reg_contact_params	= str2Pj(regConfig.contactParams);
++    ret.call_id	= str2Pj(regConfig.callID);
+     for (i=0; i<regConfig.headers.size(); ++i) {
+ 	pj_list_push_back(&ret.reg_hdr_list, &regConfig.headers[i].toPj());
+     }
+@@ -467,6 +470,7 @@
+     regConfig.unregWaitMsec	= prm.unreg_timeout;
+     regConfig.proxyUse		= prm.reg_use_proxy;
+     regConfig.contactParams	= pj2Str(prm.reg_contact_params);
++    regConfig.callID	= pj2Str(prm.call_id);
+     regConfig.headers.clear();
+     hdr = prm.reg_hdr_list.next;
+     while (hdr != &prm.reg_hdr_list) {
+diff -ru pjsip/src/pjsua-lib/pjsua_acc.c pjsip/src/pjsua-lib/pjsua_acc.c
+--- pjsip/src/pjsua-lib/pjsua_acc.c	2019-02-27 14:20:20.321143612 +0100
++++ pjsip/src/pjsua-lib/pjsua_acc.c	2019-05-17 12:22:13.243009568 +0200
+@@ -93,6 +93,7 @@
+     pj_strdup_with_null(pool, &dst->contact_uri_params,
+                         &src->contact_uri_params);
+     pj_strdup_with_null(pool, &dst->pidf_tuple_id, &src->pidf_tuple_id);
++	pj_strdup_with_null(pool, &dst->call_id, &src->call_id);
+     pj_strdup_with_null(pool, &dst->rfc5626_instance_id,
+                         &src->rfc5626_instance_id);
+     pj_strdup_with_null(pool, &dst->rfc5626_reg_id, &src->rfc5626_reg_id);
+@@ -430,7 +431,7 @@
+     if (acc->pool)
+ 	pj_pool_reset(acc->pool);
+     else
+-	acc->pool = pjsua_pool_create("acc%p", 512, 256);
++	acc->pool = pjsua_pool_create("acc%p", 1024, 256);
+ 
+     /* Copy config */
+     pjsua_acc_config_dup(acc->pool, &pjsua_var.acc[id].cfg, cfg);
+@@ -2399,7 +2400,8 @@
+ 			      &acc->cfg.id, 
+ 			      &acc->cfg.id,
+ 			      1, &acc->reg_contact,
+-			      acc->cfg.reg_timeout);
++			      acc->cfg.reg_timeout,
++				  &acc->cfg.call_id);
+     if (status != PJ_SUCCESS) {
+ 	pjsua_perror(THIS_FILE, 
+ 		     "Client registration initialization error", 
+diff -ru pjsip/src/pjsua-lib/pjsua_core.c pjsip/src/pjsua-lib/pjsua_core.c
+--- pjsip/src/pjsua-lib/pjsua_core.c	2019-02-27 14:20:20.321143612 +0100
++++ pjsip/src/pjsua-lib/pjsua_core.c	2019-02-27 18:23:41.434145203 +0100
+@@ -259,6 +259,8 @@
+ 
+     pj_bzero(cfg, sizeof(*cfg));
+ 
++	cfg->call_id = pj_str("");
++
+     cfg->reg_timeout = PJSUA_REG_INTERVAL;
+     cfg->reg_delay_before_refresh = PJSIP_REGISTER_CLIENT_DELAY_BEFORE_REFRESH;
+     cfg->unreg_timeout = PJSUA_UNREG_TIMEOUT;
+diff -ru pjsip/src/test/regc_test.c pjsip/src/test/regc_test.c
+--- pjsip/src/test/regc_test.c	2019-02-27 14:20:20.323143614 +0100
++++ pjsip/src/test/regc_test.c	2019-02-27 18:23:41.435145204 +0100
+@@ -293,7 +293,7 @@
+ 	return -100;
+ 
+     status = pjsip_regc_init(regc, registrar_uri, &aor, &aor, contact_cnt,
+-			     contacts, expires ? expires : 60);
++			     contacts, expires ? expires : 60, "highComplexityCall-Id123456");
+     if (status != PJ_SUCCESS) {
+ 	pjsip_regc_destroy(regc);
+ 	return -110;

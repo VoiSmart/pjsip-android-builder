@@ -22,10 +22,6 @@ then
   mkdir $BUILD_DIR
 fi
 
-#Force use of GCC instead of ndk default CLANG
-export NDK_TOOLCHAIN_VERSION=4.9
-export PATH="$NDK_TOOLCHAIN_VERSION:$PATH"
-
 if [ "$SETUP_PACKAGES" == "1" ]
 then
     # Setup Java 8
