@@ -199,6 +199,12 @@ then
     echo "OpenH264 downloaded!"
     echo "Extracting OpenH264 ..."
     tar xzf openh264.tar.gz && rm -rf openh264.tar.gz
+
+    if [ "$SKIP_OPENH264_DEMO" == "1" ]
+    then
+        echo "Modifying platform-android.mk to skip Encdemo and Decdemo builds"
+        sed -e "/binaries: decdemo encdemo/ s/^#*/#/" -i ${OPENH264_DIR_NAME}/build/platform-android.mk
+    fi
     cd ${BASEDIR}
     ./openh264-build-target-archs || true
 fi

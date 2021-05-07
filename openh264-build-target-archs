@@ -1,67 +1,103 @@
 #!/bin/bash -e
 
+set -e
+
+# Source variables from config.conf file
 . config.conf
 
-NDK_PATH="$DOWNLOAD_DIR/${NDK_DIR_NAME}"
-SDK_TOOLS_PATH="$DOWNLOAD_DIR/${SDK_DIR_NAME}"/tools
-OPENH264_PATH="$DOWNLOAD_DIR/${OPENH264_DIR_NAME}"
-LIB_PATH="${OPENH264_BUILD_OUT_PATH}/libs"
-LOG_PATH="${OPENH264_BUILD_OUT_PATH}/logs"
-TMP_DIR="/tmp/openh264"
 
-export PATH=${SDK_TOOLS_PATH}:$PATH
+##############################################################################
+############################      FUNCTIONS     ##############################
+##############################################################################
 
-rm -rf "${OPENH264_BUILD_OUT_PATH}"
-mkdir -p "${LIB_PATH}"
-mkdir -p "${LOG_PATH}"
+function initialSetup {
+    NDK_PATH="$DOWNLOAD_DIR/$NDK_DIR_NAME"
+    SDK_TOOLS_PATH="$DOWNLOAD_DIR/${SDK_DIR_NAME}"/tools
+    OPENH264_SRC_PATH="$DOWNLOAD_DIR/${OPENH264_DIR_NAME}"
+    OPENH264_TMP_DIR="/tmp/openh264"
+}
+
+function setupPathsAndExports {
+    LIB_PATH="${OPENH264_BUILD_OUT_PATH}/libs"
+    LOG_PATH="${OPENH264_BUILD_OUT_PATH}/logs"
+
+    export ANDROID_NDK_HOME=$NDK_PATH
+    export ANDROID_HOME=$DOWNLOAD_DIR/${SDK_DIR_NAME}
+
+    export PATH=${SDK_TOOLS_PATH}:$PATH
+}
+
+function clearBuildDirectory {
+    rm -rf "${OPENH264_BUILD_OUT_PATH}"
+    mkdir -p "${LIB_PATH}"
+    mkdir -p "${LOG_PATH}"
+}
+
+function clearTmpAndInitDirectory {
+    rm -rf "${OPENH264_TMP_DIR}"
+    mkdir -p "${OPENH264_TMP_DIR}"
+    cd ${OPENH264_SRC_PATH}
+    cp -r * ${OPENH264_TMP_DIR}
+    cd ${OPENH264_TMP_DIR}
+    mkdir -p "$BUILD_DIR"
+    mkdir -p "${LIB_PATH}/${arch}"
+    mkdir -p "${LOG_PATH}"
+}
+
+function finalizeArgs {
+    arch=$1
+    if [ "$arch" == "armeabi" ]
+    then
+        ARGS="${ARGS}arm APP_ABI=armeabi"
+    elif [ "$arch" == "armeabi-v7a" ]
+    then
+        ARGS="${ARGS}arm"
+    elif [ "$arch" == "x86" ]
+    then
+        ARGS="${ARGS}x86 ENABLEPIC=Yes"
+    elif [ "$arch" == "x86_64" ]
+    then
+        ARGS="${ARGS}x86_64"
+    elif [ "$arch" == "arm64-v8a" ]
+    then
+        ARGS="${ARGS}arm64"
+    else
+        echo "Unsupported target ABI: $arch"
+        exit 1
+    fi
+}
+
+
+##############################################################################
+############################        INIT          ############################
+##############################################################################
+
+# Initial variables setup
+initialSetup
+# Set final paths and exports
+setupPathsAndExports
+# Clear and recreate the build output directory
+clearBuildDirectory
+
+
+##############################################################################
+############################        MAIN          ############################
+##############################################################################
 
 for arch in "${TARGET_ARCHS[@]}"
 do
     echo "Building OpenH264 for target arch $arch ..."
-    rm -rf "${TMP_DIR}"
-    mkdir -p "${TMP_DIR}"
-    cd ${OPENH264_PATH}
-    cp -r * ${TMP_DIR}
-    cd ${TMP_DIR}
-    mkdir -p "$BUILD_DIR"
-    mkdir -p "${LIB_PATH}/${arch}"
-    mkdir -p "${LOG_PATH}"
-    
+    # Clear the tmp source directory
+    clearTmpAndInitDirectory
+
     #change default output DIR for make install
     sed -i "s*PREFIX=/usr/local*PREFIX=${LIB_PATH}/${arch}*g" Makefile
     
-    ARGS="OS=android NDKROOT=${NDK_PATH} NDKLEVEL=${OPENH264_TARGET_NDK_LEVEL} "
+    ARGS="APP_PLATFORM=android-${TARGET_ANDROID_API} OS=android NDKROOT=${NDK_PATH} NDK_TOOLCHAIN_VERSION=clang NDKLEVEL=${OPENH264_TARGET_NDK_LEVEL} "
     ARGS="${ARGS}TARGET=android-${TARGET_ANDROID_API} ARCH="
-    
-    if [ "$arch" == "armeabi" ]
-    then
-        ARGS="${ARGS}arm APP_ABI=armeabi"
+    # Add final architecture dependent info
+    finalizeArgs $arch
 
-    elif [ "$arch" == "armeabi-v7a" ]
-    then
-        ARGS="${ARGS}arm"
-
-    elif [ "$arch" == "x86" ]
-    then
-        ARGS="${ARGS}x86 ENABLEPIC=Yes"
-
-    elif [ "$arch" == "x86_64" ]
-    then
-        ARGS="${ARGS}x86_64"
-
-    elif [ "$arch" == "arm64-v8a" ]
-    then
-        ARGS="${ARGS}arm64"
-
-    elif [ "$arch" == "mips" ]
-    then
-        ARGS="${ARGS}mips"
-
-    elif [ "$arch" == "mips64" ]
-    then
-        ARGS="${ARGS}mips64"
-    fi
-    
     make ${ARGS} >> "${LOG_PATH}/${arch}.log" 2>&1
     mkdir -p ${LIB_PATH}/${arch}
     make ${ARGS} install >> "${LOG_PATH}/${arch}.log" 2>&1
@@ -69,3 +105,4 @@ done
 
 echo "Finished building OpenH264! Check output folder: ${OPENH264_BUILD_OUT_PATH}"
 
+set +e
