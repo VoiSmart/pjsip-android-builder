@@ -133,20 +133,6 @@ then
         ./patch.sh
         cd $BASEDIR
     fi
-
-    # Changeset 5601 [fixed in pjsip 2.7] PATCH - only for pjsip 2.6
-    if [ "${PJSIP_VERSION}" == "2.6" ]
-    then
-        echo ""
-        echo ""
-        echo "######################################################################"
-        echo "Apply patch (changeset 5601) to PJSIP 2.6 to fix issue #2021"
-        echo "######################################################################"
-        echo ""
-        cd $PATCH_DIR/changeset_5601
-        ./patch.sh
-        cd $BASEDIR
-    fi
 fi
 
 if [ "$DOWNLOAD_SWIG" == "1" ]
