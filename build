@@ -41,6 +41,12 @@ function setConfigSite {
     echo "#define PJSIP_AUTH_AUTO_SEND_NEXT 0" >> "$CONFIG_SITE_PATH"
     echo "#define PJMEDIA_HAS_OPUS_CODEC 1" >> "$CONFIG_SITE_PATH"
 
+    # Check the README in patches README.md for more info
+    if [ "${USE_FIXED_CALLID}" == "1" ]
+    then
+        echo "#define PJSIP_MAX_URL_SIZE 512" >> "$CONFIG_SITE_PATH"
+    fi
+
     if [ "${ENABLE_IPV6}" == "1" ]
     then
         echo "#define PJ_HAS_IPV6 1" >> "$CONFIG_SITE_PATH"
