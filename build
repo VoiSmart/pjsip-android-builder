@@ -47,6 +47,15 @@ function setConfigSite {
         echo "#define PJSIP_MAX_URL_SIZE 512" >> "$CONFIG_SITE_PATH"
     fi
 
+    # If you are compiling pjsip with openssl you will likely use srtp
+    # in such scenario it might happen that the sdp contains srtp info
+    # thus the whole packet will likely exceed the default 4000 bytes.
+    # We are here increasing that limit to 6000 bytes.
+    if [ "${DOWNLOAD_OPENSSL}" == "1" ]
+    then
+        echo "#define PJSIP_MAX_PKT_LEN 6000" >> "$CONFIG_SITE_PATH"
+    fi
+
     if [ "${ENABLE_IPV6}" == "1" ]
     then
         echo "#define PJ_HAS_IPV6 1" >> "$CONFIG_SITE_PATH"
