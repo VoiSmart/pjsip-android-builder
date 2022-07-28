@@ -9,11 +9,13 @@ If you want to contribute, your help is really appreciated :)
 
 ## Support - PJSIP 2.9+
 
-Using Android API `21`:
+Using Android API `21`.
+Default versions included:
 
-- Android NKD: `r20b`
+- Android Cmd Tools: `8512546`
+- Android NKD: `r21e`
 - OpenSSL: `1.1.1k` (Uses NDK Level 21)
-- OpenH264: `1.7.0` (Uses NDK Level 21)
+- OpenH264: `2.1.0` (Uses NDK Level 21)
 - Opus: `1.3.1`
 - bcg729: `1.1.1`
 - Swig: `4.0.2`
@@ -74,7 +76,7 @@ If you want to build a single library, or just change it's version, you can disa
 ## License
 
 ```text
-Copyright (C) 2015-2018 VoiSmart Srl
+Copyright (C) 2015-2022 VoiSmart Srl
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
