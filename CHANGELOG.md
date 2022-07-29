@@ -1,5 +1,11 @@
 # Change Log
 
+## Version 2.4.1
+
+_2022-07-29_
+
+* Add switches to compile PJSIP with only specific support libraries
+
 ## Version 2.4.0
 
 _2022-07-28_
