@@ -35,7 +35,7 @@ docker run -it --name pjsip-builder -v /path/to/host/repo:/home ubuntu bash
 ### Configuration
 
 1. Clone this repo on your machine or in the mounted volume inside your container.
-2. Properly configure the `config.conf` file. It's possible to configure libraries versions and build settings by editing it. The settings in the `Support` section above have been tested. Please read the comments in the file for more details.
+2. Properly configure the `config.conf` file. It's possible to configure libraries versions and build settings by editing it. The settings in the `Support` section above have been tested. Please read the comments in the file for more details. Now single libraries can be configured to be compiled with PJSIP without further editing, just enable the switches in the config file.
 3. In the `config.conf` file there are some toggles to apply patches ([`fixed_callid`](patches/fixed_callid)). See the respective README for more info.
 
 ### Prepare Environment

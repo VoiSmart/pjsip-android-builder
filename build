@@ -34,8 +34,6 @@ function setConfigSite {
     echo "Creating config site file for Android ..."
     echo "#define PJ_CONFIG_ANDROID 1" > "$CONFIG_SITE_PATH"
     echo "#define PJMEDIA_HAS_G7221_CODEC 1" >> "$CONFIG_SITE_PATH"
-    echo "#include <pj/config_site_sample.h>" >> "$CONFIG_SITE_PATH"
-    echo "#define PJMEDIA_HAS_VIDEO 1" >> "$CONFIG_SITE_PATH"
     echo "#define PJMEDIA_AUDIO_DEV_HAS_ANDROID_JNI 0" >> "$CONFIG_SITE_PATH"
     echo "#define PJMEDIA_AUDIO_DEV_HAS_OPENSL 1" >> "$CONFIG_SITE_PATH"
     echo "#define PJSIP_AUTH_AUTO_SEND_NEXT 0" >> "$CONFIG_SITE_PATH"
@@ -44,6 +42,7 @@ function setConfigSite {
     # Check the README in patches README.md for more info
     if [ "${USE_FIXED_CALLID}" == "1" ]
     then
+        echo "Changing PJSIP_MAX_URL_SIZE to 512"
         echo "#define PJSIP_MAX_URL_SIZE 512" >> "$CONFIG_SITE_PATH"
     fi
 
@@ -51,24 +50,48 @@ function setConfigSite {
     # in such scenario it might happen that the sdp contains srtp info
     # thus the whole packet will likely exceed the default 4000 bytes.
     # We are here increasing that limit to 6000 bytes.
-    if [ "${DOWNLOAD_OPENSSL}" == "1" ]
+    if [ "${ENABLE_OPENSSL}" == "1" ]
     then
+        echo "Changing PJSIP_MAX_PKT_LEN to 6000"
         echo "#define PJSIP_MAX_PKT_LEN 6000" >> "$CONFIG_SITE_PATH"
+    else
+        echo "You have not enabled OpenSSL in config_site"
     fi
 
     if [ "${ENABLE_IPV6}" == "1" ]
     then
+        echo "Enabling IPV6 in config_site"
         echo "#define PJ_HAS_IPV6 1" >> "$CONFIG_SITE_PATH"
+    else
+        echo "You have not enabled IPV6 in config_site"
     fi
 
-    if [ "${DOWNLOAD_BCG729}" == "1" ]
+    if [ "${ENABLE_BCG729}" == "1" ]
     then
+        echo "Enabling BCG729 in config_site"
         echo "#define PJMEDIA_HAS_BCG729 1" >> "$CONFIG_SITE_PATH"
+    else
+        echo "You have not enabled BCG729 in config_site"
     fi
+
+    if [ "${ENABLE_OPENH264}" == "1" ]
+    then
+        echo "Enabling Video support in config_site"
+        echo "#define PJMEDIA_HAS_VIDEO 1" >> "$CONFIG_SITE_PATH"
+        # TODO: must be tested before enabling following settings
+        # echo "#define PJMEDIA_VIDEO_DEV_HAS_OPENGL 1" >> "$CONFIG_SITE_PATH"
+        # echo "#define PJMEDIA_VIDEO_DEV_HAS_OPENGL_ES 1" >> "${CONFIG_SITE_PATH}"
+        # echo "#include <OpenGLES/ES3/glext.h>" >> "${CONFIG_SITE_PATH}"
+    else
+        echo "You have not enabled Video support in config_site"
+    fi
+
+    echo "#include <pj/config_site_sample.h>" >> "$CONFIG_SITE_PATH"
 }
 
 function buildPjSip {
     arch=$1
+    echo ""
     echo "Compile PJSIP for arch $arch ..."
     rm -rf "${PJSIP_TMP_PATH}"
     mkdir -p "${PJSIP_TMP_PATH}"
@@ -76,11 +99,39 @@ function buildPjSip {
     cp -r * "${PJSIP_TMP_PATH}"
     cd "${PJSIP_TMP_PATH}"
 
-    args=("--use-ndk-cflags"
-        "--with-ssl=${OPENSSL_BUILD_OUT_PATH}/libs/${arch}"
-        "--with-openh264=${OPENH264_BUILD_OUT_PATH}/libs/${arch}"
-        "--with-opus=${OPUS_BUILD_OUT_PATH}/libs/${arch}"
-        "--with-bcg729=${BCG729_BUILD_OUT_PATH}/libs/${arch}")
+    args=("--use-ndk-cflags")
+
+    if [ "${ENABLE_OPENSSL}" == "1" ]
+    then
+        echo "with OpenSSL support"
+        args+=("--with-ssl=${OPENSSL_BUILD_OUT_PATH}/libs/${arch}")
+    else
+        echo "without OpenSSL support"
+    fi
+
+    if [ "${ENABLE_OPENH264}" == "1" ]
+    then
+        echo "with OpenH264 support"
+        args+=("--with-openh264=${OPENH264_BUILD_OUT_PATH}/libs/${arch}")
+    else
+        echo "without OpenH264 support"
+    fi
+
+    if [ "${ENABLE_OPUS}" == "1" ]
+    then
+        echo "with Opus support"
+        args+=("--with-opus=${OPUS_BUILD_OUT_PATH}/libs/${arch}")
+    else
+        echo "without Opus support"
+    fi
+
+    if [ "${ENABLE_BCG729}" == "1" ]
+    then
+        echo "with BCG729 support"
+        args+=("--with-bcg729=${BCG729_BUILD_OUT_PATH}/libs/${arch}")
+    else
+        echo "without BCG729 support"
+    fi
 
     APP_PLATFORM=android-${TARGET_ANDROID_API} TARGET_ABI=$arch ./configure-android "${args[@]}" >> "${FINAL_BUILD_LOGS}/${arch}.log" 2>&1
 
