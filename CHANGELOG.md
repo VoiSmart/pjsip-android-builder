@@ -1,14 +1,14 @@
 # Change Log
 
-## Version 2.4.1
+## Version 2.5.0 (2022-11-03)
 
-_2022-07-29_
+* Add switch to compile with debug symbols
+
+## Version 2.4.1 (2022-07-29)
 
 * Add switches to compile PJSIP with only specific support libraries
 
-## Version 2.4.0
-
-_2022-07-28_
+## Version 2.4.0 (2022-07-28)
 
 * Bump default versions
   * NDK to `r21e`
@@ -17,9 +17,7 @@ _2022-07-28_
 * **Issues fixed**:
   * #48
 
-## Version 2.3.0
-
-_2021-05-19_
+## Version 2.3.0 (2021-05-19)
 
 * Bump default versions
   * NDK to `r20b`
@@ -33,17 +31,13 @@ _2021-05-19_
   * #43
   * #44
 
-## Version 2.2.0
-
-_2020-03-30_
+## Version 2.2.0 (2020-03-30)
 
 * Add flag to support IPv6
 * **Issues fixed**:
   * #41
 
-## Version 2.1.0
-
-_2019-09-13_
+## Version 2.1.0 (2019-09-13)
 
 * **Issues fixed**:
   * #31
