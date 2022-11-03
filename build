@@ -19,6 +19,14 @@ FINAL_BUILD_LOGS="${FINAL_BUILD_DIR}/logs"
 export ANDROID_NDK_ROOT="${BASE_FOLDER}/${NDK_DIR_NAME}"
 export PATH="$ANDROID_NDK_ROOT:$PATH"
 
+if [ "${ADD_DEBUG_SYMBOLS}" == "1" ]
+then
+    echo "Adding compile flags for debug symbols"
+    export NDK_CFLAGS="-g -O2"
+else
+    echo "Debug symbols will not be included"
+fi
+
 ##############################################################################
 ############################      FUNCTIONS     ##############################
 ##############################################################################
