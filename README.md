@@ -41,13 +41,13 @@ docker run -it --name pjsip-builder -v /path/to/host/repo:/home ubuntu bash
 ### Prepare Environment
 
 1. Execute `./prepare-build-system`
-2. If everything goes well you should see all the compiled libraries (opus, openh264, openssl, bcg729) in the <b>output</b> folder.
+2. If everything goes well you should see all the compiled libraries (opus, openh264, openssl, bcg729) in the **output** folder.
 
 ## Build PJSIP
 
 After you have successfully set up everything, to build PJSIP execute `./build`
 
-The script is going to create a new folder inside the output named <b>pjsip-output-build</b> organized as follows:
+The script is going to create a new folder inside the output named **pjsip-output-build** organized as follows:
 
 ```none
 pjsip-output-build
@@ -56,7 +56,7 @@ pjsip-output-build
  |-- java/   contains PJSUA Java wrapper to work with the library
 ```
 
-If something goes wrong during the compilation of a particular target architecture, the main script will be terminated and you can see the full log in `./pjsip-output-build/logs/<arch>.log`. So for example if there's an error for <b>x86</b>, you can see the full log in `./pjsip-output-build/logs/x86.log`
+If something goes wrong during the compilation of a particular target architecture, the main script will be terminated and you can see the full log in `./pjsip-output-build/logs/<arch>.log`. So for example if there's an error for **x86**, you can see the full log in `./pjsip-output-build/logs/x86.log`
 
 #### x86 Relocation
 
