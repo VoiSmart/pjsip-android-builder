@@ -94,6 +94,12 @@ function setConfigSite {
         echo "You have not enabled Video support in config_site"
     fi
 
+    if [ "${CHANGE_PJSIP_TRANSPORT_IDLE_TIME}" == "1" ]
+    then
+        echo "Changing PJSIP_TRANSPORT_IDLE_TIME to $PJSIP_TRANSPORT_IDLE_TIME"
+        echo "#define PJSIP_TRANSPORT_IDLE_TIME $PJSIP_TRANSPORT_IDLE_TIME" >> "$CONFIG_SITE_PATH"
+    fi
+
     echo "#include <pj/config_site_sample.h>" >> "$CONFIG_SITE_PATH"
 }
 
