@@ -133,6 +133,20 @@ then
         ./patch.sh
         cd $BASEDIR
     fi
+
+    # Rtcp-FB-Event data to pjsua2 PATCH
+    if [ "${EXPORT_RTCP_FB_DATA}" == "1" ]
+        then
+        echo ""
+        echo ""
+        echo "######################################################################"
+        echo "Apply patch to export RTCP-FB Event data to pjsua2 ..."
+        echo "######################################################################"
+        echo ""
+        cd $PATCH_DIR/export_rtcp_fb
+        ./patch.sh
+        cd $BASEDIR
+    fi
 fi
 
 if [ "$DOWNLOAD_SWIG" == "1" ]

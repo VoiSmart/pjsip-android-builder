@@ -1,0 +1,46 @@
+diff --git pjsip/include/pjsua2/media.hpp pjsip/include/pjsua2/media.hpp
+index 5c4321082..85bf0c8f6 100644
+--- pjsip/include/pjsua2/media.hpp
++++ pjsip/include/pjsua2/media.hpp
+@@ -2559,6 +2559,15 @@ struct AudDevErrorEvent
+     pj_status_t		    status;	/**< The status code.	    */
+ };
+ 
++/**
++ * This structure describes the rtcp fb event.
++ */
++struct RtcpFbEvent
++{
++    pjmedia_rtcp_fb_type fbType;
++    bool isParamLengthZero;
++};
++
+ /**
+  * Media event data.
+  */
+@@ -2572,6 +2581,11 @@ typedef union MediaEventData {
+      * Audio device error event data.
+      */
+     AudDevErrorEvent	    audDevError;
++
++    /**
++     * Rtcp FB event data.
++     */
++    RtcpFbEvent     rtcpFb;
+     
+     /**
+      * Pointer to storage to user event data, if it's outside
+diff --git pjsip/src/pjsua2/media.cpp pjsip/src/pjsua2/media.cpp
+index de9819fda..158bdc945 100644
+--- pjsip/src/pjsua2/media.cpp
++++ pjsip/src/pjsua2/media.cpp
+@@ -1931,6 +1931,9 @@ void MediaEvent::fromPj(const pjmedia_event &ev)
+ 	data.audDevError.dir = ev.data.aud_dev_err.dir;
+ 	data.audDevError.id = ev.data.aud_dev_err.id;
+ 	data.audDevError.status = ev.data.aud_dev_err.status;
++    } else if (type == PJMEDIA_EVENT_RX_RTCP_FB) {
++        data.rtcpFb.fbType = ev.data.rx_rtcp_fb.cap.type;
++        data.rtcpFb.isParamLengthZero = ev.data.rx_rtcp_fb.cap.param.slen == 0;
+     }
+     pjMediaEvent = (void *)&ev;
+ }
