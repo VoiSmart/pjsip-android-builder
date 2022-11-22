@@ -1,8 +1,18 @@
 # Change Log
 
+## Version 2.6.0 (2022-11-22)
+
+* Add patch to allow exporting of RtcpFb event data to pjsua2
+* Add switch and setting to change the default PJSIP_TRANSPORT_IDLE_TIME
+* **Issues fixed**:
+  * #50
+  * #51
+
 ## Version 2.5.0 (2022-11-03)
 
 * Add switch to compile with debug symbols
+* **Issues fixed**:
+  * #49
 
 ## Version 2.4.1 (2022-07-29)
 
