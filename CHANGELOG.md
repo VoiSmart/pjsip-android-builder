@@ -1,6 +1,6 @@
 # Change Log
 
-## Version 2.7.0 (2022-11-22)
+## Version 2.7.0 (2023-11-28)
 
 * Add patch to fix update_contact_header when need_outbound is false and only reg_contact_uri_params is not empty
 * **Issues fixed**:
