@@ -147,6 +147,20 @@ then
         ./patch.sh
         cd $BASEDIR
     fi
+
+    # Fix missing contact header PATCH
+    if [ "${FIX_MISSING_CONTACT_HEADER}" == "1" ]
+        then
+        echo ""
+        echo ""
+        echo "######################################################################"
+        echo "Apply patch to fix missing contact header ..."
+        echo "######################################################################"
+        echo ""
+        cd $PATCH_DIR/fix_missing_contact_header_on_incall_ip_change
+        ./patch.sh
+        cd $BASEDIR
+    fi
 fi
 
 if [ "$DOWNLOAD_SWIG" == "1" ]
